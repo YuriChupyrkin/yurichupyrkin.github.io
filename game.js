@@ -20,6 +20,21 @@ class Game {
     return this._lastEnemyId++;
   }
 
+  getEnemyRole() {
+    let randomRole = Math.round(Math.random() * 3);
+    switch(randomRole) {
+      case 0: {
+        return 'HEALTH';
+      }
+      case 1: {
+        return 'POISON';
+      }
+      default: {
+        return 'AMMO';
+      }
+    }
+  }
+
   buildEnemy() {
     const x = Math.random() * this._canvas.getWidth();
     const radius = Math.random() * 40;
@@ -44,6 +59,9 @@ class Game {
     }
 
     circle.setCanvas(this._canvas);
+
+    let role = this.getEnemyRole();
+    circle.setRole(role);
     return circle;
   }
 
@@ -54,10 +72,6 @@ class Game {
       this.addNewEnemy();
     }
   }
-
-  // destroyEnemy(enemyId) {
-  //   delete this._enemies[enemyId];
-  // }
 
   addNewEnemy() {
     const enemy = this.buildEnemy();

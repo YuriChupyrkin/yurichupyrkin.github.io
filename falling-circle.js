@@ -3,6 +3,26 @@ class FallingCircle extends Circle {
     super(x, y, 0, dy, radius);
   }
 
+  setRole(role) {
+    if (role === 'HEALTH') {
+      this.setFillColor('green');
+    }
+
+    if (role === 'POISON') {
+      this.setFillColor('black');
+    }
+
+    if (role === 'AMMO') {
+      this.setFillColor('yellow');
+    }
+
+    this._role = role;
+  }
+
+  getRole() {
+    return this._role;
+  }
+
   update() {
     const width = this._canvas.getWidth();
     const height = this._canvas.getHeight();

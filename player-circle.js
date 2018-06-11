@@ -40,6 +40,7 @@ class PlayerCirlce extends Circle {
     this.setCanvas(canvas);
     this._bullets = {};
     this._lastBulletId = 0;
+    this._bulletRadius = 6;
     listenKeys(this);
   }
 
@@ -78,6 +79,7 @@ class PlayerCirlce extends Circle {
     return new BulletCirlce(
       this._x,
       this._y,
+      this._bulletRadius,
       this._canvas
     );
   }

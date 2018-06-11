@@ -32,11 +32,25 @@ function InteractionResolver() {
   };
 
   const playerHasIntersection = (player, enemies, enemyId) => {
+    let enemyRole = enemies[enemyId].getRole();
+
     // delete this enemy
     delete enemies[enemyId];
 
-    // increase radius of player
-    player._radius++;
+    switch(enemyRole) {
+      case 'AMMO': {
+        player._bulletRadius++;
+        break;
+      }
+      case 'HEALTH': {
+        player._radius++;
+        break;
+      }
+      case 'POISON': {
+        player._radius--;
+        break;
+      }
+    }
   };
 
   const checkPlayerIntersection = (player, enemies) => {

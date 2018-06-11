@@ -1,6 +1,6 @@
 class BulletCirlce extends Circle {
-  constructor(x, y, canvas) {
-    super(x, y, 0, 0, 6);
+  constructor(x, y, radius, canvas) {
+    super(x, y, 0, 0, radius);
 
     this.setStrokeColor('#110952');
     this.setFillColor('orange');
