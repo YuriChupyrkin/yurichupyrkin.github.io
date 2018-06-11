@@ -3,8 +3,8 @@
   canvas.init(document.querySelector('canvas'));
   canvas.setSize(window.innerWidth - 2, window.innerHeight - 28);
 
-  const enemiesNumber = 12;
-  const game = new Game(canvas, enemiesNumber);
+  const enemiesNumber = 25;
+  const game = new Game(canvas, enemiesNumber, 20);
   game.startGame();
 
   function updateFrames () {

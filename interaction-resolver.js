@@ -85,6 +85,9 @@ function InteractionResolver() {
 
           // delete enemy
           delete enemies[enemyId];
+
+          // delete bullet
+          delete bullets[bulletId];
         }
       });
     });

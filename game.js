@@ -1,7 +1,8 @@
 class Game {
-  constructor(canvas, enemiesNumber) {
+  constructor(canvas, enemiesNumber, difficultLevel) {
     this._canvas = canvas;
     this._enemiesNumber = enemiesNumber;
+    this._difficultLevel = difficultLevel;
   }
 
   startGame() {
@@ -25,23 +26,29 @@ class Game {
   }
 
   getEnemyRole() {
-    let randomRole = Math.round(Math.random() * 3);
-    switch(randomRole) {
-      case 0: {
-        return 'HEALTH';
-      }
-      case 1: {
-        return 'POISON';
-      }
-      default: {
-        return 'AMMO';
-      }
+    let diffLevel = this._difficultLevel;
+    let randomRole = Math.round(Math.random() * diffLevel);
+    let role = 'POISON';
+    if (randomRole < diffLevel - 2) {
+      return role;
     }
+
+    if (randomRole === diffLevel - 2) {
+      role = 'AMMO';
+    } else {
+      role = 'HEALTH';
+    }
+
+    return role;
   }
 
   buildEnemy() {
     const x = Math.random() * this._canvas.getWidth();
-    const radius = Math.random() * 40;
+    let radius = Math.random() * 40;
+
+    if (radius < 6) {
+      radius = 6;
+    }
 
     const dy = (radius / 10) + 3;
 
