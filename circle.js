@@ -57,4 +57,14 @@ class Circle {
   isHidden() {
     return false;
   }
+
+  isIntersectWith(circle_2) {
+    let deltaX = Math.abs(this._x - circle_2._x);
+    let deltaY = Math.abs(this._y - circle_2._y);
+
+    let sqrtDistance = Math.pow(deltaX, 2) + Math.pow(deltaY, 2);
+    let distance = Math.sqrt(sqrtDistance);
+
+    return distance < this._radius + circle_2._radius;
+  }
 }

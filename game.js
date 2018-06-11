@@ -5,6 +5,12 @@ class Game {
     this._circleHelpers = new CircleHelpers();
 
     this.buildEnemies(enemiesNumber);
+    this.buildPlayer();
+  }
+
+  buildPlayer() {
+    const player = new PlayerCirlce(200, 100, this._canvas);
+    this._player = player;
   }
 
   getEnemyId() {
@@ -71,6 +77,28 @@ class Game {
     });
 
     this.checkEnemiesIntersection();
+
+    // player
+    this._player.update();
+    this.checkPlayerIntersection();
+  }
+
+  checkPlayerIntersection() {
+    const enemyIds = Object.keys(this._enemies);
+    enemyIds.forEach((enemyId) => {
+      let enemy = this._enemies[enemyId];
+      let isIntersect = this._player.isIntersectWith(enemy);
+
+      if (isIntersect) {
+        this.playerHasIntersection(enemyId);
+      }
+    });
+  }
+
+  playerHasIntersection(enemyId) {
+    this.destroyEnemy(enemyId);
+    this.addNewEnemy();
+    this._player._radius++;
   }
 
   checkEnemiesIntersection() {
@@ -80,10 +108,8 @@ class Game {
 
       for (let i = index + 1; i < enemyKeys.length; i++) {
         let circle_2 = this._enemies[enemyKeys[i]];
-
-        let isIntersect = this._circleHelpers
-          .circlesAreIntersect(circle_1, circle_2);
-
+        let isIntersect = circle_1.isIntersectWith(circle_2);
+          
         if (isIntersect) {
           this.enemiesHaveIntersection(circle_1, circle_2);
         }
