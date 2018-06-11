@@ -7,13 +7,13 @@ function Menu() {
     document.getElementById('bullet-count').innerHTML = bullets;
   }
 
-  const updateEnemiesCount = (enemies) => {
-    document.getElementById('enemy-killed-count').innerHTML = enemies;
+  const updateScore = (score) => {
+    document.getElementById('score-count').innerHTML = score;
   }
 
   return {
     updateHealth,
     updateBulletsCount,
-    updateEnemiesCount
+    updateScore
   };
 };

@@ -5,7 +5,8 @@
 
   const enemiesNumber = 12;
   const game = new Game(canvas, enemiesNumber);
-  
+  game.startGame();
+
   function updateFrames () {
     function animate() {
       requestAnimationFrame(animate);

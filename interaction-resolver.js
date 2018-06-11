@@ -65,7 +65,7 @@ function InteractionResolver() {
     });
   };
 
-  const checkBulletIntersection = (bullets, enemies) => {
+  const checkBulletIntersection = (bullets, enemies, player) => {
     const bulletsIds = Object.keys(bullets);
     const enemiesIds = Object.keys(enemies);
 
@@ -79,6 +79,10 @@ function InteractionResolver() {
         }
 
         if (bullet.isIntersectWith(enemy)) {
+          if (enemy.getRole() === 'POISON') {
+            player.addScore();
+          }
+
           // delete enemy
           delete enemies[enemyId];
         }
@@ -100,7 +104,7 @@ function InteractionResolver() {
     checkPlayerIntersection(player, enemies);
 
     // resolve interaction between enemies and bullets
-    checkBulletIntersection(bullets, enemies);
+    checkBulletIntersection(bullets, enemies, player);
   };
 
   return {

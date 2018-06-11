@@ -1,4 +1,4 @@
-const keyState = {};
+let keyState = {};
 
 const listenKeys = (circle) => {
   window.addEventListener('keyup', (e) => {
@@ -38,10 +38,13 @@ class PlayerCirlce extends Circle {
     this.setStrokeColor('#110952');
     this.setFillColor('red');
     this.setCanvas(canvas);
+    this._score = 0;
     this._health = 10;
     this._bullets = {};
     this._lastBulletId = 0;
     this._bulletRadius = 6;
+
+    keyState = {};
     listenKeys(this);
   }
 
@@ -71,6 +74,15 @@ class PlayerCirlce extends Circle {
     this._radius--;
     this._health--;
   }
+
+  addScore() {
+    this._score++;
+  }
+
+  getScore() {
+    return this._score;
+  }
+  
   
   getHealth() {
     return this._health;

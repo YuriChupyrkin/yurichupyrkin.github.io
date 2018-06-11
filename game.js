@@ -2,12 +2,15 @@ class Game {
   constructor(canvas, enemiesNumber) {
     this._canvas = canvas;
     this._enemiesNumber = enemiesNumber;
+  }
+
+  startGame() {
     this._lastEnemyId = 0;
     this._circleHelpers = new CircleHelpers();
     this._interactionResolver = new InteractionResolver();
     this._menu = new Menu();
 
-    this.buildEnemies(enemiesNumber);
+    this.buildEnemies(this._enemiesNumber);
     this.buildPlayer();
   }
 
@@ -118,7 +121,14 @@ class Game {
 
   updateStatusBar() {
     let hp = this._player.getHealth();
-    
     this._menu.updateHealth(hp);
+
+    if (hp < 8) {
+      alert('GAME OVER');
+      this.startGame();
+    }
+
+    let score = this._player.getScore();
+    this._menu.updateScore(score);
   }
 }
