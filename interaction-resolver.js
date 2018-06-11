@@ -39,7 +39,7 @@ function InteractionResolver() {
 
     switch(enemyRole) {
       case 'AMMO': {
-        player._bulletRadius++;
+        player.addBulletsCount(10);
         break;
       }
       case 'HEALTH': {

@@ -43,6 +43,7 @@ class PlayerCirlce extends Circle {
     this._bullets = {};
     this._lastBulletId = 0;
     this._bulletRadius = 6;
+    this._bulletCount = 15;
 
     keyState = {};
     listenKeys(this);
@@ -54,6 +55,14 @@ class PlayerCirlce extends Circle {
 
   getBullets() {
     return this._bullets;
+  }
+
+  addBulletsCount(bulletsCount) {
+    this._bulletCount += bulletsCount;
+  }
+
+  getBulletsCount() {
+    return this._bulletCount;
   }
 
   update() {
@@ -98,7 +107,8 @@ class PlayerCirlce extends Circle {
   }
 
   shot() {
-    if (!this._withBullet) {
+    let bulletsCount = this.getBulletsCount();
+    if (!this._withBullet || !bulletsCount) {
       return;
     }
 
@@ -114,5 +124,6 @@ class PlayerCirlce extends Circle {
     }
 
     this._bullets[this.getBulletId()] = bullet;
+    this.addBulletsCount(-1);
   }
 }

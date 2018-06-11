@@ -123,12 +123,15 @@ class Game {
     let hp = this._player.getHealth();
     this._menu.updateHealth(hp);
 
-    if (hp < 8) {
+    if (hp < 1) {
       alert('GAME OVER');
       this.startGame();
     }
 
     let score = this._player.getScore();
     this._menu.updateScore(score);
+
+    let bulletsCount = this._player.getBulletsCount();
+    this._menu.updateBulletsCount(bulletsCount);
   }
 }
