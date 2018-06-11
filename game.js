@@ -10,6 +10,7 @@ class Game {
 
   buildPlayer() {
     const player = new PlayerCirlce(200, 100, this._canvas);
+    player.setupBullet(true);
     this._player = player;
   }
 

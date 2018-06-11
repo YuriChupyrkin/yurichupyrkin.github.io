@@ -7,6 +7,9 @@ const listenKeys = (circle) => {
 
   window.addEventListener('keydown', (e) => {
     keyState[e.keyCode] = true;
+    if (e.keyCode === 32) {
+      circle.shot();
+    }
   }, true);
 };
 
@@ -35,12 +38,62 @@ class PlayerCirlce extends Circle {
     this.setStrokeColor('#110952');
     this.setFillColor('red');
     this.setCanvas(canvas);
-
+    this._bullets = {};
+    this._lastBulletId = 0;
     listenKeys(this);
+  }
+
+  getBulletId() {
+    return this._lastBulletId++;
   }
 
   update() {
     move(this);
+    this.updateBullets();
     this.draw();
+  }
+
+  updateBullets() {
+    let bulletsId = Object.keys(this._bullets);
+
+    bulletsId.forEach((bulletId) => {
+      let bullet = this._bullets[bulletId];
+      bullet.update();
+
+      if (bullet.isHidden()) {
+        delete this._bullets[bulletId];
+      }
+    });
+  }
+
+  setupBullet(withBullet) {
+    this._withBullet = withBullet;
+  }
+
+  buildBullet() {
+    return new BulletCirlce(
+      this._x,
+      this._y,
+      this._canvas
+    );
+  }
+
+  shot() {
+    if (!this._withBullet) {
+      return;
+    }
+
+    let bullet = this.buildBullet();
+    let bulletSpeed = 30;
+    bullet._dy = -bulletSpeed;
+    if (keyState[37]) {
+      bullet._dx = -bulletSpeed;
+    }
+  
+    if (keyState[39]) {
+      bullet._dx = +bulletSpeed;
+    }
+
+    this._bullets[this.getBulletId()] = bullet;
   }
 }
