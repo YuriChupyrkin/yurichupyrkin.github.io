@@ -5,6 +5,7 @@ class Game {
     this._lastEnemyId = 0;
     this._circleHelpers = new CircleHelpers();
     this._interactionResolver = new InteractionResolver();
+    this._menu = new Menu();
 
     this.buildEnemies(enemiesNumber);
     this.buildPlayer();
@@ -112,5 +113,12 @@ class Game {
     this.addEnemies();
 
     this._interactionResolver.resolve(player, enemies, bullets);
+    this.updateStatusBar();
+  }
+
+  updateStatusBar() {
+    let hp = this._player.getHealth();
+    
+    this._menu.updateHealth(hp);
   }
 }

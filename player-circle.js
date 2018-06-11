@@ -38,6 +38,7 @@ class PlayerCirlce extends Circle {
     this.setStrokeColor('#110952');
     this.setFillColor('red');
     this.setCanvas(canvas);
+    this._health = 10;
     this._bullets = {};
     this._lastBulletId = 0;
     this._bulletRadius = 6;
@@ -54,25 +55,25 @@ class PlayerCirlce extends Circle {
 
   update() {
     move(this);
-    //this.updateBullets();
     this.draw();
-  }
-
-  updateBullets() {
-    let bulletsId = Object.keys(this._bullets);
-
-    bulletsId.forEach((bulletId) => {
-      let bullet = this._bullets[bulletId];
-      bullet.update();
-
-      if (bullet.isHidden()) {
-        delete this._bullets[bulletId];
-      }
-    });
   }
 
   setupBullet(withBullet) {
     this._withBullet = withBullet;
+  }
+
+  increaseHelth() {
+    this._radius++;
+    this._health++;
+  }
+
+  decreaseHelth() {
+    this._radius--;
+    this._health--;
+  }
+  
+  getHealth() {
+    return this._health;
   }
 
   buildBullet() {

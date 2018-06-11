@@ -43,11 +43,11 @@ function InteractionResolver() {
         break;
       }
       case 'HEALTH': {
-        player._radius++;
+        player.increaseHelth();
         break;
       }
       case 'POISON': {
-        player._radius--;
+        player.decreaseHelth();
         break;
       }
     }
