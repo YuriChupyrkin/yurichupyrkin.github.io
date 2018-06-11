@@ -1,8 +1,10 @@
 class Game {
   constructor(canvas, enemiesNumber) {
     this._canvas = canvas;
+    this._enemiesNumber = enemiesNumber;
     this._lastEnemyId = 0;
     this._circleHelpers = new CircleHelpers();
+    this._interactionResolver = new InteractionResolver();
 
     this.buildEnemies(enemiesNumber);
     this.buildPlayer();
@@ -53,9 +55,9 @@ class Game {
     }
   }
 
-  destroyEnemy(enemyId) {
-    delete this._enemies[enemyId];
-  }
+  // destroyEnemy(enemyId) {
+  //   delete this._enemies[enemyId];
+  // }
 
   addNewEnemy() {
     const enemy = this.buildEnemy();
@@ -63,74 +65,38 @@ class Game {
     this._enemies[enemyId] = enemy;
   }
 
+  addEnemies() {
+    while (Object.keys(this._enemies).length < this._enemiesNumber) {
+      this.addNewEnemy();
+    }
+  }
+
+  // Update enemies or bullets
+  multiUpdate(target) {
+    let ids = Object.keys(target);
+    ids.forEach((id) => {
+      target[id].update();
+
+      if (target[id].isHidden && target[id].isHidden()) {
+        delete target[id];
+      }
+    });
+  }
+
   update() {
     this._canvas.clearCanvas();
-    const enemyKeys = Object.keys(this._enemies);
 
-    enemyKeys.forEach((key) => {
-      let enemy = this._enemies[key];
-      enemy.update();
+    let player = this._player;
+    let bullets = player.getBullets();
+    let enemies = this._enemies;
 
-      if (enemy.isHidden()) {
-        this.destroyEnemy(key);
-        this.addNewEnemy();
-      }
-    });
+    this.multiUpdate(enemies);
+    this.multiUpdate(bullets);
+    player.update();
 
-    this.checkEnemiesIntersection();
+    // add new enemies
+    this.addEnemies();
 
-    // player
-    this._player.update();
-    this.checkPlayerIntersection();
-  }
-
-  checkPlayerIntersection() {
-    const enemyIds = Object.keys(this._enemies);
-    enemyIds.forEach((enemyId) => {
-      let enemy = this._enemies[enemyId];
-      let isIntersect = this._player.isIntersectWith(enemy);
-
-      if (isIntersect) {
-        this.playerHasIntersection(enemyId);
-      }
-    });
-  }
-
-  playerHasIntersection(enemyId) {
-    this.destroyEnemy(enemyId);
-    this.addNewEnemy();
-    this._player._radius++;
-  }
-
-  checkEnemiesIntersection() {
-    const enemyKeys = Object.keys(this._enemies);
-    enemyKeys.forEach((key, index) => {
-      let circle_1 = this._enemies[key];
-
-      for (let i = index + 1; i < enemyKeys.length; i++) {
-        let circle_2 = this._enemies[enemyKeys[i]];
-        let isIntersect = circle_1.isIntersectWith(circle_2);
-          
-        if (isIntersect) {
-          this.enemiesHaveIntersection(circle_1, circle_2);
-        }
-      }
-    });
-  }
-
-  enemiesHaveIntersection(circle_1, circle_2) {
-    // exchange of direction
-    let dx = circle_1._dx;
-    let dy = circle_1._dy;
-
-    circle_1._dx = circle_2._dx;
-    circle_1._dy = circle_2._dy;
-
-    circle_2._dx = dx;
-    circle_2._dy = dy;
-
-    // FIX intersection
-    circle_1._x +=  circle_1._dx * 1.5;
-    circle_1._y +=  circle_1._dy * 1.5;
+    this._interactionResolver.resolve(player, enemies, bullets);
   }
 }

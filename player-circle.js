@@ -47,9 +47,13 @@ class PlayerCirlce extends Circle {
     return this._lastBulletId++;
   }
 
+  getBullets() {
+    return this._bullets;
+  }
+
   update() {
     move(this);
-    this.updateBullets();
+    //this.updateBullets();
     this.draw();
   }
 
