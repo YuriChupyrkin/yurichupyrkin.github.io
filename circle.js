@@ -53,4 +53,8 @@ class Circle {
 
     this.draw();
   }
+
+  isHidden() {
+    return false;
+  }
 }
