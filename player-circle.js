@@ -25,7 +25,7 @@ class PlayerCirlce extends Circle {
     super(x, y, START_SPEED, START_SPEED, START_RADIUS);
 
     this.setStrokeColor('#110952');
-    this.setFillColor('red');
+    this.setFillColor(CONSTANTS.PLAYER_COLOR);
     this.setCanvas(canvas);
     this._score = 0;
     this._health = START_HEALTH;

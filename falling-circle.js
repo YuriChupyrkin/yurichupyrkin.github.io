@@ -5,15 +5,16 @@ class FallingCircle extends Circle {
 
   setRole(role) {
     if (role === CONSTANTS.FALLING_HEALTH) {
-      this.setFillColor('green');
-    }
+      this.setFillColor(CONSTANTS.FALLING_HEALTH_COLOR);
+      this.setStrokeColor(CONSTANTS.FALLING_DEFAULT_STROKE);
 
-    if (role === CONSTANTS.FALLING_ENEMY) {
-      this.setFillColor('black');
-    }
+    } else if (role === CONSTANTS.FALLING_ENEMY) {
+      this.setFillColor(CONSTANTS.FALLING_ENEMY_COLOR);
+      this.setStrokeColor(CONSTANTS.FALLING_ENEMY_STROKE);
 
-    if (role === CONSTANTS.FALLING_AMMO) {
-      this.setFillColor('yellow');
+    } else {
+      this.setFillColor(CONSTANTS.FALLING_AMMO_COLOR);
+      this.setStrokeColor(CONSTANTS.FALLING_DEFAULT_STROKE);
     }
 
     this._role = role;
