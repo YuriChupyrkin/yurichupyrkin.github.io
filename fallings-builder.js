@@ -9,7 +9,7 @@ class FallingsBuilder {
     this._canvas = canvas;
   }
 
-  increaseDifficult() {
+  increaseDifficulty() {
     this._difficultLevel++;
   }
 

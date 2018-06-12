@@ -92,7 +92,7 @@ class Game {
       this._menu.updateScore(score);
       this._lastStatusBarValues.score = score;
       
-      this._fallingBuilder.increaseDifficult();
+      this._fallingBuilder.increaseDifficulty();
     }
 
     if (bulletsCount !== this._lastStatusBarValues.bulletsCount) {

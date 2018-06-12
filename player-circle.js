@@ -13,28 +13,11 @@ const listenKeys = (circle) => {
 
   window.addEventListener('keydown', (e) => {
     keyState[e.keyCode] = true;
+
     if (e.keyCode === 32) {
       circle.shot();
     }
   }, true);
-};
-
-const move = (circle) => {
-  if (keyState[37]) {
-    circle._x -= circle._dx;
-  }
-
-  if (keyState[39]) {
-    circle._x += circle._dx;
-  }
-
-  if (keyState[38]) {
-    circle._y -= circle._dy;
-  }
-
-  if (keyState[40]) {
-    circle._y += circle._dy;
-  }
 };
 
 class PlayerCirlce extends Circle {
@@ -73,7 +56,7 @@ class PlayerCirlce extends Circle {
   }
 
   update() {
-    move(this);
+    this.move();
     this.draw();
   }
 
@@ -128,6 +111,24 @@ class PlayerCirlce extends Circle {
     );
   }
 
+  move() {
+    if (keyState[37]) {
+      this._x -= this._dx;
+    }
+  
+    if (keyState[39]) {
+      this._x += this._dx;
+    }
+  
+    if (keyState[38]) {
+      this._y -= this._dy;
+    }
+
+    if (keyState[40]) {
+      this._y += this._dy;
+    }
+  };
+
   shot() {
     let bulletsCount = this.getBulletsCount();
     if (!bulletsCount) {
@@ -136,6 +137,7 @@ class PlayerCirlce extends Circle {
 
     let bullet = this.buildBullet();
     let bulletSpeed = 30;
+
     bullet._dy = -bulletSpeed;
     if (keyState[37]) {
       bullet._dx = -bulletSpeed;
