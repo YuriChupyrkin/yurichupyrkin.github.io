@@ -33,17 +33,18 @@ function InteractionResolver() {
 
   const playerHasIntersection = (player, fallings, fallingId) => {
     let fallingRole = fallings[fallingId].getRole();
+    let fallingRadius = fallings[fallingId]._radius;
 
     // delete this falling
     delete fallings[fallingId];
 
     switch(fallingRole) {
       case CONSTANTS.FALLING_AMMO: {
-        player.addBulletsCount(10);
+        player.addBulletsCount(fallingRadius);
         break;
       }
       case CONSTANTS.FALLING_HEALTH: {
-        player.increaseHelth();
+        player.increaseHelth(fallingRadius);
         break;
       }
       case CONSTANTS.FALLING_ENEMY: {

@@ -18,9 +18,10 @@ class Game {
   }
 
   buildPlayer() {
-    const player = new PlayerCirlce(200, 100, this._canvas);
-    player.setupBullet(true);
-    this._player = player;
+    const x = this._canvas.getWidth() / 2;
+    const y = this._canvas.getHeight() / 2;
+
+    this._player = new PlayerCirlce(x, y, this._canvas);
   }
 
   getFallingId() {

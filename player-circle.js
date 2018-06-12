@@ -1,3 +1,9 @@
+const START_RADIUS = 30;
+const START_HEALTH = 10;
+const START_BULLETS_COUNT = 15;
+const BULLET_RADIUS = 6;
+const START_SPEED = 4;
+
 let keyState = {};
 
 const listenKeys = (circle) => {
@@ -33,17 +39,17 @@ const move = (circle) => {
 
 class PlayerCirlce extends Circle {
   constructor(x, y, canvas) {
-    super(x, y, 4, 4, 30);
+    super(x, y, START_SPEED, START_SPEED, START_RADIUS);
 
     this.setStrokeColor('#110952');
     this.setFillColor('red');
     this.setCanvas(canvas);
     this._score = 0;
-    this._health = 10;
+    this._health = START_HEALTH;
     this._bullets = {};
     this._lastBulletId = 0;
-    this._bulletRadius = 6;
-    this._bulletCount = 15;
+    this._bulletRadius = BULLET_RADIUS;
+    this._bulletCount = START_BULLETS_COUNT;
 
     keyState = {};
     listenKeys(this);
@@ -57,8 +63,9 @@ class PlayerCirlce extends Circle {
     return this._bullets;
   }
 
-  addBulletsCount(bulletsCount) {
-    this._bulletCount += bulletsCount;
+  addBulletsCount(fallingRadius) {
+    const addBullets = Math.round(fallingRadius / 2);
+    this._bulletCount += addBullets;
   }
 
   getBulletsCount() {
@@ -70,18 +77,20 @@ class PlayerCirlce extends Circle {
     this.draw();
   }
 
-  setupBullet(withBullet) {
-    this._withBullet = withBullet;
-  }
+  increaseHelth(fallingRadius) {
+    let addHp = fallingRadius > 24 ? 2 : 1;
 
-  increaseHelth() {
-    this._radius++;
-    this._health++;
+    this._radius += addHp;
+    this._health += addHp;
+
+    this.updateSpeed();
   }
 
   decreaseHelth() {
     this._radius--;
     this._health--;
+
+    this.updateSpeed();
   }
 
   addScore() {
@@ -91,10 +100,23 @@ class PlayerCirlce extends Circle {
   getScore() {
     return this._score;
   }
-  
-  
+
   getHealth() {
     return this._health;
+  }
+
+  updateSpeed() {
+    const speedRate = Math.round((START_HEALTH - this._health) / 2); // 10 - 16 = -6 / 2  = -3
+
+    // check negative rate
+    if (START_SPEED + speedRate < 1) {
+      return;
+    }
+
+    const speed = START_SPEED + speedRate;
+
+    this._dx = speed;
+    this._dy = speed;
   }
 
   buildBullet() {
@@ -108,7 +130,7 @@ class PlayerCirlce extends Circle {
 
   shot() {
     let bulletsCount = this.getBulletsCount();
-    if (!this._withBullet || !bulletsCount) {
+    if (!bulletsCount) {
       return;
     }
 
@@ -124,6 +146,6 @@ class PlayerCirlce extends Circle {
     }
 
     this._bullets[this.getBulletId()] = bullet;
-    this.addBulletsCount(-1);
+    this._bulletCount--;
   }
 }
