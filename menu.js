@@ -11,9 +11,16 @@ function Menu() {
     document.getElementById('score-count').innerHTML = score;
   }
 
+  const updatePauseButton = (isPause) => {
+    let state = isPause ? 'Continue' : 'Pause';
+    let text = `${state} (Ctrl)`;
+    document.getElementById('btn-pause').innerHTML = text;
+  }
+
   return {
     updateHealth,
     updateBulletsCount,
-    updateScore
+    updateScore,
+    updatePauseButton,
   };
 };

@@ -1,8 +1,26 @@
+const listenCtrl = (togglePause) => {
+  window.addEventListener('keydown', (e) => {
+    if (e.keyCode === 17) {
+      togglePause();
+    }
+  }, true);
+};
+
+const listenPauseClick = (togglePause) => {
+  let element = document.getElementById('btn-pause');
+  element.addEventListener('click', () => {
+    togglePause();
+  });
+}
+
 class Game {
   constructor(canvas, fallingsNumber, difficultLevel) {
     this._canvas = canvas;
     this._fallingsNumber = fallingsNumber;
     this._difficultLevel = difficultLevel;
+
+    listenCtrl(this.togglePause.bind(this));
+    listenPauseClick(this.togglePause.bind(this));
   }
 
   startGame() {
@@ -12,9 +30,16 @@ class Game {
     this._fallingBuilder = new FallingsBuilder(this._difficultLevel, this._canvas);
     this._menu = new Menu();
     this._lastStatusBarValues = {};
+    this._isPause = false;
 
     this.buildFallings(this._fallingsNumber);
     this.buildPlayer();
+  }
+
+  togglePause() {
+    this._isPause = !this._isPause;
+
+    this._menu.updatePauseButton(this._isPause);
   }
 
   buildPlayer() {
@@ -61,6 +86,10 @@ class Game {
   }
 
   update() {
+    if (this._isPause) {
+      return;
+    }
+
     this._canvas.clearCanvas();
 
     let player = this._player;
