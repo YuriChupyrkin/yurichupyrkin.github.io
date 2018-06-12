@@ -28,15 +28,15 @@ class Game {
   getFallingRole() {
     let diffLevel = this._difficultLevel;
     let randomRole = Math.round(Math.random() * diffLevel);
-    let role = 'POISON';
+    let role = CONSTANTS.FALLING_ENEMY;
     if (randomRole < diffLevel - 2) {
       return role;
     }
 
     if (randomRole === diffLevel - 2) {
-      role = 'AMMO';
+      role = CONSTANTS.FALLING_AMMO;
     } else {
-      role = 'HEALTH';
+      role = CONSTANTS.FALLING_HEALTH;
     }
 
     return role;

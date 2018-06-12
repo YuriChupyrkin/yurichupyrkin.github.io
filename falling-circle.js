@@ -4,15 +4,15 @@ class FallingCircle extends Circle {
   }
 
   setRole(role) {
-    if (role === 'HEALTH') {
+    if (role === CONSTANTS.FALLING_HEALTH) {
       this.setFillColor('green');
     }
 
-    if (role === 'POISON') {
+    if (role === CONSTANTS.FALLING_ENEMY) {
       this.setFillColor('black');
     }
 
-    if (role === 'AMMO') {
+    if (role === CONSTANTS.FALLING_AMMO) {
       this.setFillColor('yellow');
     }
 

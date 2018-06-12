@@ -38,15 +38,15 @@ function InteractionResolver() {
     delete fallings[fallingId];
 
     switch(fallingRole) {
-      case 'AMMO': {
+      case CONSTANTS.FALLING_AMMO: {
         player.addBulletsCount(10);
         break;
       }
-      case 'HEALTH': {
+      case CONSTANTS.FALLING_HEALTH: {
         player.increaseHelth();
         break;
       }
-      case 'POISON': {
+      case CONSTANTS.FALLING_ENEMY: {
         player.decreaseHelth();
         break;
       }
@@ -79,7 +79,7 @@ function InteractionResolver() {
         }
 
         if (bullet.isIntersectWith(falling)) {
-          if (falling.getRole() === 'POISON') {
+          if (falling.getRole() === CONSTANTS.FALLING_ENEMY) {
             player.addScore();
           }
 
