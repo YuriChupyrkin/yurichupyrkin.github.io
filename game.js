@@ -11,6 +11,7 @@ class Game {
     this._interactionResolver = new InteractionResolver();
     this._fallingBuilder = new FallingsBuilder(this._difficultLevel, this._canvas);
     this._menu = new Menu();
+    this._lastStatusBarValues = {};
 
     this.buildFallings(this._fallingsNumber);
     this.buildPlayer();
@@ -78,17 +79,27 @@ class Game {
 
   updateStatusBar() {
     let hp = this._player.getHealth();
-    this._menu.updateHealth(hp);
+    let score = this._player.getScore();
+    let bulletsCount = this._player.getBulletsCount();
+
+    if (hp !== this._lastStatusBarValues.hp) {
+      this._menu.updateHealth(hp);
+      this._lastStatusBarValues.hp = hp;
+    }
+
+    if (score !== this._lastStatusBarValues.score) {
+      this._menu.updateScore(score);
+      this._lastStatusBarValues.score = score;
+    }
+
+    if (bulletsCount !== this._lastStatusBarValues.bulletsCount) {
+      this._menu.updateBulletsCount(bulletsCount);
+      this._lastStatusBarValues.bulletsCount = bulletsCount;
+    }
 
     if (hp < 1) {
       alert('GAME OVER');
       this.startGame();
     }
-
-    let score = this._player.getScore();
-    this._menu.updateScore(score);
-
-    let bulletsCount = this._player.getBulletsCount();
-    this._menu.updateBulletsCount(bulletsCount);
   }
 }
