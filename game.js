@@ -1,17 +1,17 @@
 class Game {
-  constructor(canvas, enemiesNumber, difficultLevel) {
+  constructor(canvas, fallingsNumber, difficultLevel) {
     this._canvas = canvas;
-    this._enemiesNumber = enemiesNumber;
+    this._fallingsNumber = fallingsNumber;
     this._difficultLevel = difficultLevel;
   }
 
   startGame() {
-    this._lastEnemyId = 0;
+    this._lastFallingId = 0;
     this._circleHelpers = new CircleHelpers();
     this._interactionResolver = new InteractionResolver();
     this._menu = new Menu();
 
-    this.buildEnemies(this._enemiesNumber);
+    this.buildFallings(this._fallingsNumber);
     this.buildPlayer();
   }
 
@@ -21,11 +21,11 @@ class Game {
     this._player = player;
   }
 
-  getEnemyId() {
-    return this._lastEnemyId++;
+  getFallingId() {
+    return this._lastFallingId++;
   }
 
-  getEnemyRole() {
+  getFallingRole() {
     let diffLevel = this._difficultLevel;
     let randomRole = Math.round(Math.random() * diffLevel);
     let role = 'POISON';
@@ -42,7 +42,7 @@ class Game {
     return role;
   }
 
-  buildEnemy() {
+  buildFalling() {
     const x = Math.random() * this._canvas.getWidth();
     let radius = Math.random() * 40;
 
@@ -57,10 +57,6 @@ class Game {
 
     const circle = new FallingCircle(x, -30, 0, dy, radius);
 
-    // const dx = Math.random() * 20;
-    // const y = Math.random() * this._canvas.getHeight();
-    // const circle = new Circle(x, y, dx, dy, radius);
-
     if (strokeColor) {
       circle.setStrokeColor(strokeColor);
     }
@@ -71,32 +67,32 @@ class Game {
 
     circle.setCanvas(this._canvas);
 
-    let role = this.getEnemyRole();
+    let role = this.getFallingRole();
     circle.setRole(role);
     return circle;
   }
 
-  buildEnemies(enemiesNumber) {
-    this._enemies = {};
+  buildFallings(fallingsNumber) {
+    this._fallings = {};
 
-    for(let i = 0; i < enemiesNumber; i++) {
-      this.addNewEnemy();
+    for(let i = 0; i < fallingsNumber; i++) {
+      this.addNewFalling();
     }
   }
 
-  addNewEnemy() {
-    const enemy = this.buildEnemy();
-    const enemyId = this.getEnemyId();
-    this._enemies[enemyId] = enemy;
+  addNewFalling() {
+    const falling = this.buildFalling();
+    const fallingId = this.getFallingId();
+    this._fallings[fallingId] = falling;
   }
 
-  addEnemies() {
-    while (Object.keys(this._enemies).length < this._enemiesNumber) {
-      this.addNewEnemy();
+  addFallings() {
+    while (Object.keys(this._fallings).length < this._fallingsNumber) {
+      this.addNewFalling();
     }
   }
 
-  // Update enemies or bullets
+  // Update fallings or bullets
   multiUpdate(target) {
     let ids = Object.keys(target);
     ids.forEach((id) => {
@@ -113,16 +109,16 @@ class Game {
 
     let player = this._player;
     let bullets = player.getBullets();
-    let enemies = this._enemies;
+    let fallings = this._fallings;
 
-    this.multiUpdate(enemies);
+    this.multiUpdate(fallings);
     this.multiUpdate(bullets);
     player.update();
 
-    // add new enemies
-    this.addEnemies();
+    // add new fallings
+    this.addFallings();
 
-    this._interactionResolver.resolve(player, enemies, bullets);
+    this._interactionResolver.resolve(player, fallings, bullets);
     this.updateStatusBar();
   }
 
