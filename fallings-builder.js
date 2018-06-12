@@ -1,3 +1,8 @@
+const MAX_RADIUS = 40;
+const MIN_RADIUS = 8;
+const START_Y = -30;
+const SPEED_RADIUS_RATE = 10;
+
 class FallingsBuilder {
   constructor(difficultLevel, canvas) {
     this._difficultLevel = difficultLevel;
@@ -27,18 +32,18 @@ class FallingsBuilder {
 
   buildFalling() {
     const x = Math.random() * this._canvas.getWidth();
-    let radius = Math.random() * 40;
+    let radius = Math.random() * MAX_RADIUS;
 
-    if (radius < 6) {
-      radius = 6;
+    if (radius < MIN_RADIUS) {
+      radius = MIN_RADIUS;
     }
 
-    const dy = (radius / 10) + 3;
+    const dy = (radius / SPEED_RADIUS_RATE) + this.getSpeedDifficultyRate(this._difficultLevel);
 
     const strokeColor = '#110952';
     //const fillColor = this._circleHelpers.getRandomColor();
 
-    const circle = new FallingCircle(x, -30, 0, dy, radius);
+    const circle = new FallingCircle(x, START_Y, 0, dy, radius);
 
     if (strokeColor) {
       circle.setStrokeColor(strokeColor);
@@ -53,5 +58,10 @@ class FallingsBuilder {
     let role = this.getFallingRole();
     circle.setRole(role);
     return circle;
+  }
+
+  getSpeedDifficultyRate(difficultLevel) {
+    let rate = difficultLevel / 10;
+    return rate;
   }
 }

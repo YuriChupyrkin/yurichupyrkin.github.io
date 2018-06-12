@@ -74,10 +74,10 @@ class Game {
     this.addFallings();
 
     this._interactionResolver.resolve(player, fallings, bullets);
-    this.updateStatusBar();
+    this.updateGameState();
   }
 
-  updateStatusBar() {
+  updateGameState() {
     let hp = this._player.getHealth();
     let score = this._player.getScore();
     let bulletsCount = this._player.getBulletsCount();
@@ -90,6 +90,8 @@ class Game {
     if (score !== this._lastStatusBarValues.score) {
       this._menu.updateScore(score);
       this._lastStatusBarValues.score = score;
+      
+      this._fallingBuilder.increaseDifficult();
     }
 
     if (bulletsCount !== this._lastStatusBarValues.bulletsCount) {
