@@ -130,7 +130,7 @@ class Game {
     }
 
     if (hp < 1) {
-      alert('GAME OVER');
+      alert(`GAME OVER! Score: ${score}`);
       this.startGame();
     }
   }

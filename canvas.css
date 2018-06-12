@@ -14,17 +14,56 @@ body {
     background-color: #6b6b6b;
 }
 
+.menu-text {
+    color: #eaeaea;
+}
+
+.rectangle {
+    height: 12px;
+    width: 12px;
+    margin: 0 4px;
+}
+
+.player-rectangle {
+    border: 1px solid #FF7F66;
+    background: #FF7F66;
+}
+
+.ammo-rectangle {
+    border: 1px solid #ebef00;
+    background: #ebef00;
+}
+
+.health-rectangle {
+    border: 1px solid #1bc51b;
+    background: #1bc51b;
+}
+
+.enemy-rectangle {
+    border: 1px solid black;
+    background: black;
+}
+
 .legend {
-    flex: 5 5;
+    flex: 3 3;
     font-size: 16px;
     display: flex;
     justify-content: space-around;
 }
 
+.legend-item {
+    display: flex;
+    align-items: center;
+}
+
 .status-bar {
-    flex: 5 5;
+    flex: 3 3;
     display: flex;
     justify-content: space-around;
+}
+
+.status-bar-item-value {
+    color: #ffc31b;
 }
 
 .button-section {
@@ -37,30 +76,12 @@ body {
     height: 26px;
 
     font-size: 16px;
-    color: "black";
     border-radius: 4px;
-    font-weight: normal;
+    font-weight: 600;
     border: 1px solid transparent;
     align-items: center;
     text-shadow: none;
     box-shadow: none;
-}
-
-
-.red-legend {
-    color: #FF7F66;
-}
-
-.yellow-legend {
-    color: #ebef00;
-}
-
-.green-legend {
-    color: #1bc51b;
-}
-
-.balck-legend {
-    color: black;
 }
 
 .base-canvas {

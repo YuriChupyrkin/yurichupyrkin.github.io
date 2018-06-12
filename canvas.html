@@ -7,35 +7,35 @@
     <body>
         <div class="menu">
             <div class="legend">
-                <div>
-                    <span class="red-legend">RED</span>
-                    - player
+                <div class="legend-item">
+                    <div class="rectangle player-rectangle"></div>
+                    <div class="menu-text">- player</div>
                 </div>
-                <div>
-                    <span class="yellow-legend">YELLOW</span>
-                    - ammo
+                <div class="legend-item">
+                    <div class="rectangle ammo-rectangle"></div>
+                    <div class="menu-text">- ammo</div>
                 </div>
-                <div>
-                    <span class="green-legend">GREEN</span>
-                    - health
+                <div class="legend-item">
+                    <div class="rectangle health-rectangle"></div>
+                    <div class="menu-text">- health</div>
                 </div>
-                <div>
-                    <span class="black-legend">BLACK</span>
-                    - enemy
+                <div class="legend-item">
+                    <div class="rectangle enemy-rectangle"></div>
+                    <div class="menu-text">- enemy</div>
                 </div>
             </div>
             <div class="button-section">
                 <button class="pause" id="btn-pause">Pause (Ctrl)</button>
             </div>
             <div class="status-bar">
-                <div>
-                    Health: <span id="health"></span>
+                <div class="menu-text">
+                    Health: <span class="status-bar-item-value" id="health"></span>
                 </div>
-                <div>
-                    Bullets: <span id="bullet-count"></span>
+                <div class="menu-text">
+                    Bullets: <span class="status-bar-item-value" id="bullet-count"></span>
                 </div>
-                <div>
-                    Score: <span id="score-count"></span>
+                <div class="menu-text">
+                    Score: <span class="status-bar-item-value" id="score-count"></span>
                 </div>
             </div>
         </div>
