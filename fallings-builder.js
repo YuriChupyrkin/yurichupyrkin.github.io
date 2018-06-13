@@ -39,19 +39,7 @@ class FallingsBuilder {
     }
 
     const dy = (radius / SPEED_RADIUS_RATE) + this.getSpeedDifficultyRate(this._difficultLevel);
-
-    //const strokeColor = '#110952';
-    //const fillColor = this._circleHelpers.getRandomColor();
-
     const circle = new FallingCircle(x, START_Y, 0, dy, radius);
-
-    // if (strokeColor) {
-    //   circle.setStrokeColor(strokeColor);
-    // }
-
-    // if (fillColor) {
-    //   circle.setFillColor(fillColor);
-    // }
 
     circle.setCanvas(this._canvas);
 
