@@ -1,7 +1,8 @@
 const START_RADIUS = 30;
 const START_HEALTH = 10;
 const START_BULLETS_COUNT = 15;
-const BULLET_RADIUS = 6;
+const BULLET_RADIUS = 8;
+const BULLET_SPEED = 24;
 const START_SPEED = 4;
 const PLAYER_COLOR = '#FF7F66';
 
@@ -148,15 +149,14 @@ class PlayerCirlce extends Circle {
     }
 
     let bullet = this.buildBullet();
-    let bulletSpeed = 30;
 
-    bullet._dy = -bulletSpeed;
+    bullet._dy = -BULLET_SPEED;
     if (keyState[37]  | keyState[65]) {
-      bullet._dx = -bulletSpeed;
+      bullet._dx = -BULLET_SPEED;
     }
   
     if (keyState[39] || keyState[68]) {
-      bullet._dx = +bulletSpeed;
+      bullet._dx = +BULLET_SPEED;
     }
 
     this._bullets[this.getBulletId()] = bullet;
