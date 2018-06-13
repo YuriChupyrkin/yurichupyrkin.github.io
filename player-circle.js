@@ -6,22 +6,6 @@ const BULLET_SPEED = 24;
 const START_SPEED = 4;
 const PLAYER_COLOR = '#FF7F66';
 
-let keyState = {};
-
-const listenKeys = (circle) => {
-  window.addEventListener('keyup', (e) => {
-    keyState[e.keyCode] = false;
-  }, true);
-
-  window.addEventListener('keydown', (e) => {
-    keyState[e.keyCode] = true;
-
-    if (e.keyCode === 32) {
-      circle.shot();
-    }
-  }, true);
-};
-
 class PlayerCirlce extends Circle {
   constructor(x, y, canvas) {
     super(x, y, START_SPEED, START_SPEED, START_RADIUS);
@@ -39,8 +23,12 @@ class PlayerCirlce extends Circle {
     this._canvasWidth = this._canvas.getWidth();
     this._canvasHeight = this._canvas.getHeight();
 
-    keyState = {};
-    listenKeys(this);
+    this._keyState = {};
+    //listenKeys(this);
+  }
+
+  setKeyState(keyState) {
+    this._keyState = keyState;
   }
 
   getBulletId() {
@@ -117,25 +105,25 @@ class PlayerCirlce extends Circle {
   }
 
   move() {
-    if (keyState[37] || keyState[65]) {
+    if (this._keyState[37] || this._keyState[65]) {
       if (this._x - this._radius > 0) {
         this._x -= this._dx;
       }
     }
   
-    if (keyState[39] || keyState[68]) {
+    if (this._keyState[39] || this._keyState[68]) {
       if (this._x + this._radius < this._canvasWidth) {
         this._x += this._dx;
       }
     }
   
-    if (keyState[38] || keyState[87]) {
+    if (this._keyState[38] || this._keyState[87]) {
       if (this._y - this._radius > 0) {
         this._y -= this._dy;
       }
     }
 
-    if (keyState[40] || keyState[83]) {
+    if (this._keyState[40] || this._keyState[83]) {
       if (this._y + this._radius < this._canvasHeight) {
         this._y += this._dy;
       }
@@ -151,11 +139,11 @@ class PlayerCirlce extends Circle {
     let bullet = this.buildBullet();
 
     bullet._dy = -BULLET_SPEED;
-    if (keyState[37]  | keyState[65]) {
+    if (this._keyState[37]  | this._keyState[65]) {
       bullet._dx = -BULLET_SPEED;
     }
   
-    if (keyState[39] || keyState[68]) {
+    if (this._keyState[39] || this._keyState[68]) {
       bullet._dx = +BULLET_SPEED;
     }
 

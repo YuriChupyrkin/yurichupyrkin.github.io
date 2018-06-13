@@ -1,37 +1,24 @@
-const listenCtrl = (togglePause) => {
-  window.addEventListener('keydown', (e) => {
-    if (e.keyCode === 17) {
-      togglePause();
-    }
-  }, true);
-};
-
-const listenPauseClick = (togglePause) => {
-  let element = document.getElementById('btn-pause');
-  element.addEventListener('click', () => {
-    element.blur();
-    togglePause();
-  });
-}
-
 class Game {
   constructor(canvas, fallingsNumber, difficultLevel) {
     this._canvas = canvas;
     this._fallingsNumber = fallingsNumber;
     this._difficultLevel = difficultLevel;
+    this._circleHelpers = new CircleHelpers();
+    this._interactionResolver = new InteractionResolver();
+    this._eventListener = new EventListener();
+    this._menu = new Menu();
 
-    listenCtrl(this.togglePause.bind(this));
-    listenPauseClick(this.togglePause.bind(this));
+    this._eventListener.setupCtrlAction(this.togglePause.bind(this));
+    this._eventListener
+      .listenClicks('btn-pause', this.togglePause.bind(this), true);
   }
 
   startGame() {
     this._lastFallingId = 0;
-    this._circleHelpers = new CircleHelpers();
-    this._interactionResolver = new InteractionResolver();
     this._fallingBuilder = new FallingsBuilder(this._difficultLevel, this._canvas);
-    this._menu = new Menu();
     this._lastStatusBarValues = {};
     this._isPause = false;
+    this._eventListener.clearStates();
 
     this.buildFallings(this._fallingsNumber);
     this.buildPlayer();
@@ -41,13 +28,20 @@ class Game {
     this._isPause = !this._isPause;
 
     this._menu.updatePauseButton(this._isPause);
+    this._eventListener.setStopListen(this._isPause);
   }
 
   buildPlayer() {
+    const listener = this._eventListener;
     const x = this._canvas.getWidth() / 2;
     const y = this._canvas.getHeight() / 2;
 
-    this._player = new PlayerCirlce(x, y, this._canvas);
+    const player = new PlayerCirlce(x, y, this._canvas);
+
+    player.setKeyState(listener.getKeyState());
+    listener.setupWhiteSpaceAction(player.shot.bind(player));
+
+    this._player = player;
   }
 
   getFallingId() {
