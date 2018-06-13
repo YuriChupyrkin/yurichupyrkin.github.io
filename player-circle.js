@@ -35,6 +35,9 @@ class PlayerCirlce extends Circle {
     this._bulletRadius = BULLET_RADIUS;
     this._bulletCount = START_BULLETS_COUNT;
 
+    this._canvasWidth = this._canvas.getWidth();
+    this._canvasHeight = this._canvas.getHeight();
+
     keyState = {};
     listenKeys(this);
   }
@@ -114,19 +117,27 @@ class PlayerCirlce extends Circle {
 
   move() {
     if (keyState[37] || keyState[65]) {
-      this._x -= this._dx;
+      if (this._x - this._radius > 0) {
+        this._x -= this._dx;
+      }
     }
   
     if (keyState[39] || keyState[68]) {
-      this._x += this._dx;
+      if (this._x + this._radius < this._canvasWidth) {
+        this._x += this._dx;
+      }
     }
   
     if (keyState[38] || keyState[87]) {
-      this._y -= this._dy;
+      if (this._y - this._radius > 0) {
+        this._y -= this._dy;
+      }
     }
 
     if (keyState[40] || keyState[83]) {
-      this._y += this._dy;
+      if (this._y + this._radius < this._canvasHeight) {
+        this._y += this._dy;
+      }
     }
   };
 
