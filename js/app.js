@@ -3,7 +3,10 @@ const START_DIFFICULTY = 20;
 (function () {
   const canvas = new Canvas();
   canvas.init(document.querySelector('canvas'));
-  canvas.setSize(window.innerWidth - 2, window.innerHeight - 28);
+  let menuHeight = document.getElementById('menu').clientHeight;
+
+  canvas.setSize(window.innerWidth - 2,
+    window.innerHeight - menuHeight - 2);
 
   function calculateFallingsNumber() {
     let width = canvas.getWidth();
