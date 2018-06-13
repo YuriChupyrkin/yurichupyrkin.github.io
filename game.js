@@ -9,6 +9,7 @@ const listenCtrl = (togglePause) => {
 const listenPauseClick = (togglePause) => {
   let element = document.getElementById('btn-pause');
   element.addEventListener('click', () => {
+    element.blur();
     togglePause();
   });
 }
