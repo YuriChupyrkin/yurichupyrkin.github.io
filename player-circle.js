@@ -113,19 +113,19 @@ class PlayerCirlce extends Circle {
   }
 
   move() {
-    if (keyState[37]) {
+    if (keyState[37] || keyState[65]) {
       this._x -= this._dx;
     }
   
-    if (keyState[39]) {
+    if (keyState[39] || keyState[68]) {
       this._x += this._dx;
     }
   
-    if (keyState[38]) {
+    if (keyState[38] || keyState[87]) {
       this._y -= this._dy;
     }
 
-    if (keyState[40]) {
+    if (keyState[40] || keyState[83]) {
       this._y += this._dy;
     }
   };
@@ -140,11 +140,11 @@ class PlayerCirlce extends Circle {
     let bulletSpeed = 30;
 
     bullet._dy = -bulletSpeed;
-    if (keyState[37]) {
+    if (keyState[37]  | keyState[65]) {
       bullet._dx = -bulletSpeed;
     }
   
-    if (keyState[39]) {
+    if (keyState[39] || keyState[68]) {
       bullet._dx = +bulletSpeed;
     }
 
