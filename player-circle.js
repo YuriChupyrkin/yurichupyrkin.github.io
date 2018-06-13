@@ -3,6 +3,7 @@ const START_HEALTH = 10;
 const START_BULLETS_COUNT = 15;
 const BULLET_RADIUS = 6;
 const START_SPEED = 4;
+const PLAYER_COLOR = '#FF7F66';
 
 let keyState = {};
 
@@ -25,7 +26,7 @@ class PlayerCirlce extends Circle {
     super(x, y, START_SPEED, START_SPEED, START_RADIUS);
 
     this.setStrokeColor('#110952');
-    this.setFillColor(CONSTANTS.PLAYER_COLOR);
+    this.setFillColor(PLAYER_COLOR);
     this.setCanvas(canvas);
     this._score = 0;
     this._health = START_HEALTH;

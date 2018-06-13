@@ -1,3 +1,9 @@
+const FALLING_ENEMY_COLOR = 'black';
+const FALLING_ENEMY_STROKE = '#110952';
+const FALLING_DEFAULT_STROKE = '#110952';
+const FALLING_AMMO_COLOR = '#ebef00';
+const FALLING_HEALTH_COLOR = '#10b910';
+
 class FallingCircle extends Circle {
   constructor(x, y, dx, dy, radius) {
     super(x, y, 0, dy, radius);
@@ -5,16 +11,16 @@ class FallingCircle extends Circle {
 
   setRole(role) {
     if (role === CONSTANTS.FALLING_HEALTH) {
-      this.setFillColor(CONSTANTS.FALLING_HEALTH_COLOR);
-      this.setStrokeColor(CONSTANTS.FALLING_DEFAULT_STROKE);
+      this.setFillColor(FALLING_HEALTH_COLOR);
+      this.setStrokeColor(FALLING_DEFAULT_STROKE);
 
     } else if (role === CONSTANTS.FALLING_ENEMY) {
-      this.setFillColor(CONSTANTS.FALLING_ENEMY_COLOR);
-      this.setStrokeColor(CONSTANTS.FALLING_ENEMY_STROKE);
+      this.setFillColor(FALLING_ENEMY_COLOR);
+      this.setStrokeColor(FALLING_ENEMY_STROKE);
 
     } else {
-      this.setFillColor(CONSTANTS.FALLING_AMMO_COLOR);
-      this.setStrokeColor(CONSTANTS.FALLING_DEFAULT_STROKE);
+      this.setFillColor(FALLING_AMMO_COLOR);
+      this.setStrokeColor(FALLING_DEFAULT_STROKE);
     }
 
     this._role = role;
