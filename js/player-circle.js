@@ -1,6 +1,6 @@
 const START_RADIUS = 30;
 const START_HEALTH = 10;
-const START_BULLETS_COUNT = 15;
+const START_BULLETS_COUNT = 100;
 const BULLET_RADIUS = 8;
 const BULLET_SPEED = 24;
 const START_SPEED = 4;
@@ -24,7 +24,6 @@ class PlayerCirlce extends Circle {
     this._canvasHeight = this._canvas.getHeight();
 
     this._keyState = {};
-    //listenKeys(this);
   }
 
   setKeyState(keyState) {
@@ -54,7 +53,7 @@ class PlayerCirlce extends Circle {
   }
 
   increaseHelth(fallingRadius) {
-    let addHp = fallingRadius > 24 ? 2 : 1;
+    let addHp = fallingRadius > 28 ? 2 : 1;
 
     this._radius += addHp;
     this._health += addHp;

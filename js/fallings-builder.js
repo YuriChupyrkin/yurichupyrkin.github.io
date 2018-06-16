@@ -1,5 +1,5 @@
 const MAX_RADIUS = 46;
-const MIN_RADIUS = 12;
+const MIN_RADIUS = 14;
 const START_Y = -30;
 const SPEED_RADIUS_RATE = 10;
 
