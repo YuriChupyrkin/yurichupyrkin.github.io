@@ -5,6 +5,29 @@ const BULLET_RADIUS = 8;
 const BULLET_SPEED = 24;
 const START_SPEED = 4;
 const PLAYER_COLOR = '#FF7F66';
+const HEALTH_REDUCE_COLORS =  [
+  '#8e1a03',
+  PLAYER_COLOR,
+  '#8e1a03',
+  PLAYER_COLOR,
+  '#8e1a03'
+];
+
+const HEALTH_INCREASE_COLORS =  [
+  '#e2a194',
+  PLAYER_COLOR,
+  '#e2a194',
+  PLAYER_COLOR,
+  '#e2a194'
+];
+
+const BULLETS_UPDATED_COLORS =  [
+  '#e0c504',
+  PLAYER_COLOR,
+  '#e0c504',
+  PLAYER_COLOR,
+  '#e0c504'
+];
 
 class PlayerCirlce extends Circle {
   constructor(x, y, canvas) {
@@ -13,6 +36,7 @@ class PlayerCirlce extends Circle {
     this.setStrokeColor('#110952');
     this.setFillColor(PLAYER_COLOR);
     this.setCanvas(canvas);
+    this._animating = false;
     this._score = 0;
     this._health = START_HEALTH;
     this._bullets = {};
@@ -41,6 +65,7 @@ class PlayerCirlce extends Circle {
   addBulletsCount(fallingRadius) {
     const addBullets = Math.round(fallingRadius / 2);
     this._bulletCount += addBullets;
+    this.animatePlayer(BULLETS_UPDATED_COLORS);
   }
 
   getBulletsCount() {
@@ -59,6 +84,7 @@ class PlayerCirlce extends Circle {
     this._health += addHp;
 
     this.updateSpeed();
+    this.animatePlayer(HEALTH_INCREASE_COLORS);
   }
 
   decreaseHelth() {
@@ -66,6 +92,7 @@ class PlayerCirlce extends Circle {
     this._health--;
 
     this.updateSpeed();
+    this.animatePlayer(HEALTH_REDUCE_COLORS);
   }
 
   addScore() {
@@ -148,5 +175,25 @@ class PlayerCirlce extends Circle {
 
     this._bullets[this.getBulletId()] = bullet;
     this._bulletCount--;
+  }
+
+  animatePlayer(colors) {
+    if (this._animating) {
+      return;
+    }
+
+    this._animating = true;
+
+    let index = 0;
+    let interval = setInterval(() => {
+      if (index < colors.length) {
+        this.setFillColor(colors[index]);
+        index++;
+      } else {
+        clearInterval(interval);
+        this.setFillColor(PLAYER_COLOR);
+        this._animating = false;
+      }
+    }, 50);
   }
 }
