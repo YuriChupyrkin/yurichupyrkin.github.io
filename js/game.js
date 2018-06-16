@@ -14,6 +14,7 @@ class Game {
   }
 
   startGame() {
+    this._finished = false;
     this._lastFallingId = 0;
     this._fallingBuilder = new FallingsBuilder(this._difficultLevel, this._canvas);
     this._lastStatusBarValues = {};
@@ -125,8 +126,18 @@ class Game {
     }
 
     if (hp < 1) {
-      alert(`GAME OVER! Score: ${score}`);
-      this.startGame();
+      this.finishGame(score);
+    }
+  }
+
+  finishGame(score) {
+    if (!this._finished) {
+      this._finished = true;
+      // delay to render updated health
+      setTimeout(() => {
+        alert(`GAME OVER! Score: ${score}`);
+        this.startGame();
+      }, 0);
     }
   }
 }
