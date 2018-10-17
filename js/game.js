@@ -26,6 +26,10 @@ class Game {
   }
 
   togglePause() {
+    if (this._finished) {
+      return;
+    }
+
     this._isPause = !this._isPause;
 
     this._menu.updatePauseButton(this._isPause);
@@ -82,12 +86,11 @@ class Game {
   }
 
   update() {
-    if (this._isPause) {
+    if (this._isPause || this._finished) {
       return;
     }
 
     this._canvas.clearCanvas();
-
     let player = this._player;
     let bullets = player.getBullets();
     let fallings = this._fallings;
@@ -137,7 +140,7 @@ class Game {
       setTimeout(() => {
         alert(`GAME OVER! Score: ${score}`);
         this.startGame();
-      }, 0);
+      }, 2000);
     }
   }
 }
