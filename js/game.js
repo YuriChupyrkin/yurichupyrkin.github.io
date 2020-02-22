@@ -66,7 +66,7 @@ class Game {
     falling.setKeyState(this._eventListener.getKeyState());
 
     if (this._player) {
-      falling.setPlayerConfig(this._player.getPlayerStats.bind(this._player));
+      falling.setPlayerConfig(this._player.getPlayerConfig.bind(this._player));
     }
     const fallingId = this.getFallingId();
     this._fallings[fallingId] = falling;

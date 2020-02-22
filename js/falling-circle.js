@@ -7,12 +7,7 @@ const FALLING_HEALTH_COLOR = '#10b910';
 class FallingCircle extends Circle {
   constructor(x, y, dx, dy, radius) {
     super(x, y, dx, dy, radius);
-    this._keyState = {};
     this._playerConfig = {};
-  }
-
-  setKeyState(keyState) {
-    this._keyState = keyState;
   }
 
   setPlayerConfig(playerConfig) {
@@ -63,19 +58,19 @@ class FallingCircle extends Circle {
     this._x += this._dx;
     this._y += this._dy;
 
-    if (this._keyState[37] || this._keyState[65]) {
+    if (this._keyState.LEFT) {
       this._x += this._playerConfig().dx;
     }
   
-    if (this._keyState[39] || this._keyState[68]) {
+    if (this._keyState.RIGHT) {
       this._x -= this._playerConfig().dx;
     }
   
-    if (this._keyState[38] || this._keyState[87]) {
+    if (this._keyState.UP) {
       this._y += this._playerConfig().dy;
     }
 
-    if (this._keyState[40] || this._keyState[83]) {
+    if (this._keyState.DOWN) {
       this._y -= this._playerConfig().dy;
     }
   }

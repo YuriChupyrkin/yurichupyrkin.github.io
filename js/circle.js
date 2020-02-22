@@ -9,6 +9,7 @@ class Circle {
     this._canvas = null;
     this._strokeColor = 'black';
     this._fillColor = null;
+    this._keyState = {};
   }
 
   setCanvas(canvas) {
@@ -22,6 +23,10 @@ class Circle {
   setFillColor(color) {
     this._fillColor = color;
   };
+
+  setKeyState(keyState) {
+    this._keyState = keyState;
+  }
 
   draw() {
     const ctx = this._canvas.getContext();

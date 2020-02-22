@@ -46,12 +46,6 @@ class PlayerCirlce extends Circle {
 
     this._canvasWidth = this._canvas.getWidth();
     this._canvasHeight = this._canvas.getHeight();
-
-    this._keyState = {};
-  }
-
-  setKeyState(keyState) {
-    this._keyState = keyState;
   }
 
   getBulletId() {
@@ -62,7 +56,7 @@ class PlayerCirlce extends Circle {
     return this._bullets;
   }
 
-  getPlayerStats() {
+  getPlayerConfig() {
     return {
       dx: this._dx,
       dy: this._dy,
@@ -173,16 +167,16 @@ class PlayerCirlce extends Circle {
 
     let bullet = this.buildBullet();
     bullet.setKeyState(this._keyState);
-    bullet.setPlayerConfig(this.getPlayerStats.bind(this));
+    bullet.setPlayerConfig(this.getPlayerConfig.bind(this));
 
     bullet._dy = -BULLET_SPEED;
-    if (this._keyState[37]  | this._keyState[65]) {
-      bullet._dx = -BULLET_SPEED;
-    }
+    // if (this._keyState[37] || this._keyState[65]) {
+    //   bullet._dx = -BULLET_SPEED;
+    // }
   
-    if (this._keyState[39] || this._keyState[68]) {
-      bullet._dx = +BULLET_SPEED;
-    }
+    // if (this._keyState[39] || this._keyState[68]) {
+    //   bullet._dx = +BULLET_SPEED;
+    // }
 
     this._bullets[this.getBulletId()] = bullet;
     this._bulletCount--;
