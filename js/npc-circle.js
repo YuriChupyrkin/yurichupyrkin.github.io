@@ -4,7 +4,7 @@ const FALLING_DEFAULT_STROKE = '#110952';
 const FALLING_AMMO_COLOR = '#ebef00';
 const FALLING_HEALTH_COLOR = '#10b910';
 
-class FallingCircle extends Circle {
+class NPCCircle extends Circle {
   constructor(x, y, dx, dy, radius) {
     super(x, y, dx, dy, radius);
     this._playerConfig = {};

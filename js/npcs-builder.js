@@ -3,7 +3,7 @@ const MIN_RADIUS = 14;
 const START_Y = -100;
 const SPEED_RADIUS_RATE = 10;
 
-class FallingsBuilder {
+class NPCsBuilder {
   constructor(difficultLevel, canvas) {
     this._difficultLevel = difficultLevel;
     this._canvas = canvas;
@@ -13,7 +13,7 @@ class FallingsBuilder {
     this._difficultLevel++;
   }
 
-  getFallingRole() {
+  getNPCRole() {
     let diffLevel = this._difficultLevel;
     let randomRole = Math.round(Math.random() * diffLevel);
     let role = CONSTANTS.FALLING_ENEMY;
@@ -30,7 +30,7 @@ class FallingsBuilder {
     return role;
   }
   
-  buildFalling() {
+  buildNPC() {
     const middleX = this._canvas.getWidth() / 2;
     const middleY = this._canvas.getHeight() / 2;
     const startBorderCoordinat = 50;
@@ -87,9 +87,9 @@ class FallingsBuilder {
       }
     }
 
-    const circle = new FallingCircle(x, y, dx, dy, radius);
+    const circle = new NPCCircle(x, y, dx, dy, radius);
     circle.setCanvas(this._canvas);
-    circle.setRole(this.getFallingRole());
+    circle.setRole(this.getNPCRole());
     return circle;
   }
 

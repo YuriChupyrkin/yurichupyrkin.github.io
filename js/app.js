@@ -8,7 +8,7 @@ const START_DIFFICULTY = 10;
   canvas.setSize(window.innerWidth - 2,
     window.innerHeight - menuHeight - 2);
 
-  function calculateFallingsNumber() {
+  function calculateNPCsNumber() {
     let width = canvas.getWidth();
     let height = canvas.getHeight();
     const rate = 90000;
@@ -17,8 +17,8 @@ const START_DIFFICULTY = 10;
     return number;
   }
 
-  const fallingsNumber = calculateFallingsNumber();
-  const game = new Game(canvas, fallingsNumber, START_DIFFICULTY);
+  const npcsNumber = calculateNPCsNumber();
+  const game = new Game(canvas, npcsNumber, START_DIFFICULTY);
   game.startGame();
 
   function updateFrames () {

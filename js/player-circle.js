@@ -65,8 +65,8 @@ class PlayerCirlce extends Circle {
     };
   }
 
-  addBulletsCount(fallingRadius) {
-    const addBullets = Math.round(fallingRadius / 2);
+  addBulletsCount(npcRadius) {
+    const addBullets = Math.round(npcRadius / 2);
     this._bulletCount += addBullets;
     this.animatePlayer(BULLETS_UPDATED_COLORS);
   }
@@ -80,8 +80,8 @@ class PlayerCirlce extends Circle {
     this.draw();
   }
 
-  increaseHelth(fallingRadius) {
-    let addHp = fallingRadius > 28 ? 2 : 1;
+  increaseHelth(npcRadius) {
+    let addHp = npcRadius > 28 ? 2 : 1;
 
     this._radius += addHp;
     this._health += addHp;

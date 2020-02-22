@@ -1,7 +1,7 @@
 class Game {
-  constructor(canvas, fallingsNumber, difficultLevel) {
+  constructor(canvas, npcsNumber, difficultLevel) {
     this._canvas = canvas;
-    this._fallingsNumber = fallingsNumber;
+    this._npcsNumber = npcsNumber;
     this._difficultLevel = difficultLevel;
     this._circleHelpers = new CircleHelpers();
     this._interactionResolver = new InteractionResolver();
@@ -15,14 +15,14 @@ class Game {
 
   startGame() {
     this._finished = false;
-    this._lastFallingId = 0;
-    this._fallingBuilder = new FallingsBuilder(this._difficultLevel, this._canvas);
+    this._lastNPCId = 0;
+    this._npcBuilder = new NPCsBuilder(this._difficultLevel, this._canvas);
     this._lastStatusBarValues = {};
     this._isPause = false;
     this._eventListener.clearStates();
 
     this.buildPlayer();
-    this.buildFallings(this._fallingsNumber);
+    this.buildNPCs(this._npcsNumber);
   }
 
   togglePause() {
@@ -49,36 +49,36 @@ class Game {
     this._player = player;
   }
 
-  getFallingId() {
-    return this._lastFallingId++;
+  getNPCId() {
+    return this._lastNPCId++;
   }
 
-  buildFallings(fallingsNumber) {
-    this._fallings = {};
+  buildNPCs(npcsNumber) {
+    this._npcs = {};
 
-    for(let i = 0; i < fallingsNumber; i++) {
-      this.addNewFalling();
+    for(let i = 0; i < npcsNumber; i++) {
+      this.addNewNPC();
     }
   }
 
-  addNewFalling() {
-    const falling = this._fallingBuilder.buildFalling();
-    falling.setKeyState(this._eventListener.getKeyState());
+  addNewNPC() {
+    const npc = this._npcBuilder.buildNPC();
+    npc.setKeyState(this._eventListener.getKeyState());
 
     if (this._player) {
-      falling.setPlayerConfig(this._player.getPlayerConfig.bind(this._player));
+      npc.setPlayerConfig(this._player.getPlayerConfig.bind(this._player));
     }
-    const fallingId = this.getFallingId();
-    this._fallings[fallingId] = falling;
+    const npcId = this.getNPCId();
+    this._npcs[npcId] = npc;
   }
 
-  addFallings() {
-    while (Object.keys(this._fallings).length < this._fallingsNumber) {
-      this.addNewFalling();
+  addNPCs() {
+    while (Object.keys(this._npcs).length < this._npcsNumber) {
+      this.addNewNPC();
     }
   }
 
-  // Update fallings or bullets
+  // Update npcs or bullets
   multiUpdate(target) {
     let ids = Object.keys(target);
     ids.forEach((id) => {
@@ -98,16 +98,16 @@ class Game {
     this._canvas.clearCanvas();
     let player = this._player;
     let bullets = player.getBullets();
-    let fallings = this._fallings;
+    let npcs = this._npcs;
 
-    this.multiUpdate(fallings);
+    this.multiUpdate(npcs);
     this.multiUpdate(bullets);
     player.update();
 
-    // add new fallings
-    this.addFallings();
+    // add new npcs
+    this.addNPCs();
 
-    this._interactionResolver.resolve(player, fallings, bullets);
+    this._interactionResolver.resolve(player, npcs, bullets);
     this.updateGameState();
   }
 
@@ -125,7 +125,7 @@ class Game {
       this._menu.updateScore(score);
       this._lastStatusBarValues.score = score;
       
-      this._fallingBuilder.increaseDifficulty();
+      this._npcBuilder.increaseDifficulty();
     }
 
     if (bulletsCount !== this._lastStatusBarValues.bulletsCount) {

@@ -1,5 +1,5 @@
 function InteractionResolver() {
-  const fallingsHaveIntersection = (circle_1, circle_2) => {
+  const npcsHaveIntersection = (circle_1, circle_2) => {
     // exchange of direction
     let dx = circle_1._dx;
     let dy = circle_1._dy;
@@ -15,36 +15,36 @@ function InteractionResolver() {
     circle_1._y +=  circle_1._dy * 1.5;
   };
 
-  const checkFallingsIntersection = (fallings) => {
-    const fallingKeys = Object.keys(fallings);
-    fallingKeys.forEach((key, index) => {
-      let circle_1 = fallings[key];
+  const checkNPCsIntersection = (npcs) => {
+    const npcKeys = Object.keys(npcs);
+    npcKeys.forEach((key, index) => {
+      let circle_1 = npcs[key];
 
-      for (let i = index + 1; i < fallingKeys.length; i++) {
-        let circle_2 = fallings[fallingKeys[i]];
+      for (let i = index + 1; i < npcKeys.length; i++) {
+        let circle_2 = npcs[npcKeys[i]];
         let isIntersect = circle_1.isIntersectWith(circle_2);
           
         if (isIntersect) {
-          fallingsHaveIntersection(circle_1, circle_2);
+          npcsHaveIntersection(circle_1, circle_2);
         }
       }
     });
   };
 
-  const playerHasIntersection = (player, fallings, fallingId) => {
-    let fallingRole = fallings[fallingId].getRole();
-    let fallingRadius = fallings[fallingId]._radius;
+  const playerHasIntersection = (player, npcs, npcId) => {
+    let npcRole = npcs[npcId].getRole();
+    let npcRadius = npcs[npcId]._radius;
 
-    // delete this falling
-    delete fallings[fallingId];
+    // delete this npc
+    delete npcs[npcId];
 
-    switch(fallingRole) {
+    switch(npcRole) {
       case CONSTANTS.FALLING_AMMO: {
-        player.addBulletsCount(fallingRadius);
+        player.addBulletsCount(npcRadius);
         break;
       }
       case CONSTANTS.FALLING_HEALTH: {
-        player.increaseHelth(fallingRadius);
+        player.increaseHelth(npcRadius);
         break;
       }
       case CONSTANTS.FALLING_ENEMY: {
@@ -54,38 +54,38 @@ function InteractionResolver() {
     }
   };
 
-  const checkPlayerIntersection = (player, fallings) => {
-    const fallingIds = Object.keys(fallings);
-    fallingIds.forEach((fallingId) => {
-      let falling = fallings[fallingId];
-      let isIntersect = player.isIntersectWith(falling);
+  const checkPlayerIntersection = (player, npcs) => {
+    const npcIds = Object.keys(npcs);
+    npcIds.forEach((npcId) => {
+      let npc = npcs[npcId];
+      let isIntersect = player.isIntersectWith(npc);
 
       if (isIntersect) {
-        playerHasIntersection(player, fallings, fallingId);
+        playerHasIntersection(player, npcs, npcId);
       }
     });
   };
 
-  const checkBulletIntersection = (bullets, fallings, player) => {
+  const checkBulletIntersection = (bullets, npcs, player) => {
     const bulletsIds = Object.keys(bullets);
-    const fallingsIds = Object.keys(fallings);
+    const npcsIds = Object.keys(npcs);
 
     bulletsIds.forEach((bulletId) => {
-      fallingsIds.forEach((fallingId) => {
+      npcsIds.forEach((npcId) => {
         let bullet = bullets[bulletId];
-        let falling = fallings[fallingId];
+        let npc = npcs[npcId];
 
-        if (!falling || !bullet) {
+        if (!npc || !bullet) {
           return;
         }
 
-        if (bullet.isIntersectWith(falling)) {
-          if (falling.getRole() === CONSTANTS.FALLING_ENEMY) {
+        if (bullet.isIntersectWith(npc)) {
+          if (npc.getRole() === CONSTANTS.FALLING_ENEMY) {
             player.addScore();
           }
 
-          // delete falling
-          delete fallings[fallingId];
+          // delete npc
+          delete npcs[npcId];
 
           // delete bullet
           delete bullets[bulletId];
@@ -97,18 +97,18 @@ function InteractionResolver() {
   /**
    * 
    * @param {Object} player
-   * @param {Object} fallings
+   * @param {Object} npcs
    * @param {Object} bullets
    */
-  const resolve = (player, fallings, bullets) => {
-    // resolve interaction between fallings
-    checkFallingsIntersection(fallings);
+  const resolve = (player, npcs, bullets) => {
+    // resolve interaction between npcs
+    checkNPCsIntersection(npcs);
 
-    // resolve interaction between fallings and player
-    checkPlayerIntersection(player, fallings);
+    // resolve interaction between npcs and player
+    checkPlayerIntersection(player, npcs);
 
-    // resolve interaction between fallings and bullets
-    checkBulletIntersection(bullets, fallings, player);
+    // resolve interaction between npcs and bullets
+    checkBulletIntersection(bullets, npcs, player);
   };
 
   return {
