@@ -1,4 +1,4 @@
-const START_DIFFICULTY = 20;
+const START_DIFFICULTY = 10;
 
 (function () {
   const canvas = new Canvas();

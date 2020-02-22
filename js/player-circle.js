@@ -62,6 +62,15 @@ class PlayerCirlce extends Circle {
     return this._bullets;
   }
 
+  getPlayerStats() {
+    return {
+      dx: this._dx,
+      dy: this._dy,
+      x: this._x,
+      y: this._y,
+    };
+  }
+
   addBulletsCount(fallingRadius) {
     const addBullets = Math.round(fallingRadius / 2);
     this._bulletCount += addBullets;
@@ -131,29 +140,29 @@ class PlayerCirlce extends Circle {
   }
 
   move() {
-    if (this._keyState[37] || this._keyState[65]) {
-      if (this._x - this._radius > 0) {
-        this._x -= this._dx;
-      }
-    }
+    // if (this._keyState[37] || this._keyState[65]) {
+    //   if (this._x - this._radius > 0) {
+    //     this._x -= this._dx;
+    //   }
+    // }
   
-    if (this._keyState[39] || this._keyState[68]) {
-      if (this._x + this._radius < this._canvasWidth) {
-        this._x += this._dx;
-      }
-    }
+    // if (this._keyState[39] || this._keyState[68]) {
+    //   if (this._x + this._radius < this._canvasWidth) {
+    //     this._x += this._dx;
+    //   }
+    // }
   
-    if (this._keyState[38] || this._keyState[87]) {
-      if (this._y - this._radius > 0) {
-        this._y -= this._dy;
-      }
-    }
+    // if (this._keyState[38] || this._keyState[87]) {
+    //   if (this._y - this._radius > 0) {
+    //     this._y -= this._dy;
+    //   }
+    // }
 
-    if (this._keyState[40] || this._keyState[83]) {
-      if (this._y + this._radius < this._canvasHeight) {
-        this._y += this._dy;
-      }
-    }
+    // if (this._keyState[40] || this._keyState[83]) {
+    //   if (this._y + this._radius < this._canvasHeight) {
+    //     this._y += this._dy;
+    //   }
+    // }
   };
 
   shot() {
@@ -163,6 +172,8 @@ class PlayerCirlce extends Circle {
     }
 
     let bullet = this.buildBullet();
+    bullet.setKeyState(this._keyState);
+    bullet.setPlayerConfig(this.getPlayerStats.bind(this));
 
     bullet._dy = -BULLET_SPEED;
     if (this._keyState[37]  | this._keyState[65]) {
