@@ -1,8 +1,5 @@
 const START_RADIUS = 30;
 const START_HEALTH = 10;
-const START_BULLETS_COUNT = 120;
-const BULLET_RADIUS = 8;
-const BULLET_SPEED = 20;
 const START_SPEED = 4;
 const PLAYER_COLOR = '#FF7F66';
 const HEALTH_REDUCE_COLORS =  [
@@ -39,21 +36,15 @@ class PlayerCirlce extends Circle {
     this._animating = false;
     this._score = 0;
     this._health = START_HEALTH;
-    this._bullets = {};
-    this._lastBulletId = 0;
-    this._bulletRadius = BULLET_RADIUS;
-    this._bulletCount = START_BULLETS_COUNT;
 
     this._canvasWidth = this._canvas.getWidth();
     this._canvasHeight = this._canvas.getHeight();
+    this._gun = {};
   }
 
-  getBulletId() {
-    return this._lastBulletId++;
-  }
 
   getBullets() {
-    return this._bullets;
+    return this._gun.getBullets();
   }
 
   getPlayerConfig() {
@@ -62,21 +53,21 @@ class PlayerCirlce extends Circle {
       dy: this._dy,
       x: this._x,
       y: this._y,
+      radius: this._radius,
     };
   }
 
   addBulletsCount(npcRadius) {
-    const addBullets = Math.round(npcRadius / 2);
-    this._bulletCount += addBullets;
+    this._gun.addBulletsCount(npcRadius);
     this.animatePlayer(BULLETS_UPDATED_COLORS);
   }
 
   getBulletsCount() {
-    return this._bulletCount;
+    return this._gun.getBulletsCount();
   }
 
   update() {
-    this.move();
+    this._gun.update();
     this.draw();
   }
 
@@ -110,6 +101,14 @@ class PlayerCirlce extends Circle {
     return this._health;
   }
 
+  setGun() {
+    const x = this._x + this._radius
+    const gun = new GunCirlce(x, this._y, this._canvas);
+    gun.setPlayerConfig(this.getPlayerConfig.bind(this));
+    gun.setKeyState(this._keyState);
+    this._gun = gun;
+  }
+
   updateSpeed() {
     const speedRate = Math.round((START_HEALTH - this._health) / 2); // 10 - 16 = -6 / 2  = -3
 
@@ -124,75 +123,8 @@ class PlayerCirlce extends Circle {
     this._dy = speed;
   }
 
-  buildBullet() {
-    return new BulletCirlce(
-      this._x,
-      this._y,
-      this._bulletRadius,
-      this._canvas
-    );
-  }
-
-  move() {
-    // if (this._keyState[37] || this._keyState[65]) {
-    //   if (this._x - this._radius > 0) {
-    //     this._x -= this._dx;
-    //   }
-    // }
-  
-    // if (this._keyState[39] || this._keyState[68]) {
-    //   if (this._x + this._radius < this._canvasWidth) {
-    //     this._x += this._dx;
-    //   }
-    // }
-  
-    // if (this._keyState[38] || this._keyState[87]) {
-    //   if (this._y - this._radius > 0) {
-    //     this._y -= this._dy;
-    //   }
-    // }
-
-    // if (this._keyState[40] || this._keyState[83]) {
-    //   if (this._y + this._radius < this._canvasHeight) {
-    //     this._y += this._dy;
-    //   }
-    // }
-  };
-
   shot() {
-    let bulletsCount = this.getBulletsCount();
-    if (!bulletsCount) {
-      return;
-    }
-
-    let bullet = this.buildBullet();
-    bullet.setKeyState(this._keyState);
-    bullet.setPlayerConfig(this.getPlayerConfig.bind(this));
-
-    bullet._dy = 0;
-    bullet._dx = 0;
-
-    if (!this._keyState.UP && !this._keyState.DOWN &&
-      !this._keyState.LEFT && !this._keyState.RIGHT) {
-      // direction is NOT set
-      bullet._dy = -BULLET_SPEED;
-    } else {
-      if (this._keyState.UP) {
-        bullet._dy = -BULLET_SPEED;
-      }
-      if (this._keyState.DOWN) {
-        bullet._dy = BULLET_SPEED;
-      }
-  
-      if (this._keyState.LEFT) {
-        bullet._dx = -BULLET_SPEED;
-      } else if (this._keyState.RIGHT) {
-        bullet._dx = BULLET_SPEED;
-      }
-    }
-
-    this._bullets[this.getBulletId()] = bullet;
-    this._bulletCount--;
+    this._gun.shoot();
   }
 
   animatePlayer(colors) {

@@ -44,6 +44,7 @@ class Game {
     const player = new PlayerCirlce(x, y, this._canvas);
 
     player.setKeyState(listener.getKeyState());
+    player.setGun();
     listener.setupWhiteSpaceAction(player.shot.bind(player));
 
     this._player = player;

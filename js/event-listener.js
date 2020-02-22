@@ -11,18 +11,22 @@ class EventListener {
   updateKeyStateDirection(keyCode, value) {
     // NOTE: whitespace doens't work when 2 arrows are down
     switch (keyCode) {
-      //case 37:
       case 65:
         return this._keyState['LEFT'] = value;
-      //case 39:
       case 68:
         return this._keyState['RIGHT'] = value;
-      //case 38:
       case 87:
         return this._keyState['UP'] = value;
-      //case 40:
       case 83:
         return this._keyState['DOWN'] = value;
+      case 38:
+        return this._keyState['ARROW_UP'] = value;
+      case 40:
+        return this._keyState['ARROW_DOWN'] = value;
+      case 37:
+        return this._keyState['ARROW_LEFT'] = value;
+      case 39:
+        return this._keyState['ARROW_RIGHT'] = value;
     }
   }
 
