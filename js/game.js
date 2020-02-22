@@ -1,8 +1,8 @@
 class Game {
-  constructor(canvas, npcsNumber, difficultLevel) {
+  constructor(canvas, npcsNumber) {
     this._canvas = canvas;
     this._npcsNumber = npcsNumber;
-    this._difficultLevel = difficultLevel;
+    this._difficultLevel = GAME_CONFIG.START_DIFFICULTY;
     this._circleHelpers = new CircleHelpers();
     this._interactionResolver = new InteractionResolver();
     this._eventListener = new EventListener();

@@ -1,9 +1,3 @@
-const FALLING_ENEMY_COLOR = 'black';
-const FALLING_ENEMY_STROKE = '#110952';
-const FALLING_DEFAULT_STROKE = '#110952';
-const FALLING_AMMO_COLOR = '#ebef00';
-const FALLING_HEALTH_COLOR = '#10b910';
-
 class NPCCircle extends Circle {
   constructor(x, y, dx, dy, radius) {
     super(x, y, dx, dy, radius);
@@ -15,17 +9,17 @@ class NPCCircle extends Circle {
   }
 
   setRole(role) {
-    if (role === CONSTANTS.FALLING_HEALTH) {
-      this.setFillColor(FALLING_HEALTH_COLOR);
-      this.setStrokeColor(FALLING_DEFAULT_STROKE);
+    if (role === GAME_CONFIG.NPC_HEALTH) {
+      this.setFillColor(GAME_CONFIG.NPC_HEALTH_COLOR);
+      this.setStrokeColor(GAME_CONFIG.NPC_DEFAULT_STROKE);
 
-    } else if (role === CONSTANTS.FALLING_ENEMY) {
-      this.setFillColor(FALLING_ENEMY_COLOR);
-      this.setStrokeColor(FALLING_ENEMY_STROKE);
+    } else if (role === GAME_CONFIG.NPC_ENEMY) {
+      this.setFillColor(GAME_CONFIG.NPC_ENEMY_COLOR);
+      this.setStrokeColor(GAME_CONFIG.NPC_ENEMY_STROKE);
 
     } else {
-      this.setFillColor(FALLING_AMMO_COLOR);
-      this.setStrokeColor(FALLING_DEFAULT_STROKE);
+      this.setFillColor(GAME_CONFIG.NPC_AMMO_COLOR);
+      this.setStrokeColor(GAME_CONFIG.NPC_DEFAULT_STROKE);
     }
 
     this._role = role;
@@ -36,17 +30,16 @@ class NPCCircle extends Circle {
   }
 
   update() {
-    // can be hidden after that coef
-    const invisibleBorderCoord = 200;
-
     const width = this._canvas.getWidth();
     const height = this._canvas.getHeight();
 
-    if (this._y - invisibleBorderCoord > height || this._y < - invisibleBorderCoord) {
+    if (this._y - GAME_CONFIG.NPC_IVISIBLE_BORDER_LENGTH > height
+      || this._y < - GAME_CONFIG.NPC_IVISIBLE_BORDER_LENGTH) {
       this._hidden = true;
     }
 
-    if (this._x - invisibleBorderCoord > width || this._x < - invisibleBorderCoord) {
+    if (this._x - GAME_CONFIG.NPC_IVISIBLE_BORDER_LENGTH > width
+      || this._x < - GAME_CONFIG.NPC_IVISIBLE_BORDER_LENGTH) {
       this._hidden = true;
     }
 

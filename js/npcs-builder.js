@@ -1,8 +1,3 @@
-const MAX_RADIUS = 46;
-const MIN_RADIUS = 14;
-const START_Y = -100;
-const SPEED_RADIUS_RATE = 10;
-
 class NPCsBuilder {
   constructor(difficultLevel, canvas) {
     this._difficultLevel = difficultLevel;
@@ -16,15 +11,15 @@ class NPCsBuilder {
   getNPCRole() {
     let diffLevel = this._difficultLevel;
     let randomRole = Math.round(Math.random() * diffLevel);
-    let role = CONSTANTS.FALLING_ENEMY;
+    let role = GAME_CONFIG.NPC_ENEMY;
     if (randomRole < diffLevel - 2) {
       return role;
     }
 
     if (randomRole === diffLevel - 2) {
-      role = CONSTANTS.FALLING_AMMO;
+      role = GAME_CONFIG.NPC_AMMO;
     } else {
-      role = CONSTANTS.FALLING_HEALTH;
+      role = GAME_CONFIG.NPC_HEALTH;
     }
 
     return role;
@@ -33,7 +28,6 @@ class NPCsBuilder {
   buildNPC() {
     const middleX = this._canvas.getWidth() / 2;
     const middleY = this._canvas.getHeight() / 2;
-    const startBorderCoordinat = 50;
     let dx;
     let dy;
     let x;
@@ -45,20 +39,21 @@ class NPCsBuilder {
     // vertical = 0 or 1 AND horizontal = 2 or 3
     const isVertical = randomPostionCoef < 2;
 
-    let radius = Math.random() * MAX_RADIUS;
-    if (radius < MIN_RADIUS) {
-      radius = MIN_RADIUS;
+    let radius = Math.random() * GAME_CONFIG.NPC_MAX_RADIUS;
+    if (radius < GAME_CONFIG.NPC_MIN_RADIUS) {
+      radius = GAME_CONFIG.NPC_MIN_RADIUS;
     }
 
     if (isVertical) {
       x = Math.random() * this._canvas.getWidth();
-      y = -startBorderCoordinat;
-      dy = (radius / SPEED_RADIUS_RATE) + this.getSpeedDifficultyRate(this._difficultLevel);
+      y = -GAME_CONFIG.NPC_START_BORDER_COORDINAT;
+      dy = (radius / GAME_CONFIG.NPC_SPEED_RADIUS_RATE)
+        + this.getSpeedDifficultyRate(this._difficultLevel);
 
       // move from bottom to bottom
       if (randomPostionCoef == 1) {
         dy *= -1;
-        y = this._canvas.getHeight() + startBorderCoordinat;
+        y = this._canvas.getHeight() + GAME_CONFIG.NPC_START_BORDER_COORDINAT;
       }
 
       dx = Math.round(Math.random() * 8);
@@ -69,14 +64,14 @@ class NPCsBuilder {
       }
     } else {
       y = Math.random() * this._canvas.getHeight();
-      x = -startBorderCoordinat;
+      x = -GAME_CONFIG.NPC_START_BORDER_COORDINAT;
 
-      dx = (radius / SPEED_RADIUS_RATE) + this.getSpeedDifficultyRate(this._difficultLevel);
+      dx = (radius / GAME_CONFIG.NPC_SPEED_RADIUS_RATE) + this.getSpeedDifficultyRate(this._difficultLevel);
 
       // move from right to left
       if (randomPostionCoef == 3) {
         dx *= -1;
-        x = this._canvas.getWidth() + startBorderCoordinat;
+        x = this._canvas.getWidth() + GAME_CONFIG.NPC_START_BORDER_COORDINAT;
       }
 
       dy = Math.round(Math.random() * 8);
@@ -94,7 +89,7 @@ class NPCsBuilder {
   }
 
   getSpeedDifficultyRate(difficultLevel) {
-    let rate = difficultLevel / 10;
+    let rate = difficultLevel / GAME_CONFIG.NPC_SPEED_LEVEL_DIFICULT_RATE;
     return rate;
   }
 }

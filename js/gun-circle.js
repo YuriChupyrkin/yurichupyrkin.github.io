@@ -1,17 +1,12 @@
-const GUN_COLOR = '#ffd714';
-const GUN_RADIUS = 10;
-const BULLET_RADIUS = 8;
-const START_BULLETS_COUNT = 120;
-
 class GunCirlce extends Circle {
   constructor(x, y, canvas) {
-    super(x, y, 0, 0, GUN_RADIUS);
+    super(x, y, 0, 0, GAME_CONFIG.GUN_RADIUS);
 
     this.setStrokeColor('#110952');
-    this.setFillColor(GUN_COLOR);
+    this.setFillColor(GAME_CONFIG.GUN_COLOR);
     this.setCanvas(canvas);
 
-    this._bulletCount = START_BULLETS_COUNT;
+    this._bulletCount = GAME_CONFIG.START_BULLETS_COUNT;
     this._lastBulletId = 0;
     this._bullets = {};
 
@@ -31,7 +26,7 @@ class GunCirlce extends Circle {
     const bullet = new BulletCirlce(
       this._x,
       this._y,
-      BULLET_RADIUS,
+      GAME_CONFIG.BULLET_RADIUS,
       this._canvas
     );
 
@@ -41,15 +36,15 @@ class GunCirlce extends Circle {
     const dx = (this._playerConfig().x - this._x) * -1;
     const dy = (this._playerConfig().y - this._y) * -1;
 
-    bullet._dy = dy / 3;
-    bullet._dx = dx / 3;
+    bullet._dy = dy * GAME_CONFIG.BULLET_SPEED_RATE;
+    bullet._dx = dx * GAME_CONFIG.BULLET_SPEED_RATE;
 
     this._bullets[this.getBulletId()] = bullet;
     this._bulletCount--;
   }
 
   addBulletsCount(npcRadius) {
-    const addBullets = Math.round(npcRadius / 2);
+    const addBullets = Math.round(npcRadius / GAME_CONFIG.ADD_BULLETS_RATE);
     this._bulletCount += addBullets;
   }
 
@@ -72,17 +67,15 @@ class GunCirlce extends Circle {
   }
 
   move() {
-    const coef = 4;
-
     if (this._keyState.ARROW_DOWN || this._keyState.ARROW_RIGHT) {
-      this._angle += coef;
+      this._angle += GAME_CONFIG.GUN_ANGLE_MOVE_RATE;
       if (this._angle > 359) {
         this._angle = 0;
       }
     }
 
     if (this._keyState.ARROW_UP || this._keyState.ARROW_LEFT) {
-      this._angle -= coef;
+      this._angle -= GAME_CONFIG.GUN_ANGLE_MOVE_RATE;
       if (this._angle < 0) {
         this._angle = 359;
       }

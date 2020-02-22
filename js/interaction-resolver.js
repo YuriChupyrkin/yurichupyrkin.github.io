@@ -39,15 +39,15 @@ function InteractionResolver() {
     delete npcs[npcId];
 
     switch(npcRole) {
-      case CONSTANTS.FALLING_AMMO: {
+      case GAME_CONFIG.NPC_AMMO: {
         player.addBulletsCount(npcRadius);
         break;
       }
-      case CONSTANTS.FALLING_HEALTH: {
+      case GAME_CONFIG.NPC_HEALTH: {
         player.increaseHelth(npcRadius);
         break;
       }
-      case CONSTANTS.FALLING_ENEMY: {
+      case GAME_CONFIG.NPC_ENEMY: {
         player.decreaseHelth();
         break;
       }
@@ -80,7 +80,7 @@ function InteractionResolver() {
         }
 
         if (bullet.isIntersectWith(npc)) {
-          if (npc.getRole() === CONSTANTS.FALLING_ENEMY) {
+          if (npc.getRole() === GAME_CONFIG.NPC_ENEMY) {
             player.addScore();
           }
 
