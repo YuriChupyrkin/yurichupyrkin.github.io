@@ -169,14 +169,27 @@ class PlayerCirlce extends Circle {
     bullet.setKeyState(this._keyState);
     bullet.setPlayerConfig(this.getPlayerConfig.bind(this));
 
-    bullet._dy = -BULLET_SPEED;
-    // if (this._keyState[37] || this._keyState[65]) {
-    //   bullet._dx = -BULLET_SPEED;
-    // }
+    bullet._dy = 0;
+    bullet._dx = 0;
+
+    if (!this._keyState.UP && !this._keyState.DOWN &&
+      !this._keyState.LEFT && !this._keyState.RIGHT) {
+      // direction is NOT set
+      bullet._dy = -BULLET_SPEED;
+    } else {
+      if (this._keyState.UP) {
+        bullet._dy = -BULLET_SPEED;
+      }
+      if (this._keyState.DOWN) {
+        bullet._dy = BULLET_SPEED;
+      }
   
-    // if (this._keyState[39] || this._keyState[68]) {
-    //   bullet._dx = +BULLET_SPEED;
-    // }
+      if (this._keyState.LEFT) {
+        bullet._dx = -BULLET_SPEED;
+      } else if (this._keyState.RIGHT) {
+        bullet._dx = BULLET_SPEED;
+      }
+    }
 
     this._bullets[this.getBulletId()] = bullet;
     this._bulletCount--;
