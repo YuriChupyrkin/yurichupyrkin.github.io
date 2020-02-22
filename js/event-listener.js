@@ -2,6 +2,8 @@ class EventListener {
   constructor() {
     this._keyState = {};
     this._stopListen = false;
+    this._escAction = () => {};
+    this._ctrlAction = () => {};
 
     this.listenKeys();
   }
@@ -35,7 +37,10 @@ class EventListener {
     }, true);
   
     window.addEventListener('keydown', (e) => {
-      // can listen PAUSE
+      if (e.keyCode === 27 && this._escAction) {
+        this._escAction();
+      }
+
       if (e.keyCode === 17 && this._ctrlAction) {
         this._ctrlAction();
       }
@@ -68,6 +73,10 @@ class EventListener {
 
   setupCtrlAction(action) {
     this._ctrlAction = action;
+  }
+
+  setupEscAction(action) {
+    this._escAction = action;
   }
 
   setStopListen(isStop) {

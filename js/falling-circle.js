@@ -55,8 +55,8 @@ class FallingCircle extends Circle {
   }
 
   move() {
-    // this._x += this._dx;
-    // this._y += this._dy;
+    this._x += this._dx;
+    this._y += this._dy;
 
     if (this._keyState.LEFT) {
       this._x += this._playerConfig().dx;
