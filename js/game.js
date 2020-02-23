@@ -21,92 +21,32 @@ class Game {
     this._isPause = false;
     this._eventListener.clearStates();
     this._keyState = this._eventListener.getKeyState();
+    this._playerState = {};
 
     this.buildPlayer();
     this.buildNPCs(this._npcsNumber);
   }
 
-  togglePause() {
-    if (this._finished) {
-      return;
-    }
-
-    this._isPause = !this._isPause;
-
-    this._menu.updatePauseButton(this._isPause);
-    this._eventListener.setStopListen(this._isPause);
-  }
-
-  buildPlayer() {
-    const listener = this._eventListener;
-    const x = this._canvas.getWidth() / 2;
-    const y = this._canvas.getHeight() / 2;
-
-    const player = new PlayerCirlce(x, y, this._canvas);
-
-    player.setGun();
-    listener.setupWhiteSpaceAction(player.shot.bind(player));
-
-    this._player = player;
-  }
-
-  getNPCId() {
-    return this._lastNPCId++;
-  }
-
-  buildNPCs(npcsNumber) {
-    this._npcs = {};
-
-    for(let i = 0; i < npcsNumber; i++) {
-      this.addNewNPC();
-    }
-  }
-
-  addNewNPC() {
-    const npc = this._npcBuilder.buildNPC();
-
-    if (this._player) {
-      npc.setPlayerConfig(this._player.getPlayerConfig.bind(this._player));
-    }
-    const npcId = this.getNPCId();
-    this._npcs[npcId] = npc;
-  }
-
-  addNPCs() {
-    while (Object.keys(this._npcs).length < this._npcsNumber) {
-      this.addNewNPC();
-    }
-  }
-
-  // Update npcs or bullets
-  multiUpdate(target) {
-    let ids = Object.keys(target);
-    ids.forEach((id) => {
-      target[id].update(this._keyState);
-
-      if (target[id].isHidden && target[id].isHidden()) {
-        delete target[id];
-      }
-    });
-  }
-
-  update() {
+  refresh() {
     if (this._isPause || this._finished) {
       return;
     }
 
-    this._canvas.refreshCanvas(
-      this._player.getPlayerConfig.bind(this._player),
+    let player = this._player;
+
+    this._playerState = player.getPlayerState();
+
+    this._canvas.refresh(
+      this._playerState,
       this._keyState
     );
 
-    let player = this._player;
     let bullets = player.getBullets();
     let npcs = this._npcs;
 
-    this.multiUpdate(npcs);
-    this.multiUpdate(bullets);
-    player.update(this._keyState);
+    this.multirefresh(npcs);
+    this.multirefresh(bullets);
+    player.refresh(this._keyState);
 
     // add new npcs
     this.addNPCs();
@@ -139,6 +79,66 @@ class Game {
 
     if (hp < 1) {
       this.finishGame(score);
+    }
+  }
+
+  // Update npcs or bullets
+  multirefresh(target) {
+    let ids = Object.keys(target);
+    ids.forEach((id) => {
+      target[id].refresh(this._playerState, this._keyState);
+
+      if (target[id].isHidden && target[id].isHidden()) {
+        delete target[id];
+      }
+    });
+  }
+
+  togglePause() {
+    if (this._finished) {
+      return;
+    }
+
+    this._isPause = !this._isPause;
+
+    this._menu.updatePauseButton(this._isPause);
+    this._eventListener.setStopListen(this._isPause);
+  }
+
+  buildPlayer() {
+    const listener = this._eventListener;
+    const x = this._canvas.getWidth() / 2;
+    const y = this._canvas.getHeight() / 2;
+
+    const player = new PlayerCirlce(x, y, this._canvas);
+
+    player.setGun();
+    listener.setupWhiteSpaceAction(player.shoot.bind(player));
+
+    this._player = player;
+  }
+
+  getNPCId() {
+    return this._lastNPCId++;
+  }
+
+  buildNPCs(npcsNumber) {
+    this._npcs = {};
+
+    for(let i = 0; i < npcsNumber; i++) {
+      this.addNewNPC();
+    }
+  }
+
+  addNewNPC() {
+    const npc = this._npcBuilder.buildNPC();
+    const npcId = this.getNPCId();
+    this._npcs[npcId] = npc;
+  }
+
+  addNPCs() {
+    while (Object.keys(this._npcs).length < this._npcsNumber) {
+      this.addNewNPC();
     }
   }
 

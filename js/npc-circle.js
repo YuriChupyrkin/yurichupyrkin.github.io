@@ -1,11 +1,45 @@
 class NPCCircle extends Circle {
   constructor(x, y, dx, dy, radius) {
     super(x, y, dx, dy, radius);
-    this._playerConfig = {};
   }
 
-  setPlayerConfig(playerConfig) {
-    this._playerConfig = playerConfig;
+  refresh(playerState, keyState) {
+    const width = this._canvas.getWidth();
+    const height = this._canvas.getHeight();
+
+    if (this._y - GAME_CONFIG.NPC_IVISIBLE_BORDER_LENGTH > height
+      || this._y < - GAME_CONFIG.NPC_IVISIBLE_BORDER_LENGTH) {
+      this._hidden = true;
+    }
+
+    if (this._x - GAME_CONFIG.NPC_IVISIBLE_BORDER_LENGTH > width
+      || this._x < - GAME_CONFIG.NPC_IVISIBLE_BORDER_LENGTH) {
+      this._hidden = true;
+    }
+
+    this.move(playerState, keyState);
+    this.draw();
+  }
+
+  move(playerState, keyState) {
+    this._x += this._dx;
+    this._y += this._dy;
+
+    if (keyState.LEFT) {
+      this._x += playerState.dx;
+    }
+  
+    if (keyState.RIGHT) {
+      this._x -= playerState.dx;
+    }
+  
+    if (keyState.UP) {
+      this._y += playerState.dy;
+    }
+
+    if (keyState.DOWN) {
+      this._y -= playerState.dy;
+    }
   }
 
   setRole(role) {
@@ -27,45 +61,6 @@ class NPCCircle extends Circle {
 
   getRole() {
     return this._role;
-  }
-
-  update(keyState) {
-    const width = this._canvas.getWidth();
-    const height = this._canvas.getHeight();
-
-    if (this._y - GAME_CONFIG.NPC_IVISIBLE_BORDER_LENGTH > height
-      || this._y < - GAME_CONFIG.NPC_IVISIBLE_BORDER_LENGTH) {
-      this._hidden = true;
-    }
-
-    if (this._x - GAME_CONFIG.NPC_IVISIBLE_BORDER_LENGTH > width
-      || this._x < - GAME_CONFIG.NPC_IVISIBLE_BORDER_LENGTH) {
-      this._hidden = true;
-    }
-
-    this.move(keyState);
-    this.draw();
-  }
-
-  move(keyState) {
-    this._x += this._dx;
-    this._y += this._dy;
-
-    if (keyState.LEFT) {
-      this._x += this._playerConfig().dx;
-    }
-  
-    if (keyState.RIGHT) {
-      this._x -= this._playerConfig().dx;
-    }
-  
-    if (keyState.UP) {
-      this._y += this._playerConfig().dy;
-    }
-
-    if (keyState.DOWN) {
-      this._y -= this._playerConfig().dy;
-    }
   }
 
   isHidden() {

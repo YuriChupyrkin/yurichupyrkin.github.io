@@ -5,14 +5,9 @@ class BulletCirlce extends Circle {
     this.setStrokeColor('#110952');
     this.setFillColor('orange');
     this.setCanvas(canvas);
-    this._playerConfig = {};
   }
 
-  setPlayerConfig(playerConfig) {
-    this._playerConfig = playerConfig;
-  }
-
-  update(keyState) {
+  refresh(playerState, keyState) {
     const width = this._canvas.getWidth();
     const height = this._canvas.getHeight();
 
@@ -27,25 +22,25 @@ class BulletCirlce extends Circle {
     this._x += this._dx;
     this._y += this._dy;
 
-    this.move(keyState);
+    this.move(playerState, keyState);
     this.draw();
   }
 
-  move(keyState) {
+  move(playerState, keyState) {
     if (keyState.LEFT) {
-      this._x += this._playerConfig().dx;
+      this._x += playerState.dx;
     }
   
     if (keyState.RIGHT) {
-      this._x -= this._playerConfig().dx;
+      this._x -= playerState.dx;
     }
   
     if (keyState.UP) {
-      this._y += this._playerConfig().dy;
+      this._y += playerState.dy;
     }
 
     if (keyState.DOWN) {
-      this._y -= this._playerConfig().dy;
+      this._y -= playerState.dy;
     }
   }
 

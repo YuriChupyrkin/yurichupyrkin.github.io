@@ -94,7 +94,7 @@
   function updateFrames () {
     function animate() {
       requestAnimationFrame(animate);
-      game.update();
+      game.refresh();
     }
     animate();
   };

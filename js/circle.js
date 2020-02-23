@@ -36,7 +36,7 @@ class Circle {
     }
   };
 
-  update() {
+  refresh() {
     const width = this._canvas.getWidth();
     const height = this._canvas.getHeight();
 

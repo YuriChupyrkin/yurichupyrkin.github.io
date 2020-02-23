@@ -11,14 +11,38 @@ class GunCirlce extends Circle {
     this._bullets = {};
 
     this._angle = 0;
-    this._playerConfig = {};
   }
 
-  setPlayerConfig(playerConfig) {
-    this._playerConfig = playerConfig;
+  refresh(playerState, keyState) {
+    this.draw();
+    this.move(playerState, keyState);
   }
 
-  shoot() {
+  move(playerState, keyState) {
+    if (keyState.ARROW_DOWN || keyState.ARROW_RIGHT) {
+      this._angle += GAME_CONFIG.GUN_ANGLE_MOVE_RATE;
+      if (this._angle > 359) {
+        this._angle = 0;
+      }
+    }
+
+    if (keyState.ARROW_UP || keyState.ARROW_LEFT) {
+      this._angle -= GAME_CONFIG.GUN_ANGLE_MOVE_RATE;
+      if (this._angle < 0) {
+        this._angle = 359;
+      }
+    }
+
+    const playerX = playerState.x;
+    const playerY = playerState.y;
+    const playerRadius =  playerState.radius;
+    const alfa = this._angle * Math.PI / 180;
+
+    this._x = playerX + playerRadius * Math.cos(alfa);
+    this._y = playerY + playerRadius * Math.sin(alfa);
+  }
+
+  shoot(playerState) {
     if (!this._bulletCount) {
       return;
     }
@@ -30,10 +54,8 @@ class GunCirlce extends Circle {
       this._canvas
     );
 
-    bullet.setPlayerConfig(this._playerConfig);
-
-    const dx = (this._playerConfig().x - this._x) * -1;
-    const dy = (this._playerConfig().y - this._y) * -1;
+    const dx = (playerState.x - this._x) * -1;
+    const dy = (playerState.y - this._y) * -1;
 
     bullet._dy = dy * GAME_CONFIG.BULLET_SPEED_RATE;
     bullet._dx = dx * GAME_CONFIG.BULLET_SPEED_RATE;
@@ -57,35 +79,5 @@ class GunCirlce extends Circle {
 
   getBullets() {
     return this._bullets;
-  }
-
-
-  update(keyState) {
-    this.draw();
-    this.move(keyState);
-  }
-
-  move(keyState) {
-    if (keyState.ARROW_DOWN || keyState.ARROW_RIGHT) {
-      this._angle += GAME_CONFIG.GUN_ANGLE_MOVE_RATE;
-      if (this._angle > 359) {
-        this._angle = 0;
-      }
-    }
-
-    if (keyState.ARROW_UP || keyState.ARROW_LEFT) {
-      this._angle -= GAME_CONFIG.GUN_ANGLE_MOVE_RATE;
-      if (this._angle < 0) {
-        this._angle = 359;
-      }
-    }
-
-    const playerX = this._playerConfig().x;
-    const playerY = this._playerConfig().y;
-    const playerRadius =  this._playerConfig().radius;
-    const alfa = this._angle * Math.PI / 180;
-
-    this._x = playerX + playerRadius * Math.cos(alfa);
-    this._y = playerY + playerRadius * Math.sin(alfa);
   }
 }

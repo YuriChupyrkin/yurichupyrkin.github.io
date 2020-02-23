@@ -14,12 +14,20 @@ class PlayerCirlce extends Circle {
     this._gun = {};
   }
 
+  refresh(keyState) {
+    this._gun.refresh(this.getPlayerState(), keyState);
+    this.draw();
+  }
+
+  shoot() {
+    this._gun.shoot(this.getPlayerState());
+  }
 
   getBullets() {
     return this._gun.getBullets();
   }
 
-  getPlayerConfig() {
+  getPlayerState() {
     return {
       dx: this._dx,
       dy: this._dy,
@@ -36,11 +44,6 @@ class PlayerCirlce extends Circle {
 
   getBulletsCount() {
     return this._gun.getBulletsCount();
-  }
-
-  update(keyState) {
-    this._gun.update(keyState);
-    this.draw();
   }
 
   increaseHelth(npcRadius) {
@@ -76,7 +79,6 @@ class PlayerCirlce extends Circle {
   setGun() {
     const x = this._x + this._radius
     const gun = new GunCirlce(x, this._y, this._canvas);
-    gun.setPlayerConfig(this.getPlayerConfig.bind(this));
     this._gun = gun;
   }
 
@@ -92,10 +94,6 @@ class PlayerCirlce extends Circle {
 
     this._dx = speed;
     this._dy = speed;
-  }
-
-  shot() {
-    this._gun.shoot();
   }
 
   animatePlayer(colors) {
