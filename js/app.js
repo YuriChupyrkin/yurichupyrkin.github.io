@@ -6,6 +6,10 @@
     START_DIFFICULTY: 8,
 
 
+    /* canvas */
+    CANVAS_CELL_LENGHT: 100,
+
+
     /* player */
     START_RADIUS: 30,
     START_HEALTH: 10,

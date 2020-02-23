@@ -20,6 +20,7 @@ class Game {
     this._lastStatusBarValues = {};
     this._isPause = false;
     this._eventListener.clearStates();
+    this._keyState = this._eventListener.getKeyState();
 
     this.buildPlayer();
     this.buildNPCs(this._npcsNumber);
@@ -96,7 +97,11 @@ class Game {
       return;
     }
 
-    this._canvas.clearCanvas();
+    this._canvas.refreshCanvas(
+      this._player.getPlayerConfig.bind(this._player),
+      this._keyState
+    );
+
     let player = this._player;
     let bullets = player.getBullets();
     let npcs = this._npcs;
