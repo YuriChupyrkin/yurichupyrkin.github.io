@@ -30,7 +30,6 @@ class GunCirlce extends Circle {
       this._canvas
     );
 
-    bullet.setKeyState(this._keyState);
     bullet.setPlayerConfig(this._playerConfig);
 
     const dx = (this._playerConfig().x - this._x) * -1;
@@ -61,20 +60,20 @@ class GunCirlce extends Circle {
   }
 
 
-  update() {
+  update(keyState) {
     this.draw();
-    this.move();
+    this.move(keyState);
   }
 
-  move() {
-    if (this._keyState.ARROW_DOWN || this._keyState.ARROW_RIGHT) {
+  move(keyState) {
+    if (keyState.ARROW_DOWN || keyState.ARROW_RIGHT) {
       this._angle += GAME_CONFIG.GUN_ANGLE_MOVE_RATE;
       if (this._angle > 359) {
         this._angle = 0;
       }
     }
 
-    if (this._keyState.ARROW_UP || this._keyState.ARROW_LEFT) {
+    if (keyState.ARROW_UP || keyState.ARROW_LEFT) {
       this._angle -= GAME_CONFIG.GUN_ANGLE_MOVE_RATE;
       if (this._angle < 0) {
         this._angle = 359;

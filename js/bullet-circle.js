@@ -12,7 +12,7 @@ class BulletCirlce extends Circle {
     this._playerConfig = playerConfig;
   }
 
-  update() {
+  update(keyState) {
     const width = this._canvas.getWidth();
     const height = this._canvas.getHeight();
 
@@ -27,24 +27,24 @@ class BulletCirlce extends Circle {
     this._x += this._dx;
     this._y += this._dy;
 
-    this.move();
+    this.move(keyState);
     this.draw();
   }
 
-  move() {
-    if (this._keyState.LEFT) {
+  move(keyState) {
+    if (keyState.LEFT) {
       this._x += this._playerConfig().dx;
     }
   
-    if (this._keyState.RIGHT) {
+    if (keyState.RIGHT) {
       this._x -= this._playerConfig().dx;
     }
   
-    if (this._keyState.UP) {
+    if (keyState.UP) {
       this._y += this._playerConfig().dy;
     }
 
-    if (this._keyState.DOWN) {
+    if (keyState.DOWN) {
       this._y -= this._playerConfig().dy;
     }
   }

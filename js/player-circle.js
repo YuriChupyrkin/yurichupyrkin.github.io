@@ -38,8 +38,8 @@ class PlayerCirlce extends Circle {
     return this._gun.getBulletsCount();
   }
 
-  update() {
-    this._gun.update();
+  update(keyState) {
+    this._gun.update(keyState);
     this.draw();
   }
 
@@ -77,7 +77,6 @@ class PlayerCirlce extends Circle {
     const x = this._x + this._radius
     const gun = new GunCirlce(x, this._y, this._canvas);
     gun.setPlayerConfig(this.getPlayerConfig.bind(this));
-    gun.setKeyState(this._keyState);
     this._gun = gun;
   }
 

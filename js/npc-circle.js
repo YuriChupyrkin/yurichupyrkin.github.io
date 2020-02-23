@@ -29,7 +29,7 @@ class NPCCircle extends Circle {
     return this._role;
   }
 
-  update() {
+  update(keyState) {
     const width = this._canvas.getWidth();
     const height = this._canvas.getHeight();
 
@@ -43,27 +43,27 @@ class NPCCircle extends Circle {
       this._hidden = true;
     }
 
-    this.move();
+    this.move(keyState);
     this.draw();
   }
 
-  move() {
+  move(keyState) {
     this._x += this._dx;
     this._y += this._dy;
 
-    if (this._keyState.LEFT) {
+    if (keyState.LEFT) {
       this._x += this._playerConfig().dx;
     }
   
-    if (this._keyState.RIGHT) {
+    if (keyState.RIGHT) {
       this._x -= this._playerConfig().dx;
     }
   
-    if (this._keyState.UP) {
+    if (keyState.UP) {
       this._y += this._playerConfig().dy;
     }
 
-    if (this._keyState.DOWN) {
+    if (keyState.DOWN) {
       this._y -= this._playerConfig().dy;
     }
   }

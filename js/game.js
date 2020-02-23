@@ -44,7 +44,6 @@ class Game {
 
     const player = new PlayerCirlce(x, y, this._canvas);
 
-    player.setKeyState(listener.getKeyState());
     player.setGun();
     listener.setupWhiteSpaceAction(player.shot.bind(player));
 
@@ -65,7 +64,6 @@ class Game {
 
   addNewNPC() {
     const npc = this._npcBuilder.buildNPC();
-    npc.setKeyState(this._eventListener.getKeyState());
 
     if (this._player) {
       npc.setPlayerConfig(this._player.getPlayerConfig.bind(this._player));
@@ -84,7 +82,7 @@ class Game {
   multiUpdate(target) {
     let ids = Object.keys(target);
     ids.forEach((id) => {
-      target[id].update();
+      target[id].update(this._keyState);
 
       if (target[id].isHidden && target[id].isHidden()) {
         delete target[id];
@@ -108,7 +106,7 @@ class Game {
 
     this.multiUpdate(npcs);
     this.multiUpdate(bullets);
-    player.update();
+    player.update(this._keyState);
 
     // add new npcs
     this.addNPCs();
