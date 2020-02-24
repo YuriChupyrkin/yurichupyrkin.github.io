@@ -11,6 +11,13 @@ class Game {
     this._eventListener.setupEscAction(this.togglePause.bind(this));
     this._eventListener
       .listenClicks('btn-pause', this.togglePause.bind(this), true);
+
+    this._refreshCount = 0;
+    this._log = {
+      destroed: 0,
+      npcs: 0,
+      bullets: 0,
+    };
   }
 
   startGame() {
@@ -80,6 +87,8 @@ class Game {
     if (hp < 1) {
       this.finishGame(score);
     }
+
+    this.writeLog();
   }
 
   // Update npcs or bullets
@@ -89,9 +98,30 @@ class Game {
       target[id].refresh(this._playerState, this._keyState);
 
       if (target[id].isHidden && target[id].isHidden()) {
+        this._log.destroed ++;
         delete target[id];
       }
     });
+  }
+
+  writeLog() {
+    this._refreshCount ++;
+
+    if (this._refreshCount % 300 === 0) {
+      console.log(this._refreshCount);
+      this._log.bullets = Object.keys(this._player.getBullets()).length;
+      this._log.npcs = Object.keys(this._npcs).length;
+
+      console.log(`
+\n
+-----\n
+bullets: ${this._log.bullets}\n
+npcs: ${this._log.npcs}\n
+destroyed: ${this._log.destroed}\n
+------\n
+\n
+      `);
+    }
   }
 
   togglePause() {
