@@ -4,16 +4,13 @@ class NPCCircle extends Circle {
   }
 
   refresh(playerState, keyState) {
-    const width = this._canvas.getWidth();
-    const height = this._canvas.getHeight();
-
-    if (this._y - GAME_CONFIG.NPC_IVISIBLE_BORDER_LENGTH > height
-      || this._y < - GAME_CONFIG.NPC_IVISIBLE_BORDER_LENGTH) {
+    if (this._x > GAME_CONFIG.NPC_IVISIBLE_BORDER_LENGTH
+      || this._x < - GAME_CONFIG.NPC_IVISIBLE_BORDER_LENGTH) {
       this._hidden = true;
     }
 
-    if (this._x - GAME_CONFIG.NPC_IVISIBLE_BORDER_LENGTH > width
-      || this._x < - GAME_CONFIG.NPC_IVISIBLE_BORDER_LENGTH) {
+    if (this._y > GAME_CONFIG.NPC_IVISIBLE_BORDER_LENGTH
+      || this._y < - GAME_CONFIG.NPC_IVISIBLE_BORDER_LENGTH) {
       this._hidden = true;
     }
 

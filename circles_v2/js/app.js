@@ -3,7 +3,8 @@
 
   window.GAME_CONFIG = {
     /* game */
-    START_DIFFICULTY: 8,
+    START_DIFFICULTY: 6,
+    NPC_COUNT_RATE: 9000, // 90000 default
 
 
     /* canvas */
@@ -41,7 +42,7 @@
     /* gun and bullets */
     GUN_RADIUS: 10,
     BULLET_RADIUS: 8,
-    START_BULLETS_COUNT: 140,
+    START_BULLETS_COUNT: 300,
     BULLET_SPEED_RATE: 0.7,
     ADD_BULLETS_RATE: 0.5,
     GUN_ANGLE_MOVE_RATE: 6,
@@ -50,7 +51,7 @@
 
     /* NPC */
     NPC_SPEED_RADIUS_RATE: 10,
-    NPC_START_BORDER_COORDINAT: 100,
+    NPC_START_BORDER_COORDINAT: 8000,
     NPC_MIN_RADIUS: 18,
     NPC_MAX_RADIUS: 46,
     NPC_SPEED_LEVEL_DIFICULT_RATE: 10,
@@ -60,7 +61,7 @@
     NPC_AMMO_COLOR: '#ebef00',
     NPC_HEALTH_COLOR: '#10b910',
     // can be hidden after that coef
-    NPC_IVISIBLE_BORDER_LENGTH: 300,
+    NPC_IVISIBLE_BORDER_LENGTH: 10000,
 
 
     /* constants */
@@ -81,7 +82,7 @@
   function calculateNPCsNumber() {
     let width = canvas.getWidth();
     let height = canvas.getHeight();
-    const rate = 90000;
+    const rate = GAME_CONFIG.NPC_COUNT_RATE;
     const number = Math.round(width * height / rate);
 
     return number;

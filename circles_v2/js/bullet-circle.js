@@ -8,14 +8,13 @@ class BulletCirlce extends Circle {
   }
 
   refresh(playerState, keyState) {
-    const width = this._canvas.getWidth();
-    const height = this._canvas.getHeight();
-
-    if (this._x + this._radius > width || this._x - this._radius < 0) {
+    if (this._x > GAME_CONFIG.NPC_IVISIBLE_BORDER_LENGTH
+      || this._x < - GAME_CONFIG.NPC_IVISIBLE_BORDER_LENGTH) {
       this._hidden = true;
     }
 
-    if (this._y + this._radius > height || this._y - this._radius < 0) {
+    if (this._y > GAME_CONFIG.NPC_IVISIBLE_BORDER_LENGTH
+      || this._y < - GAME_CONFIG.NPC_IVISIBLE_BORDER_LENGTH) {
       this._hidden = true;
     }
 
