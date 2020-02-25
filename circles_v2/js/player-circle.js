@@ -15,26 +15,16 @@ class PlayerCirlce extends Circle {
   }
 
   refresh(keyState) {
-    this._gun.refresh(this.getPlayerState(), keyState);
+    this._gun.refresh(this.getCircleParams(), keyState);
     this.draw();
   }
 
   shoot() {
-    this._gun.shoot(this.getPlayerState());
+    this._gun.shoot(this.getCircleParams());
   }
 
   getBullets() {
     return this._gun.getBullets();
-  }
-
-  getPlayerState() {
-    return {
-      dx: this._dx,
-      dy: this._dy,
-      x: this._x,
-      y: this._y,
-      radius: this._radius,
-    };
   }
 
   addBulletsCount(npcRadius) {

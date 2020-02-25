@@ -23,6 +23,18 @@ class Circle {
     this._fillColor = color;
   };
 
+  getCircleParams() {
+    return {
+      x: this._x,
+      y: this._y,
+      dx: this._dx,
+      dy: this._dy,
+      radius: this._radius,
+      strokeColor: this._strokeColor,
+      fillColor: this._fillColor,
+    }
+  }
+
   draw() {
     const ctx = this._canvas.getContext();
     ctx.beginPath();

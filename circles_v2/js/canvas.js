@@ -15,9 +15,9 @@ class Canvas {
     this._canvas.height = height;
   }
 
-  refresh(playerState, keyState) {
-    const playerDx = playerState.dx;
-    const playerDy = playerState.dy;
+  refresh(playerCircleParams, keyState) {
+    const playerDx = playerCircleParams.dx;
+    const playerDy = playerCircleParams.dy;
 
     const canvas = this._canvas;
     const ctx = this._context;

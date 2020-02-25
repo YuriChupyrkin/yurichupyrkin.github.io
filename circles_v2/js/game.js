@@ -30,7 +30,7 @@ class Game {
     this._isPause = false;
     this._eventListener.clearStates();
     this._keyState = this._eventListener.getKeyState();
-    this._playerState = {};
+    this._playerCircleParams = {};
 
     this.buildPlayer();
     this.buildNPCs(this._npcsNumber);
@@ -48,10 +48,10 @@ class Game {
 
     let player = this._player;
 
-    this._playerState = player.getPlayerState();
+    this._playerCircleParams = player.getCircleParams();
 
     this._canvas.refresh(
-      this._playerState,
+      this._playerCircleParams,
       this._keyState
     );
 
@@ -116,7 +116,7 @@ class Game {
   multirefresh(target) {
     let ids = Object.keys(target);
     ids.forEach((id) => {
-      target[id].refresh(this._playerState, this._keyState);
+      target[id].refresh(this._playerCircleParams, this._keyState);
 
       if (target[id].isHidden && target[id].isHidden()) {
         this._log.destroed ++;

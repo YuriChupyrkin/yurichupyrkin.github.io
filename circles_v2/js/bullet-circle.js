@@ -7,7 +7,7 @@ class BulletCirlce extends Circle {
     this.setCanvas(canvas);
   }
 
-  refresh(playerState, keyState) {
+  refresh(playerCircleParams, keyState) {
     if (this._x > GAME_CONFIG.NPC_IVISIBLE_BORDER_LENGTH
       || this._x < - GAME_CONFIG.NPC_IVISIBLE_BORDER_LENGTH) {
       this._hidden = true;
@@ -21,25 +21,25 @@ class BulletCirlce extends Circle {
     this._x += this._dx;
     this._y += this._dy;
 
-    this.move(playerState, keyState);
+    this.move(playerCircleParams, keyState);
     this.draw();
   }
 
-  move(playerState, keyState) {
+  move(playerCircleParams, keyState) {
     if (keyState.LEFT) {
-      this._x += playerState.dx;
+      this._x += playerCircleParams.dx;
     }
   
     if (keyState.RIGHT) {
-      this._x -= playerState.dx;
+      this._x -= playerCircleParams.dx;
     }
   
     if (keyState.UP) {
-      this._y += playerState.dy;
+      this._y += playerCircleParams.dy;
     }
 
     if (keyState.DOWN) {
-      this._y -= playerState.dy;
+      this._y -= playerCircleParams.dy;
     }
   }
 
