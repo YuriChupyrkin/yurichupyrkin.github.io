@@ -15,7 +15,6 @@ class NPCCircle extends Circle {
     }
 
     this.move(playerCircleParams, keyState);
-    this.draw();
   }
 
   move(playerCircleParams, keyState) {

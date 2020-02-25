@@ -1,10 +1,9 @@
 class BulletCirlce extends Circle {
-  constructor(x, y, radius, canvas) {
+  constructor(x, y, radius) {
     super(x, y, 0, 0, radius);
 
     this.setStrokeColor('#110952');
     this.setFillColor('orange');
-    this.setCanvas(canvas);
   }
 
   refresh(playerCircleParams, keyState) {
@@ -22,7 +21,6 @@ class BulletCirlce extends Circle {
     this._y += this._dy;
 
     this.move(playerCircleParams, keyState);
-    this.draw();
   }
 
   move(playerCircleParams, keyState) {

@@ -1,10 +1,9 @@
 class GunCirlce extends Circle {
-  constructor(x, y, canvas) {
+  constructor(x, y) {
     super(x, y, 0, 0, GAME_CONFIG.GUN_RADIUS);
 
     this.setStrokeColor('#110952');
     this.setFillColor(GAME_CONFIG.GUN_COLOR);
-    this.setCanvas(canvas);
 
     this._bulletCount = GAME_CONFIG.START_BULLETS_COUNT;
     this._lastBulletId = 0;
@@ -14,7 +13,6 @@ class GunCirlce extends Circle {
   }
 
   refresh(playerCircleParams, keyState) {
-    this.draw();
     this.move(playerCircleParams, keyState);
   }
 
@@ -51,7 +49,6 @@ class GunCirlce extends Circle {
       this._x,
       this._y,
       GAME_CONFIG.BULLET_RADIUS,
-      this._canvas
     );
 
     const dx = (playerCircleParams.x - this._x) * -1;

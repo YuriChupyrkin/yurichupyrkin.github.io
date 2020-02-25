@@ -1,22 +1,18 @@
 class PlayerCirlce extends Circle {
-  constructor(x, y, canvas) {
+  constructor(x, y) {
     super(x, y, GAME_CONFIG.START_SPEED, GAME_CONFIG.START_SPEED, GAME_CONFIG.START_RADIUS);
 
     this.setStrokeColor('#110952');
     this.setFillColor(GAME_CONFIG.PLAYER_COLOR);
-    this.setCanvas(canvas);
     this._animating = false;
     this._score = 0;
     this._health = GAME_CONFIG.START_HEALTH;
 
-    this._canvasWidth = this._canvas.getWidth();
-    this._canvasHeight = this._canvas.getHeight();
     this._gun = {};
   }
 
   refresh(keyState) {
     this._gun.refresh(this.getCircleParams(), keyState);
-    this.draw();
   }
 
   shoot() {
@@ -68,8 +64,12 @@ class PlayerCirlce extends Circle {
 
   setGun() {
     const x = this._x + this._radius
-    const gun = new GunCirlce(x, this._y, this._canvas);
+    const gun = new GunCirlce(x, this._y);
     this._gun = gun;
+  }
+
+  getGun() {
+    return this._gun;
   }
 
   updateSpeed() {

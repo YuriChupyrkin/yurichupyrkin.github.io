@@ -25,7 +25,13 @@ class Game {
   startGame() {
     this._finished = false;
     this._lastNPCId = 0;
-    this._npcBuilder = new NPCsBuilder(this._difficultLevel, this._canvas);
+    this._npcBuilder = new NPCsBuilder(
+      this._difficultLevel,
+      {
+        width: this._canvas.getWidth(),
+        height: this._canvas.getHeight(),
+      }
+    );
     this._lastStatusBarValues = {};
     this._isPause = false;
     this._eventListener.clearStates();
@@ -47,16 +53,18 @@ class Game {
     }
 
     let player = this._player;
-
-    this._playerCircleParams = player.getCircleParams();
-
-    this._canvas.refresh(
-      this._playerCircleParams,
-      this._keyState
-    );
-
     let bullets = player.getBullets();
     let npcs = this._npcs;
+    const npcsArray = Object.values(npcs);
+    const bulletsArray = Object.values(bullets);
+    const allCircles = bulletsArray
+      .concat(npcsArray)
+      .concat([
+        player,
+        player.getGun()
+      ]);
+
+    this._playerCircleParams = player.getCircleParams();
 
     this.multirefresh(npcs);
     this.multirefresh(bullets);
@@ -66,6 +74,12 @@ class Game {
     this.addNPCs();
 
     this._interactionResolver.resolve(player, npcs, bullets);
+
+    this._canvas.draw(
+      this._playerCircleParams,
+      this._keyState,
+      allCircles
+    );
 
     if (GAME_CONFIG.WRITE_LOG) {
       const refreshTime = performance.now() - refreshTimeStart;
@@ -79,7 +93,7 @@ class Game {
         }
       }
 
-      this.writeLog();
+      this.writeLog(npcsArray, bulletsArray);
     }
 
     this.updateGameState();
@@ -119,20 +133,22 @@ class Game {
       target[id].refresh(this._playerCircleParams, this._keyState);
 
       if (target[id].isHidden && target[id].isHidden()) {
-        this._log.destroed ++;
+        if (GAME_CONFIG.WRITE_LOG) {
+          this._log.destroed ++;
+        }
         delete target[id];
       }
     });
   }
 
-  writeLog() {
+  writeLog(npcsArray, bulletsArray) {
     this._refreshCount ++;
 
     if (this._refreshCount % 300 === 0) {
       console.group(`refresh #${this._refreshCount} log`);
 
-      this._log.bullets = Object.keys(this._player.getBullets()).length;
-      this._log.npcs = Object.keys(this._npcs).length;
+      this._log.bullets = bulletsArray.length;
+      this._log.npcs = npcsArray.length;
 
       console.log(`
 -----\n
@@ -164,7 +180,7 @@ destroyed: ${this._log.destroed}\n
     const x = this._canvas.getWidth() / 2;
     const y = this._canvas.getHeight() / 2;
 
-    const player = new PlayerCirlce(x, y, this._canvas);
+    const player = new PlayerCirlce(x, y);
 
     player.setGun();
     listener.setupWhiteSpaceAction(player.shoot.bind(player));

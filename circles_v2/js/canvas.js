@@ -56,6 +56,35 @@ class Canvas {
     ctx.stroke();
   }
 
+  draw(playerCircleParams, keyState, allCircles) {
+    this.refresh(playerCircleParams, keyState);
+    this.drawCircles(allCircles);
+  }
+
+  drawCircles(allCircles) {
+    allCircles.forEach((circle) => {
+      this.drawCircle(circle);
+    });
+  }
+
+  drawCircle(circle) {
+    const {
+      x, y, radius, strokeColor, fillColor
+    } = circle.getCircleParams();
+
+    const ctx = this._context;
+
+    ctx.beginPath();
+    ctx.arc(x, y, radius, 0, Math.PI * 2, false);
+    ctx.strokeStyle =strokeColor;
+    ctx.stroke();
+
+    if (fillColor) {
+      ctx.fillStyle = fillColor;
+      ctx.fill();
+    }
+  }
+
   getContext() {
     return this._context;
   }
