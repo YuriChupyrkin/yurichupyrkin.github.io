@@ -17,6 +17,8 @@ class Game {
       destroed: 0,
       npcs: 0,
       bullets: 0,
+      minRefreshTime: 9999,
+      maxRefreshTime: 0,
     };
   }
 
@@ -39,6 +41,11 @@ class Game {
       return;
     }
 
+    let refreshTimeStart
+    if (GAME_CONFIG.WRITE_LOG) {
+      refreshTimeStart = performance.now();
+    }
+
     let player = this._player;
 
     this._playerState = player.getPlayerState();
@@ -59,6 +66,22 @@ class Game {
     this.addNPCs();
 
     this._interactionResolver.resolve(player, npcs, bullets);
+
+    if (GAME_CONFIG.WRITE_LOG) {
+      const refreshTime = performance.now() - refreshTimeStart;
+
+      // start log from frame #10 to avoid big max value (connected to start the APP)
+      if (this._refreshCount > 10) {
+        if (this._log.maxRefreshTime < refreshTime) {
+          this._log.maxRefreshTime = refreshTime;
+        } else if (this._log.minRefreshTime > refreshTime) {
+          this._log.minRefreshTime = refreshTime;
+        }
+      }
+
+      this.writeLog();
+    }
+
     this.updateGameState();
   }
 
@@ -87,8 +110,6 @@ class Game {
     if (hp < 1) {
       this.finishGame(score);
     }
-
-    this.writeLog();
   }
 
   // Update npcs or bullets
@@ -108,20 +129,23 @@ class Game {
     this._refreshCount ++;
 
     if (this._refreshCount % 300 === 0) {
-      console.log(this._refreshCount);
+      console.group(`refresh #${this._refreshCount} log`);
+
       this._log.bullets = Object.keys(this._player.getBullets()).length;
       this._log.npcs = Object.keys(this._npcs).length;
 
       console.log(`
-\n
 -----\n
+min time: ${this._log.minRefreshTime}ms\n
+max time: ${this._log.maxRefreshTime}ms\n
 bullets: ${this._log.bullets}\n
 npcs: ${this._log.npcs}\n
 destroyed: ${this._log.destroed}\n
 ------\n
-\n
       `);
     }
+
+    console.groupEnd();
   }
 
   togglePause() {
