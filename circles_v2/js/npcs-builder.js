@@ -1,7 +1,7 @@
 class NPCsBuilder {
-  constructor(difficultLevel, canvas) {
+  constructor(difficultLevel, canvasSize) {
     this._difficultLevel = difficultLevel;
-    this._canvas = canvas;
+    this._canvasSize = canvasSize;
   }
 
   increaseDifficulty() {
@@ -26,8 +26,8 @@ class NPCsBuilder {
   }
   
   buildNPC() {
-    const middleX = this._canvas.getWidth() / 2;
-    const middleY = this._canvas.getHeight() / 2;
+    const middleX = this._canvasSize.width / 2;
+    const middleY = this._canvasSize.height / 2;
     let dx;
     let dy;
     let x;
@@ -45,7 +45,7 @@ class NPCsBuilder {
     }
 
     if (isVertical) {
-      x = Math.random() * this._canvas.getWidth();
+      x = Math.random() * this._canvasSize.width;
       y = -GAME_CONFIG.NPC_START_BORDER_COORDINAT;
       dy = (radius / GAME_CONFIG.NPC_SPEED_RADIUS_RATE)
         + this.getSpeedDifficultyRate(this._difficultLevel);
@@ -53,7 +53,7 @@ class NPCsBuilder {
       // move from bottom to bottom
       if (randomPostionCoef == 1) {
         dy *= -1;
-        y = this._canvas.getHeight() + GAME_CONFIG.NPC_START_BORDER_COORDINAT;
+        y = this._canvasSize.height + GAME_CONFIG.NPC_START_BORDER_COORDINAT;
       }
 
       dx = Math.round(Math.random() * 8);
@@ -63,7 +63,7 @@ class NPCsBuilder {
         dx *= -1;
       }
     } else {
-      y = Math.random() * this._canvas.getHeight();
+      y = Math.random() * this._canvasSize.height;
       x = -GAME_CONFIG.NPC_START_BORDER_COORDINAT;
 
       dx = (radius / GAME_CONFIG.NPC_SPEED_RADIUS_RATE) + this.getSpeedDifficultyRate(this._difficultLevel);
@@ -71,7 +71,7 @@ class NPCsBuilder {
       // move from right to left
       if (randomPostionCoef == 3) {
         dx *= -1;
-        x = this._canvas.getWidth() + GAME_CONFIG.NPC_START_BORDER_COORDINAT;
+        x = this._canvasSize.width + GAME_CONFIG.NPC_START_BORDER_COORDINAT;
       }
 
       dy = Math.round(Math.random() * 8);
@@ -83,7 +83,6 @@ class NPCsBuilder {
     }
 
     const circle = new NPCCircle(x, y, dx, dy, radius);
-    circle.setCanvas(this._canvas);
     circle.setRole(this.getNPCRole());
     return circle;
   }

@@ -1,10 +1,9 @@
 class GunCirlce extends Circle {
-  constructor(x, y, canvas) {
+  constructor(x, y) {
     super(x, y, 0, 0, GAME_CONFIG.GUN_RADIUS);
 
     this.setStrokeColor('#110952');
     this.setFillColor(GAME_CONFIG.GUN_COLOR);
-    this.setCanvas(canvas);
 
     this._bulletCount = GAME_CONFIG.START_BULLETS_COUNT;
     this._lastBulletId = 0;
@@ -13,12 +12,11 @@ class GunCirlce extends Circle {
     this._angle = 0;
   }
 
-  refresh(playerState, keyState) {
-    this.draw();
-    this.move(playerState, keyState);
+  refresh(playerCircleParams, keyState) {
+    this.move(playerCircleParams, keyState);
   }
 
-  move(playerState, keyState) {
+  move(playerCircleParams, keyState) {
     if (keyState.ARROW_DOWN || keyState.ARROW_RIGHT) {
       this._angle += GAME_CONFIG.GUN_ANGLE_MOVE_RATE;
       if (this._angle > 359) {
@@ -33,16 +31,16 @@ class GunCirlce extends Circle {
       }
     }
 
-    const playerX = playerState.x;
-    const playerY = playerState.y;
-    const playerRadius =  playerState.radius;
+    const playerX = playerCircleParams.x;
+    const playerY = playerCircleParams.y;
+    const playerRadius =  playerCircleParams.radius;
     const alfa = this._angle * Math.PI / 180;
 
     this._x = playerX + playerRadius * Math.cos(alfa);
     this._y = playerY + playerRadius * Math.sin(alfa);
   }
 
-  shoot(playerState) {
+  shoot(playerCircleParams) {
     if (!this._bulletCount) {
       return;
     }
@@ -51,11 +49,10 @@ class GunCirlce extends Circle {
       this._x,
       this._y,
       GAME_CONFIG.BULLET_RADIUS,
-      this._canvas
     );
 
-    const dx = (playerState.x - this._x) * -1;
-    const dy = (playerState.y - this._y) * -1;
+    const dx = (playerCircleParams.x - this._x) * -1;
+    const dy = (playerCircleParams.y - this._y) * -1;
 
     bullet._dy = dy * GAME_CONFIG.BULLET_SPEED_RATE;
     bullet._dx = dx * GAME_CONFIG.BULLET_SPEED_RATE;
