@@ -1,7 +1,7 @@
 class Canvas {
   init(canvas) {
     this._canvas = canvas;
-    this._context = this._canvas.getContext('2d');
+    this._context = this._canvas.getContext('2d', { alpha: false });
     console.log('canvas loaded');
     console.log(this._canvas);
 
@@ -72,8 +72,20 @@ class Canvas {
       x, y, radius, strokeColor, fillColor
     } = circle.getCircleParams();
 
-    const ctx = this._context;
+    const width = this._canvas.width;
+    const height = this._canvas.height;
+    const lenghtBuffer = 50;
 
+    // do not draw invisible object
+    if (x + radius + lenghtBuffer < 0 || x - radius - lenghtBuffer > width) {
+      return;
+    }
+
+    if (y + radius + lenghtBuffer < 0 || y - radius - lenghtBuffer > height) {
+      return;
+    }
+
+    const ctx = this._context;
     ctx.beginPath();
     ctx.arc(x, y, radius, 0, Math.PI * 2, false);
     ctx.strokeStyle =strokeColor;

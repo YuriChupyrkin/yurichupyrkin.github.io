@@ -8,7 +8,7 @@
 
 
     /* canvas */
-    CANVAS_CELL_LENGHT: 100,
+    CANVAS_CELL_LENGHT: 200,
 
 
     /* player */
