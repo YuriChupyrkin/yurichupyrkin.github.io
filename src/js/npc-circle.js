@@ -3,39 +3,23 @@ class NPCCircle extends Circle {
     super(x, y, dx, dy, radius);
   }
 
-  refresh(playerCircleParams, keyState) {
-    if (this._x > GAME_CONFIG.NPC_IVISIBLE_BORDER_LENGTH
-      || this._x < - GAME_CONFIG.NPC_IVISIBLE_BORDER_LENGTH) {
+  refresh(playerParams) {
+    if (this._x > playerParams.x + GAME_CONFIG.NPC_IVISIBLE_BORDER_LENGTH
+      || this._x < playerParams.x - GAME_CONFIG.NPC_IVISIBLE_BORDER_LENGTH) {
       this._hidden = true;
     }
 
-    if (this._y > GAME_CONFIG.NPC_IVISIBLE_BORDER_LENGTH
-      || this._y < - GAME_CONFIG.NPC_IVISIBLE_BORDER_LENGTH) {
+    if (this._y > playerParams.y + GAME_CONFIG.NPC_IVISIBLE_BORDER_LENGTH
+      || this._y < playerParams.y - GAME_CONFIG.NPC_IVISIBLE_BORDER_LENGTH) {
       this._hidden = true;
     }
 
-    this.move(playerCircleParams, keyState);
+    this.move();
   }
 
-  move(playerCircleParams, keyState) {
+  move() {
     this._x += this._dx;
     this._y += this._dy;
-
-    if (keyState.LEFT) {
-      this._x += playerCircleParams.dx;
-    }
-  
-    if (keyState.RIGHT) {
-      this._x -= playerCircleParams.dx;
-    }
-  
-    if (keyState.UP) {
-      this._y += playerCircleParams.dy;
-    }
-
-    if (keyState.DOWN) {
-      this._y -= playerCircleParams.dy;
-    }
   }
 
   setRole(role) {

@@ -9,10 +9,30 @@ class PlayerCirlce extends Circle {
     this._health = GAME_CONFIG.START_HEALTH;
 
     this._gun = {};
+    this._role = GAME_CONFIG.PLAYER_ROLE
   }
 
   refresh(keyState) {
+    this.move(keyState);
     this._gun.refresh(this.getCircleParams(), keyState);
+  }
+
+  move(keyState) {
+    if (keyState.LEFT) {
+      this._x -= this._dx;
+    }
+  
+    if (keyState.RIGHT) {
+      this._x += this._dx;
+    }
+  
+    if (keyState.UP) {
+      this._y -= this._dy;
+    }
+
+    if (keyState.DOWN) {
+      this._y += this._dy;
+    }
   }
 
   shoot() {
