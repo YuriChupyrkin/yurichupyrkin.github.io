@@ -8,12 +8,12 @@ body {
   margin-bottom: 20px;
 }
 
-.version-link {
+.link {
   font-size: 20px;
   margin-bottom: 10px;
 }
 
-.version-link a {
+.link a {
   color: #00a1ff;
 }
 
