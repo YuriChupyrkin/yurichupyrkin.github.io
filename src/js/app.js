@@ -16,6 +16,7 @@
     START_HEALTH: 10,
     START_SPEED: 5,
     PLAYER_COLOR: playerColor,
+    PLAYER_ROLE: 'PLAYER',
     HEALTH_REDUCE_COLORS: [
       '#8e1a03',
       playerColor,
@@ -51,7 +52,7 @@
 
     /* NPC */
     NPC_SPEED_RADIUS_RATE: 10,
-    NPC_START_BORDER_COORDINAT: 6000,
+    NPC_START_BORDER_COORDINAT: 3100,
     NPC_MIN_RADIUS: 18,
     NPC_MAX_RADIUS: 46,
     NPC_SPEED_LEVEL_DIFICULT_RATE: 10,
@@ -61,7 +62,7 @@
     NPC_AMMO_COLOR: '#ebef00',
     NPC_HEALTH_COLOR: '#10b910',
     // can be hidden after that coef
-    NPC_IVISIBLE_BORDER_LENGTH: 7000,
+    NPC_IVISIBLE_BORDER_LENGTH: 4000,
 
 
     /* constants */

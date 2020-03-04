@@ -5,8 +5,6 @@ class Canvas {
     console.log('canvas loaded');
     console.log(this._canvas);
 
-    this._cellDx = 0;
-    this._cellDy = 0;
     this._canvasCellLength = GAME_CONFIG.CANVAS_CELL_LENGHT;
   }
 
@@ -15,59 +13,45 @@ class Canvas {
     this._canvas.height = height;
   }
 
-  refresh(playerCircleParams, keyState) {
-    const playerDx = playerCircleParams.dx;
-    const playerDy = playerCircleParams.dy;
-
+  refresh(playerCircleParams) {
     const canvas = this._canvas;
     const ctx = this._context;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    if (keyState.LEFT) {
-      this._cellDx += playerDx;
-    }
-  
-    if (keyState.RIGHT) {
-      this._cellDx -= playerDx;
-    }
-  
-    if (keyState.UP) {
-      this._cellDy += playerDy;
-    }
+    const playerX = playerCircleParams.x % this._canvasCellLength;
+    const playerY = playerCircleParams.y % this._canvasCellLength;
+    const cavnasGridShift = (this._canvasCellLength / 2) + 0.5;
 
-    if (keyState.DOWN) {
-      this._cellDy -= playerDy;
-    }
-
-    this._cellDx = this._cellDx % this._canvasCellLength;
-    this._cellDy = this._cellDy % this._canvasCellLength;
-
-    for (var x = 0.5; x < canvas.width; x += this._canvasCellLength) {
-      ctx.moveTo(x + this._cellDx, 0);
-      ctx.lineTo(x + this._cellDx, canvas.height);
+    for (var x = -cavnasGridShift; x < canvas.width + cavnasGridShift; x += this._canvasCellLength) {
+      ctx.moveTo(x - playerX, 0);
+      ctx.lineTo(x - playerX, canvas.height);
     }
     
-    for (var y = 0.5; y < canvas.height; y += this._canvasCellLength) {
-      ctx.moveTo(0, y + this._cellDy);
-      ctx.lineTo(canvas.width, y + this._cellDy);
+    for (var y = -cavnasGridShift; y < canvas.height + cavnasGridShift; y += this._canvasCellLength) {
+      ctx.moveTo(0, y - playerY);
+      ctx.lineTo(canvas.width, y - playerY);
     }
 
     ctx.strokeStyle = "#ddd";
     ctx.stroke();
   }
 
-  draw(playerCircleParams, keyState, allCircles) {
-    this.refresh(playerCircleParams, keyState);
-    this.drawCircles(allCircles);
+  draw(playerCircleParams, allCircles) {
+    this.refresh(playerCircleParams);
+
+    const playerCenterShift =
+      this.getPlayerCenterShift(playerCircleParams.x, playerCircleParams.y);
+
+    this.drawCircles(allCircles, playerCenterShift);
   }
 
-  drawCircles(allCircles) {
+  drawCircles(allCircles, playerCenterShift) {
     allCircles.forEach((circle) => {
-      this.drawCircle(circle);
+      this.drawCircle(circle, playerCenterShift);
     });
   }
 
-  drawCircle(circle) {
+  drawCircle(circle, playerCenterShift) {
     const {
       x, y, radius, strokeColor, fillColor
     } = circle.getCircleParams();
@@ -76,18 +60,21 @@ class Canvas {
     const height = this._canvas.height;
     const lenghtBuffer = 50;
 
+    const canvasX = x - playerCenterShift.x;
+    const canvasY = y - playerCenterShift.y;
+
     // do not draw invisible object
-    if (x + radius + lenghtBuffer < 0 || x - radius - lenghtBuffer > width) {
+    if (canvasX + radius + lenghtBuffer < 0 || canvasX - radius - lenghtBuffer > width) {
       return;
     }
 
-    if (y + radius + lenghtBuffer < 0 || y - radius - lenghtBuffer > height) {
+    if (canvasY + radius + lenghtBuffer < 0 || canvasY - radius - lenghtBuffer > height) {
       return;
     }
 
     const ctx = this._context;
     ctx.beginPath();
-    ctx.arc(x, y, radius, 0, Math.PI * 2, false);
+    ctx.arc(canvasX, canvasY, radius, 0, Math.PI * 2, false);
     ctx.strokeStyle =strokeColor;
     ctx.stroke();
 
@@ -95,6 +82,16 @@ class Canvas {
       ctx.fillStyle = fillColor;
       ctx.fill();
     }
+  }
+
+  getPlayerCenterShift(x, y) {
+    const middleX = this.getWidth() / 2;
+    const middleY = this.getHeight() / 2;
+
+    return {
+      x: x - middleX,
+      y: y - middleY,
+    };
   }
 
   getContext() {

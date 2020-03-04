@@ -25,9 +25,11 @@ class NPCsBuilder {
     return role;
   }
   
-  buildNPC() {
-    const middleX = this._canvasSize.width / 2;
-    const middleY = this._canvasSize.height / 2;
+  buildNPC(playerParams) {
+    const maxX = playerParams.x + GAME_CONFIG.NPC_START_BORDER_COORDINAT;
+    const minX = playerParams.x - GAME_CONFIG.NPC_START_BORDER_COORDINAT;
+    const maxY = playerParams.y + GAME_CONFIG.NPC_START_BORDER_COORDINAT;
+    const minY = playerParams.y - GAME_CONFIG.NPC_START_BORDER_COORDINAT;
     let dx;
     let dy;
     let x;
@@ -45,39 +47,39 @@ class NPCsBuilder {
     }
 
     if (isVertical) {
-      x = Math.random() * this._canvasSize.width;
-      y = -GAME_CONFIG.NPC_START_BORDER_COORDINAT;
+      x = Math.floor(Math.random() * (maxX - minX + 1)) + minX;
+      y = minY;
       dy = (radius / GAME_CONFIG.NPC_SPEED_RADIUS_RATE)
         + this.getSpeedDifficultyRate(this._difficultLevel);
 
-      // move from bottom to bottom
+      // move from bottom to top
       if (randomPostionCoef == 1) {
         dy *= -1;
-        y = this._canvasSize.height + GAME_CONFIG.NPC_START_BORDER_COORDINAT;
+        y = maxY;
       }
 
       dx = Math.round(Math.random() * 8);
 
       // move from right to left
-      if (x > middleX) {
+      if (x > playerParams.x) {
         dx *= -1;
       }
     } else {
-      y = Math.random() * this._canvasSize.height;
-      x = -GAME_CONFIG.NPC_START_BORDER_COORDINAT;
+      y = Math.floor(Math.random() * (maxY - minY + 1)) + minY;
+      x = minX;
 
       dx = (radius / GAME_CONFIG.NPC_SPEED_RADIUS_RATE) + this.getSpeedDifficultyRate(this._difficultLevel);
 
       // move from right to left
       if (randomPostionCoef == 3) {
         dx *= -1;
-        x = this._canvasSize.width + GAME_CONFIG.NPC_START_BORDER_COORDINAT;
+        x = maxX;
       }
 
       dy = Math.round(Math.random() * 8);
 
       // move from bottom to top
-      if (y > middleY) {
+      if (y > playerParams.y) {
         dy *= -1;
       }
     }

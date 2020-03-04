@@ -2,8 +2,6 @@ class Game {
   constructor(canvas, npcsNumber) {
     this._canvas = canvas;
     this._npcsNumber = npcsNumber;
-    this._difficultLevel = GAME_CONFIG.START_DIFFICULTY;
-    this._circleHelpers = new CircleHelpers();
     this._interactionResolver = new InteractionResolver();
     this._eventListener = new EventListener();
     this._menu = new Menu();
@@ -26,7 +24,7 @@ class Game {
     this._finished = false;
     this._lastNPCId = 0;
     this._npcBuilder = new NPCsBuilder(
-      this._difficultLevel,
+      GAME_CONFIG.START_DIFFICULTY,
       {
         width: this._canvas.getWidth(),
         height: this._canvas.getHeight(),
@@ -36,9 +34,9 @@ class Game {
     this._isPause = false;
     this._eventListener.clearStates();
     this._keyState = this._eventListener.getKeyState();
-    this._playerCircleParams = {};
 
     this.buildPlayer();
+    this._playerParams = this._player.getCircleParams();
     this.buildNPCs(this._npcsNumber);
   }
 
@@ -47,7 +45,8 @@ class Game {
       return;
     }
 
-    let refreshTimeStart
+    let refreshTimeStart;
+    this._playerParams = this._player.getCircleParams();
     if (GAME_CONFIG.WRITE_LOG) {
       refreshTimeStart = performance.now();
     }
@@ -64,11 +63,6 @@ class Game {
         player.getGun()
       ]);
 
-    this._playerCircleParams = player.getCircleParams();
-
-    this.multirefresh(npcs);
-    this.multirefresh(bullets);
-    player.refresh(this._keyState);
 
     // add new npcs
     this.addNPCs();
@@ -76,10 +70,14 @@ class Game {
     this._interactionResolver.resolve(player, npcs, bullets);
 
     this._canvas.draw(
-      this._playerCircleParams,
-      this._keyState,
+      player.getCircleParams(),
       allCircles
     );
+
+    this.multirefresh(npcs);
+    this.multirefresh(bullets);
+
+    player.refresh(this._keyState);
 
     if (GAME_CONFIG.WRITE_LOG) {
       const refreshTime = performance.now() - refreshTimeStart;
@@ -133,7 +131,7 @@ class Game {
   multirefresh(target) {
     let ids = Object.keys(target);
     ids.forEach((id) => {
-      target[id].refresh(this._playerCircleParams, this._keyState);
+      target[id].refresh(this._playerParams);
 
       if (target[id].isHidden && target[id].isHidden()) {
         if (GAME_CONFIG.WRITE_LOG) {
@@ -180,8 +178,9 @@ destroyed: ${this._log.destroed}\n
 
   buildPlayer() {
     const listener = this._eventListener;
-    const x = this._canvas.getWidth() / 2;
-    const y = this._canvas.getHeight() / 2;
+    // START COORDINATS
+    const x = 500;
+    const y = 500;
 
     const player = new PlayerCirlce(x, y);
 
@@ -204,7 +203,7 @@ destroyed: ${this._log.destroed}\n
   }
 
   addNewNPC() {
-    const npc = this._npcBuilder.buildNPC();
+    const npc = this._npcBuilder.buildNPC(this._playerParams);
     const npcId = this.getNPCId();
     this._npcs[npcId] = npc;
   }
