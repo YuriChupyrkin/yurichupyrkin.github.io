@@ -103,6 +103,7 @@ class Game {
     let hp = this._player.getHealth();
     let score = this._player.getScore();
     let bulletsCount = this._player.getBulletsCount();
+    const playerParams = this._player.getCircleParams();
 
     if (hp !== this._lastStatusBarValues.hp) {
       this._menu.updateHealth(hp);
@@ -120,6 +121,8 @@ class Game {
       this._menu.updateBulletsCount(bulletsCount);
       this._lastStatusBarValues.bulletsCount = bulletsCount;
     }
+
+    this._menu.updatePosition(playerParams.x, playerParams.y);
 
     if (hp < 1) {
       this.finishGame(score);
