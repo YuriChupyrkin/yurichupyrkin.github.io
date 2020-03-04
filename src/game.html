@@ -1,7 +1,7 @@
 <html>
     <head>
-        <title>Circles v2</title>
-        <link rel="stylesheet" type="text/css" href="css/index.css">
+        <title>Circles</title>
+        <link rel="stylesheet" type="text/css" href="css/game.css">
     </head>
 
     <body>
@@ -9,19 +9,31 @@
             <div class="legend">
                 <div class="legend-item">
                     <div class="circle player-circle"></div>
-                    <div class="menu-text">- player</div>
+                    <div class="menu-text">- Player</div>
                 </div>
                 <div class="legend-item">
                     <div class="circle enemy-circle"></div>
-                    <div class="menu-text">- enemy</div>
+                    <div class="menu-text">- Enemy
+                        (
+                            <span class="status-bar-item-value" id="score-count"></span>
+                        )
+                    </div>
                 </div>
                 <div class="legend-item">
                     <div class="circle health-circle"></div>
-                    <div class="menu-text">- health</div>
+                    <div class="menu-text">- Health
+                        (
+                            <span class="status-bar-item-value" id="health"></span>
+                        )
+                    </div>
                 </div>
                 <div class="legend-item">
                     <div class="circle ammo-circle"></div>
-                    <div class="menu-text">- ammo</div>
+                    <div class="menu-text">- Bullets
+                        (
+                            <span class="status-bar-item-value" id="bullet-count"></span>
+                        )
+                    </div>
                 </div>
             </div>
             <div class="button-section">
@@ -29,13 +41,7 @@
             </div>
             <div class="status-bar">
                 <div class="menu-text">
-                    Health: <span class="status-bar-item-value" id="health"></span>
-                </div>
-                <div class="menu-text">
-                    Bullets: <span class="status-bar-item-value" id="bullet-count"></span>
-                </div>
-                <div class="menu-text">
-                    Score: <span class="status-bar-item-value" id="score-count"></span>
+                    Position: <span id="position"></span>
                 </div>
             </div>
         </div>

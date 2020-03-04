@@ -17,10 +17,15 @@ function Menu() {
     document.getElementById('btn-pause').innerHTML = text;
   }
 
+  const updatePosition = (x, y) => {
+    document.getElementById('position').innerHTML = `${x}; ${y}`;
+  }
+
   return {
     updateHealth,
     updateBulletsCount,
     updateScore,
     updatePauseButton,
+    updatePosition,
   };
 };
