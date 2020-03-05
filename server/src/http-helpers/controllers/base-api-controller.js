@@ -1,20 +1,19 @@
 const url = require('url');
 const qs = require('querystring');
-const BaseController = require('./base-controller');
 
 module.exports = class BaseApiController {
-  onRequest (request, response, methodName) {
+  onRequest (request, response, actionName) {
     this._request = request;
     this._response = response;
 
     if (request.method === 'GET') {
-      this.beforeGet(request, response, methodName);
+      this.beforeGet(request, response, actionName);
     } else if (request.method === 'POST') {
-      this.beforePost(request, response, methodName);
+      this.beforePost(request, response, actionName);
     }
   };
 
-  beforePost (request, response, methodName) {
+  beforePost (request, response, actionName) {
     // TODO: do not parse arrays
     let body = '';
     request.on('data', (chunk) => {
@@ -23,7 +22,7 @@ module.exports = class BaseApiController {
     request.on('end', () =>{
       let data = qs.parse(body);
 
-      if (this[methodName]) {
+      if (this[actionName]) {
         this._response.writeHead(
           200,
           {
@@ -31,14 +30,15 @@ module.exports = class BaseApiController {
           }
         );
 
-        this[methodName](data);
+        this[actionName](data);
+        this._response.end();
       } else {
         this.notFound(request, response);
       }
     });
   }
 
-  beforeGet (request, response, methodName) {
+  beforeGet (request, response, actionName) {
     const parsedUrl = this.parseUrl(request);
 
     if (!parsedUrl || !parsedUrl.pathname) {
@@ -50,7 +50,7 @@ module.exports = class BaseApiController {
     this._pathName = parsedUrl.pathname;
     //this._data = parsedUrl.query;
 
-    if (this[methodName]) {
+    if (this[actionName]) {
       this._response.writeHead(
         200,
         {
@@ -58,7 +58,8 @@ module.exports = class BaseApiController {
         }
       );
 
-      this[methodName](parsedUrl.query);
+      this[actionName](parsedUrl.query);
+      this._response.end();
     } else {
       this.notFound(request, response);
     }

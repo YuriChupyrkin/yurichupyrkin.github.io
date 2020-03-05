@@ -1,23 +1,18 @@
 const fs = require('fs');
-const BaseController = require('./base-controller');
 
-module.exports = class ResourcesController extends BaseController {
-  constructor () {
-    super();
-  }
-
-  get (data) {
-    const pathName = this._pathName;
+module.exports = class ResourcesController {
+  get (request, response, pathName) {
     // TODO: need to dev env
     const fullPath = `F:/dev/yurichupyrkin.github.io/client/${pathName}`;
+    //const fullPath = `/Users/ychupyrkin/Documents/dev/yurichupyrkin.github.io/client/${pathName}`
 
-    this._response.writeHead(
+    response.writeHead(
       200,
       {
         'Context-Type': 'text/javascript'
       }
     );
 
-    fs.createReadStream(fullPath).pipe(this._response);
+    fs.createReadStream(fullPath).pipe(response);
   }
 };

@@ -6,14 +6,16 @@ module.exports = class ApiController extends BaseApiController {
     super();
   }
 
+  check_ping() {
+    this._response.write('{"OK": "true"}');
+  }
+
   getCats (data) {
     this._response.write(stringify(this.getAllCats()));
-    this._response.end();
   }
 
   postCats (data) {
     this._response.write(stringify(this.getAllCats()));
-    this._response.end();
   }
 
   getAllCats () {

@@ -7,7 +7,7 @@ const startGameLoop = (fps = 30, callBack) => {
 
   const id = gameloop.setGameLoop((delta) => {
     // `delta` is the delta time from the last frame
-    console.log('Hi there! (delta=%s)', delta);
+    //console.log('Hi there! (delta=%s)', delta);
 
     callBack();
   }, tickRate);
