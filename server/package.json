@@ -9,6 +9,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "node-gameloop": "^0.1.4"
+    "lodash": "^4.17.15",
+    "node-gameloop": "^0.1.4",
+    "node-stringify": "^0.2.1",
+    "socket.io": "^2.3.0",
+    "url": "^0.11.0"
   }
 }
