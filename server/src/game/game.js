@@ -28,7 +28,7 @@ class Game {
 
     console.log('start game: ' + id);
 
-    this._npcBuilder.initNpcsSet(500);
+    this._npcBuilder.initNpcsSet(150);
   }
 
   stopGame() {
@@ -40,32 +40,35 @@ class Game {
   }
 
   refresh() {
-    //console.time('FooTimer');
-
     this._refreshNumber++;
 
     const npcAndBulletsCicles = gameState.getNpcAndBulletInstances();
     npcAndBulletsCicles.forEach((circle) => {
       circle.refresh();
     });
-
-    //console.timeEnd('FooTimer');
   }
 
   onRefreshPlayer(message) {
     const player = gameState.getPlayerById(message.playerId);
     player.refresh(message.moveState);
-    this.playerRefreshed(player);
+    this.playerRefreshed(player, message.playerScreenParams);
   }
 
-  playerRefreshed(player) {
-    const allCircles = gameState.getAllCircles();
+  playerRefreshed(player, playerScreenParams) {
+    //console.time('playerRefreshed');
+    const playerParams = player.getCircleParams();
+
+    const visibleForPlayerCicles =
+      gameState.getAllVisibleCycles(playerParams, playerScreenParams);
+
     this._websocketServer.onPlayerRefreshed(
       {
-        circles: allCircles,
+        circles: visibleForPlayerCicles,
       },
       player.getPlayerSocket()
     );
+
+    //console.timeEnd('playerRefreshed');
   }
 
   onPlayerShoot(message) {

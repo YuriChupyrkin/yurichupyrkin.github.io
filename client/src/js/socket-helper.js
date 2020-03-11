@@ -7,10 +7,6 @@ class SocketHelper {
     this._socket.on('player-connected', callback);
   }
 
-  // onGameStateRefresh(callback) {
-  //   this._socket.on('game-state-refresh', callback);
-  // }
-
   onDisconnected(callback) {
     this._socket.on('disconnect', () => {
       callback();
@@ -18,10 +14,11 @@ class SocketHelper {
     });
   }
 
-  triggerPlayerRefresh(playerId, moveState) {
+  triggerPlayerRefresh(playerId, moveState, playerScreenParams) {
     this._socket.emit('refresh-player', {
       playerId,
       moveState,
+      playerScreenParams,
     });
   };
 

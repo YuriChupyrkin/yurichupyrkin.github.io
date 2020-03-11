@@ -27,14 +27,11 @@ class PlayerHelper {
     return player;
   }
 
-  refresh() {
-    this.move();
-  }
-
-  move() {
+  refresh(playerScreenParams) {
     this._socketHelper.triggerPlayerRefresh(
       this._playerId,
       this._keyState,
+      playerScreenParams,
     );
   }
 

@@ -25,28 +25,38 @@ class Game {
     this.buildConnection();
 
     // run game loop
-  }
 
-  startGame() {
-    this._gameLoop = new GameLoop(60, this.gameLoop.bind(this));
-    this._gameLoop.start();
-  }
 
-  gameLoop(gameLoopInfo) {
-    if (!this._playerHerlper) {
-      return;
-    }
-
-    //this._socketHelper.triggerPlayerRefresh();
-    this._playerHerlper.refresh();
-
+    // subsrcibe
     this._socketHelper.onPlaeyerRefreshed((serverGameState) => {
       this.refresh(serverGameState);
     });
   }
 
+  startGame() {
+    const FPS = 60;
+    const playerScreenParams = {
+      width: this._canvas.getWidth(),
+      height: this._canvas.getHeight(),
+    };
+
+    this._gameLoop = new GameLoop(
+      FPS,
+      this.gameLoop.bind(this, playerScreenParams)
+    );
+    this._gameLoop.start();
+  }
+
+  gameLoop(playerScreenParams) {
+    if (!this._playerHerlper) {
+      return;
+    }
+
+    this._playerHerlper.refresh(playerScreenParams);
+  }
+
   refresh(serverGameState) {
-    //const refreshTimeStart = performance.now();
+    const refreshTimeStart = performance.now();
 
     const circles = serverGameState.circles;
     const playerInstance = this._playerHerlper.getInstance(circles.players);
@@ -70,10 +80,10 @@ class Game {
 
     this._canvas.draw(playerInstance, allCircles);
 
-    //const refreshTime = performance.now() - refreshTimeStart;
+    const refreshTime = performance.now() - refreshTimeStart;
 
-    //this._refreshCount++;
-    //this.writeLog(refreshTime, npcs, bullets, players);
+    this._refreshCount++;
+    this.writeLog(refreshTime, npcs, bullets, players);
   }
 
   buildCanvas() {

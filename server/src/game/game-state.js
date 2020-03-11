@@ -72,48 +72,49 @@ class GameState {
   getAllCircles() {
     return {
       players: this.getPlayers(),
-      npcs: [],//this.getNpcs(),
+      npcs: this.getNpcs(),
       bullets: this.getBullets(),
       guns: this.getGuns(),
     };
   }
 
-  getAllCircles2() {
-    const p = Object.values(this._players);
-    const n = Object.values(this._npcs);
-    const b = Object.values(this._bullets);
-    const g = Object.values(this._guns)
+  getAllVisibleCycles(playerParams, playerScreenParams) {
+    const allCicles = this.getAllCircles();
 
+    const visiblePlayers = this.getVisibleCycles(
+      playerParams, playerScreenParams, allCicles.players);
+    const visibleNpcs = this.getVisibleCycles(
+      playerParams, playerScreenParams, allCicles.npcs);
+    const visibleBullets = this.getVisibleCycles(
+      playerParams, playerScreenParams, allCicles.bullets);
+    const visibleGuns = this.getVisibleCycles(
+      playerParams, playerScreenParams, allCicles.guns);
 
-    const playersStr = this.getSerializedInstances(p);
-    const npcsStr = this.getSerializedInstances(n);
-    const bulletsStr = this.getSerializedInstances(b);
-    const gunsStr = this.getSerializedInstances(g);
-
-    const result = '{"players":' + playersStr +
-      ',"npcs":' + npcsStr +
-      ',"bullets":' + bulletsStr +
-      ',"guns":' + gunsStr + '}';
-
-    return result;
-  };
-
-  getSerializedInstances(instances) {
-    let instancesStr = "[";
-    instances.forEach((instance, index) => {
-      let p = instance.getCircleParams();
-      instancesStr += "{"
-      instancesStr += `"id":${p.id},"x":${p.x}, "y":${p.y},"dx":${p.dx},"dy":${p.dy},"radius":${p.radius},"strokeColor":"${p.strokeColor}","fillColor":"${p.fillColor}"`
-      instancesStr += "}"
-
-      if (index !== instances.length - 1) {
-        instancesStr += ",";
-      }
-    });
-    instancesStr += "]";
-
-    return instancesStr;
+    return {
+      players: visiblePlayers,
+      npcs: visibleNpcs,
+      bullets: visibleBullets,
+      guns: visibleGuns,
+    }
   }
+
+  getVisibleCycles(playerParams, playerScreenParams, cycles) {
+    const x = playerParams.x;
+    const y = playerParams.y;
+
+    const playerScreenWidth = playerScreenParams.width;
+    const playerScreenHeight = playerScreenParams.height;
+
+    const visibleCycles = cycles.filter((cycle) => {
+      return (
+        Math.abs(x - cycle.x) < playerScreenWidth
+        && Math.abs(y - cycle.y) < playerScreenHeight
+      )
+    });
+
+    return visibleCycles;
+  }
+
 
   getNpcAndBulletInstances() {
     return []
