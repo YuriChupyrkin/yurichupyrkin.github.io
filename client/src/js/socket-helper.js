@@ -5,15 +5,11 @@ class SocketHelper {
 
   onPlayerConnected(callback) {
     this._socket.on('player-connected', callback);
-
-    // this._socket.on('player-connected', (message) => {
-    //   callback(message);
-    // });
   }
 
-  onGameStateRefresh(callback) {
-    this._socket.on('game-state-refresh', callback);
-  }
+  // onGameStateRefresh(callback) {
+  //   this._socket.on('game-state-refresh', callback);
+  // }
 
   onDisconnected(callback) {
     this._socket.on('disconnect', () => {
@@ -28,6 +24,10 @@ class SocketHelper {
       moveState,
     });
   };
+
+  onPlaeyerRefreshed(callback) {
+    this._socket.on('player-refreshed', callback);
+  }
 
   triggerPlayershoot(playerId) {
     this._socket.emit('player-shoot', {

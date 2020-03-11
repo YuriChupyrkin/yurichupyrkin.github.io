@@ -72,7 +72,7 @@ class GameState {
   getAllCircles() {
     return {
       players: this.getPlayers(),
-      npcs: this.getNpcs(),
+      npcs: [],//this.getNpcs(),
       bullets: this.getBullets(),
       guns: this.getGuns(),
     };

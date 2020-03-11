@@ -3,6 +3,8 @@ class Game {
     this._canvas = null;
     this._playerSocket = null;
     this._statusBarHelper = new StatusBarHelper();
+    this._gameLoop = null;
+    this._socketHelper = null;
 
     this._refreshCount = 0;
     this._log = {
@@ -11,7 +13,7 @@ class Game {
     };
   }
 
-  start() {
+  init() {
     console.log('start');
 
     // todo get config....
@@ -25,17 +27,29 @@ class Game {
     // run game loop
   }
 
-  refresh(serverGameState) {
+  startGame() {
+    this._gameLoop = new GameLoop(60, this.gameLoop.bind(this));
+    this._gameLoop.start();
+  }
+
+  gameLoop(gameLoopInfo) {
     if (!this._playerHerlper) {
       return;
     }
 
-    const refreshTimeStart = performance.now();
+    //this._socketHelper.triggerPlayerRefresh();
+    this._playerHerlper.refresh();
 
-    const deserializedCircles = JSON.parse(serverGameState.circles);
-    //const deserializedCircles = serverGameState.circles;
+    this._socketHelper.onPlaeyerRefreshed((serverGameState) => {
+      this.refresh(serverGameState);
+    });
+  }
 
-    const playerInstance = this._playerHerlper.getInstance(deserializedCircles.players);
+  refresh(serverGameState) {
+    //const refreshTimeStart = performance.now();
+
+    const circles = serverGameState.circles;
+    const playerInstance = this._playerHerlper.getInstance(circles.players);
 
     if (!playerInstance) {
       console.error('player is not found');
@@ -44,10 +58,10 @@ class Game {
 
     this._statusBarHelper.updatePosition(playerInstance.x, playerInstance.y);
 
-    const npcs = Object.values(deserializedCircles.npcs);
-    const bullets = Object.values(deserializedCircles.bullets);
-    const guns = Object.values(deserializedCircles.guns);
-    const players = Object.values(deserializedCircles.players);
+    const npcs = Object.values(circles.npcs);
+    const bullets = Object.values(circles.bullets);
+    const guns = Object.values(circles.guns);
+    const players = Object.values(circles.players);
 
     const allCircles = bullets
       .concat(npcs)
@@ -55,12 +69,11 @@ class Game {
       .concat(guns);
 
     this._canvas.draw(playerInstance, allCircles);
-    this._playerHerlper.refresh();
 
-    const refreshTime = performance.now() - refreshTimeStart;
+    //const refreshTime = performance.now() - refreshTimeStart;
 
-    this._refreshCount++;
-    this.writeLog(refreshTime, npcs, bullets, players);
+    //this._refreshCount++;
+    //this.writeLog(refreshTime, npcs, bullets, players);
   }
 
   buildCanvas() {
@@ -87,13 +100,13 @@ class Game {
       console.log(message);
     });
 
-    socketHelper.onGameStateRefresh((message) => {
-      this.refresh(message);
-    });
-
     socketHelper.onDisconnected(() => {
       console.log('DISCONNECTED');
+      this._gameLoop.pause();
     });
+
+    this._socketHelper = socketHelper;
+    this.startGame();
   }
 
   writeLog(refreshTime, npcsArray, bulletsArray, players) {
@@ -123,4 +136,4 @@ players: ${players.length}\n
   }
 }
 
-new Game().start();
+new Game().init();

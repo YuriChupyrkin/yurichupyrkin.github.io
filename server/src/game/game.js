@@ -5,12 +5,21 @@ const gameState = require('./game-state');
 const gameLoop = require('./gameloop');
 
 class Game {
-  constructor(id) {
-    this._notifyPlayerCallback = null;
+  constructor(websocketServer) {
+   // this._notifyPlayerCallback = null;
     this._gameLoopId = null;
     this._refreshNumber = 0;
 
     this._npcBuilder = new NpcBuilder;
+    this._websocketServer = websocketServer;
+
+    this.initWebsocketHandlers(websocketServer);
+  }
+
+  initWebsocketHandlers(websocketServer) {
+    websocketServer.setOnRefreshPlayerCallback(this.onRefreshPlayer.bind(this));
+    websocketServer.setOnPlayerConnectedCallback(this.onPlayerConnected.bind(this));
+    websocketServer.setOnPlayerShootCallback(this.onPlayerShoot.bind(this));
   }
 
   startGame() {
@@ -30,10 +39,6 @@ class Game {
     this._npcBuilder.destroyAllNpcs();
   }
 
-  setNotifyPlayerCallback(notifyPlayerCallback) {
-    this._notifyPlayerCallback = notifyPlayerCallback;
-  }
-
   refresh() {
     //console.time('FooTimer');
 
@@ -44,28 +49,23 @@ class Game {
       circle.refresh();
     });
 
-    this.notifyPlayers2();
-
     //console.timeEnd('FooTimer');
-  }
-
-  notifyPlayers() {
-    const allCircles = gameState.getAllCircles();
-    this._notifyPlayerCallback({
-      circles: allCircles,
-    });
-  }
-
-  notifyPlayers2() {
-    const serializedCircles = gameState.getAllCircles2();
-    this._notifyPlayerCallback({
-      circles: serializedCircles,
-    });
   }
 
   onRefreshPlayer(message) {
     const player = gameState.getPlayerById(message.playerId);
     player.refresh(message.moveState);
+    this.playerRefreshed(player);
+  }
+
+  playerRefreshed(player) {
+    const allCircles = gameState.getAllCircles();
+    this._websocketServer.onPlayerRefreshed(
+      {
+        circles: allCircles,
+      },
+      player.getPlayerSocket()
+    );
   }
 
   onPlayerShoot(message) {

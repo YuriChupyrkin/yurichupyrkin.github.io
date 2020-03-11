@@ -18,6 +18,10 @@ class PlayerCirlce extends Circle {
     this._playerSocket = playerSocket;
   }
 
+  getPlayerSocket() {
+    return this._playerSocket;
+  }
+
   refresh(moveState) {
     this.move(moveState);
     this._gun.refresh(moveState);
