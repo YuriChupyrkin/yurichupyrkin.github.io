@@ -5,13 +5,11 @@ class PlayerCirlce extends Circle {
   constructor(id, x, y) {
     super(id, x, y, settings.START_SPEED, settings.START_SPEED, settings.START_RADIUS);
 
-    this.setStrokeColor('#110952');
-    this.setFillColor(settings.PLAYER_COLOR);
     this._score = 0;
     this._health = settings.START_HEALTH;
-
     this._gun = {};
-    this._role = settings.PLAYER_ROLE
+
+    this.setRole(settings.ROLE_PLAYER);
   }
 
   setPlayerSocket(playerSocket) {
@@ -65,7 +63,6 @@ class PlayerCirlce extends Circle {
     this._health += addHp;
 
     this.updateSpeed();
-    //this.animatePlayer(settings.HEALTH_INCREASE_COLORS);
   }
 
   decreaseHelth() {
@@ -73,7 +70,6 @@ class PlayerCirlce extends Circle {
     this._health--;
 
     this.updateSpeed();
-    //this.animatePlayer(settings.HEALTH_REDUCE_COLORS);
   }
 
   addScore() {
@@ -109,28 +105,6 @@ class PlayerCirlce extends Circle {
     this._dx = speed;
     this._dy = speed;
   }
-
-  /*
-  animatePlayer(colors) {
-    if (this._animating) {
-      return;
-    }
-
-    this._animating = true;
-
-    let index = 0;
-    let interval = setInterval(() => {
-      if (index < colors.length) {
-        this.setFillColor(colors[index]);
-        index++;
-      } else {
-        clearInterval(interval);
-        this.setFillColor(settings.PLAYER_COLOR);
-        this._animating = false;
-      }
-    }, 50);
-  }
-  */
 }
 
 module.exports = PlayerCirlce;

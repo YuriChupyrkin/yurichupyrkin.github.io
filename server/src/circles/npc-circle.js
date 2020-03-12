@@ -4,7 +4,7 @@ const settings = require('../settings/settings');
 class NPCCircle extends Circle {
   constructor(id, x, y, dx, dy, radius) {
     super(id, x, y, dx, dy, radius);
-    this.setRole(settings.NPC_AMMO);
+    this.setRole(settings.ROLE_NPC_HEALTH);
   }
 
   refresh() {
@@ -24,27 +24,6 @@ class NPCCircle extends Circle {
   move() {
     this._x += this._dx;
     this._y += this._dy;
-  }
-
-  setRole(role) {
-    if (role === settings.NPC_HEALTH) {
-      this.setFillColor(settings.NPC_HEALTH_COLOR);
-      this.setStrokeColor(settings.NPC_DEFAULT_STROKE);
-
-    } else if (role === settings.NPC_ENEMY) {
-      this.setFillColor(settings.NPC_ENEMY_COLOR);
-      this.setStrokeColor(settings.NPC_ENEMY_STROKE);
-
-    } else {
-      this.setFillColor(settings.NPC_AMMO_COLOR);
-      this.setStrokeColor(settings.NPC_DEFAULT_STROKE);
-    }
-
-    this._role = role;
-  }
-
-  getRole() {
-    return this._role;
   }
 
   isHidden() {

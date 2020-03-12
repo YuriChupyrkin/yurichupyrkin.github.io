@@ -5,7 +5,7 @@ class Canvas {
     console.log('canvas loaded');
     console.log(this._canvas);
 
-    this._canvasCellLength = GAME_CONFIG.CANVAS_CELL_LENGHT;
+    this._canvasCellLength = SERVER_SETTIGS.CANVAS_CELL_LENGHT;
   }
 
   setSize(width, height) {
@@ -55,8 +55,8 @@ class Canvas {
     const x = circle.x;
     const y = circle.y;
     const radius = circle.radius;
-    const strokeColor = circle.strokeColor;
-    const fillColor = circle.fillColor;
+
+    const colors = this.getCicleColors(circle.role);
 
     const width = this._canvas.width;
     const height = this._canvas.height;
@@ -77,12 +77,54 @@ class Canvas {
     const ctx = this._context;
     ctx.beginPath();
     ctx.arc(canvasX, canvasY, radius, 0, Math.PI * 2, false);
-    ctx.strokeStyle =strokeColor;
+    ctx.strokeStyle = colors.stroke;
     ctx.stroke();
 
-    if (fillColor) {
-      ctx.fillStyle = fillColor;
+    if (colors.fill) {
+      ctx.fillStyle = colors.fill;
       ctx.fill();
+    }
+  }
+
+  getCicleColors(roleName) {
+    let strokeColor;
+    let fillColor;
+
+    switch (roleName) {
+      case SERVER_SETTIGS.ROLE_PLAYER:
+        strokeColor = SERVER_SETTIGS.PLAYER_STROKE_COLOR;
+        fillColor = SERVER_SETTIGS.PLAYER_FILL_COLOR;
+        break;
+      case SERVER_SETTIGS.ROLE_BULLET: {
+        strokeColor = SERVER_SETTIGS.BULLET_STROKE_COLOR;
+        fillColor = SERVER_SETTIGS.BULLET_FILL_COLOR;
+        break;
+      }
+      case SERVER_SETTIGS.ROLE_GUN: {
+        strokeColor = SERVER_SETTIGS.GUN_STROKE_COLOR;
+        fillColor = SERVER_SETTIGS.GUN_FILL_COLOR;
+        break;
+      }
+      case SERVER_SETTIGS.ROLE_NPC_AMMO: {
+        strokeColor = SERVER_SETTIGS.NPC_DEFAULT_STROKE_COLOR;
+        fillColor = SERVER_SETTIGS.NPC_AMMO_FILL_COLOR;
+        break;
+      }
+      case SERVER_SETTIGS.ROLE_NPC_HEALTH: {
+        strokeColor = SERVER_SETTIGS.NPC_DEFAULT_STROKE_COLOR;
+        fillColor = SERVER_SETTIGS.NPC_HEALTH_FILL_COLOR;
+        break;
+      }
+      case SERVER_SETTIGS.ROLE_NPC_ENEMY: {
+        strokeColor = SERVER_SETTIGS.NPC_ENEMY_STROKE_COLOR;
+        fillColor = SERVER_SETTIGS.NPC_ENEMY_FILL_COLOR;
+        break;
+      }
+    }
+
+    return {
+      stroke: strokeColor,
+      fill: fillColor,
     }
   }
 

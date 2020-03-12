@@ -1,5 +1,6 @@
 const stringify = require('node-stringify');
 const BaseApiController = require('../base-api-controller');
+const settings = require('../../../settings/settings');
 
 module.exports = class ApiController extends BaseApiController {
   constructor () {
@@ -8,6 +9,10 @@ module.exports = class ApiController extends BaseApiController {
 
   check_ping() {
     this._response.write('{"OK": "true"}');
+  }
+
+  get_settings() {
+    this._response.write(JSON.stringify(settings));
   }
 
   getCats (data) {

@@ -6,18 +6,15 @@ class Circle {
     this._radius = radius || 50;
     this._dx = dx || 0;
     this._dy = dy || 0;
-  
-    this._strokeColor = 'black';
-    this._fillColor = null;
   }
 
-  setStrokeColor(color) {
-    this._strokeColor = color;
-  };
+  setRole(roleName) {
+    this._role = roleName;
+  }
 
-  setFillColor(color) {
-    this._fillColor = color;
-  };
+  getRole() {
+    return this._role;
+  }
 
   getCircleParams() {
     return {
@@ -27,35 +24,9 @@ class Circle {
       dx: this._dx,
       dy: this._dy,
       radius: this._radius,
-      strokeColor: this._strokeColor,
-      fillColor: this._fillColor,
+      role: this._role,
     }
   }
-
-  /*
-  setCanvasSize(width, height) {
-    this._canvasWidth = width;
-    this._canvasHeight = height;
-  }
-  */
-
-  /*
-  refresh() {
-    const width = this._canvasWidth;
-    const height = this._canvasHeight;
-
-    if (this._x + this._radius > width || this._x - this._radius < 0) {
-      this._dx = -this._dx;
-    }
-
-    if (this._y + this._radius > height || this._y - this._radius < 0) {
-      this._dy = -this._dy;
-    }
-
-    this._x += this._dx;
-    this._y += this._dy;
-  }
-  */
 
   isHidden() {
     return false;

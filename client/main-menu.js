@@ -2,24 +2,6 @@ $(document).ready(() => {
   console.log('main menu loaded');
   let serverPing = null;
 
-
-  // const socket = io.connect('http://localhost:8888');
-
-  // socket.on('game-state-refresh', onReceiveMessage);
-
-  // function onReceiveMessage (data) {
-  //   console.log(data);
-  // }
-
-  // window.upudateState = function () {
-  //   socket.emit('game-state-refresh', {
-  //     refreshCount: 100
-  //   });
-  // }
-
-
-
-
   $('.check-server').click(function() {
     this.setAttribute('disabled', true);
 
@@ -37,6 +19,11 @@ $(document).ready(() => {
 
   $('.start-game-button').click(function() {
     console.log('start game');
-    location.pathname = '/circles-online';
+
+    HttpHelper.getServerSettings().then((settings) => {
+      console.log(settings);
+      localStorage.setItem('serverSettings', settings);
+      location.pathname = '/circles-online';
+    });
   });
 });

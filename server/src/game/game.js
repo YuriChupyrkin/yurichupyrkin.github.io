@@ -3,6 +3,7 @@ const GunCirlce = require('../circles/gun-cirlce');
 const NpcBuilder = require('./npc-builder');
 const gameState = require('./game-state');
 const gameLoop = require('./gameloop');
+const {logInfo, logError} = require('../logger');
 
 class Game {
   constructor(websocketServer) {
@@ -26,14 +27,13 @@ class Game {
     const id = gameLoop.startGameLoop(60, this.refresh.bind(this));
     this._gameLoopId = id;
 
-    console.log('start game: ' + id);
-
+    logInfo('GAME STARTED! ID:' + id);
     this._npcBuilder.initNpcsSet(150);
   }
 
   stopGame() {
     gameLoop.stopGameLoop(this._gameLoopId);
-    console.log('stop game: ' + this._gameLoopId);
+    logInfo('GAME STOPPED! ID:' + this._gameLoopId);
     this._gameLoopId = null;
 
     this._npcBuilder.destroyAllNpcs();
@@ -48,8 +48,21 @@ class Game {
     });
   }
 
+  onPlayerShoot(message) {
+    const player = gameState.getPlayerById(message.playerId);
+    if (!player) {
+      return;
+    }
+
+    player.shoot();
+  }
+
   onRefreshPlayer(message) {
     const player = gameState.getPlayerById(message.playerId);
+    if (!player) {
+      return;
+    }
+
     player.refresh(message.moveState);
     this.playerRefreshed(player, message.playerScreenParams);
   }
@@ -71,14 +84,9 @@ class Game {
     //console.timeEnd('playerRefreshed');
   }
 
-  onPlayerShoot(message) {
-    const player = gameState.getPlayerById(message.playerId);
-    player.shoot();
-  }
-
   onPlayerConnected(playerSocket) {
     const plaeyerId = gameState.getNewCircleId();
-    console.log(`player #${plaeyerId} is connected`);
+    logInfo(`player #${plaeyerId} is connected`);
 
     // first player is connected
     if (!this._gameLoopId) {
@@ -102,16 +110,26 @@ class Game {
       playerId: plaeyerId,
     });
 
-    playerSocket.on('disconnect', () => {
-      gameState.removePlayer(plaeyerId);
-      gameState.removeGun(gunId)
-      console.log(`player #${plaeyerId} is disconnectd`);
-
-      const playersCount = gameState.getPlayersCount();
-      if (!playersCount) {
-        this.stopGame();
-      }
+    playerSocket.on('player-disconnect', () => {
+      this.onPlayerDisconnect(plaeyerId, gunId, playerSocket);
     });
+
+    playerSocket.on('disconnect', () => {
+      this.onPlayerDisconnect(plaeyerId, gunId, playerSocket);
+    });
+  }
+
+  onPlayerDisconnect(plaeyerId, gunId, playerSocket) {
+    gameState.removePlayer(plaeyerId);
+    gameState.removeGun(gunId)
+    logInfo(`player #${plaeyerId} is disconnected`);
+
+    playerSocket.emit('player-disconnected');
+
+    const playersCount = gameState.getPlayersCount();
+    if (!playersCount) {
+      this.stopGame();
+    }
   }
 }
 

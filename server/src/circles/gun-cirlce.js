@@ -7,14 +7,13 @@ class GunCircle extends Circle {
   constructor(id, x, y) {
     super(id, x, y, 0, 0, settings.GUN_RADIUS);
 
-    this.setStrokeColor('#110952');
-    this.setFillColor(settings.GUN_COLOR);
-
     this._bulletCount = settings.START_BULLETS_COUNT;
     this._lastBulletId = 0;
 
     this._angle = 0;
     this._player = null;
+
+    this.setRole(settings.ROLE_GUN);
   }
 
   refresh(playerCircleParams, moveState) {

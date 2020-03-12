@@ -8,9 +8,17 @@ class SocketHelper {
   }
 
   onDisconnected(callback) {
-    this._socket.on('disconnect', () => {
+    const onDisconnectd = () => {
       callback();
       this._socket.open();
+    }
+
+    this._socket.on('disconnect', () => {
+      onDisconnectd();
+    });
+
+    this._socket.on('player-disconnected', () => {
+      onDisconnectd();
     });
   }
 
@@ -28,6 +36,12 @@ class SocketHelper {
 
   triggerPlayershoot(playerId) {
     this._socket.emit('player-shoot', {
+      playerId,
+    })
+  }
+
+  disconnect(playerId) {
+    this._socket.emit('player-disconnect', {
       playerId,
     })
   }

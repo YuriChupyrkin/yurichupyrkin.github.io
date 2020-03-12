@@ -16,16 +16,17 @@ class Game {
   init() {
     console.log('start');
 
-    // todo get config....
+    const serverSettings = getServerSettings();
+    if (!serverSettings) {
+      console.error('Server settings is NOT loaded');
+      return;
+    }
 
     // build canvas
     this.buildCanvas();
 
     // start connection
     this.buildConnection();
-
-    // run game loop
-
 
     // subsrcibe
     this._socketHelper.onPlaeyerRefreshed((serverGameState) => {
@@ -113,6 +114,9 @@ class Game {
     socketHelper.onDisconnected(() => {
       console.log('DISCONNECTED');
       this._gameLoop.pause();
+
+      // TODO: show player stat
+      window.location = '/';
     });
 
     this._socketHelper = socketHelper;

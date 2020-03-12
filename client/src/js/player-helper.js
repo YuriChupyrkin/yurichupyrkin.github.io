@@ -12,7 +12,7 @@ class PlayerHelper {
     const eventListener = new EventListener();
 
     eventListener.setupEscAction(() => {console.log('escape')});
-    //eventListener.listenClicks('btn-pause', () => {console.log('escape')}, true);
+    eventListener.listenClicks('btn-disconnect', () => {this.disconnect()}, true);
     eventListener.setupWhiteSpaceAction(() => this.shoot());
 
     eventListener.clearStates();
@@ -36,7 +36,10 @@ class PlayerHelper {
   }
 
   shoot() {
-    console.log('shoot');
     this._socketHelper.triggerPlayershoot(this._playerId);
+  }
+
+  disconnect() {
+    this._socketHelper.disconnect('this._playerId');
   }
 }
