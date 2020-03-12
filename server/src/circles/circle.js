@@ -6,6 +6,9 @@ class Circle {
     this._radius = radius || 50;
     this._dx = dx || 0;
     this._dy = dy || 0;
+
+    this._birthCycleId = 0;
+    this._lifeDuration = 0;
   }
 
   setRole(roleName) {
@@ -28,8 +31,12 @@ class Circle {
     }
   }
 
-  isHidden() {
-    return false;
+  isDead() {
+    return this._isDead;
+  }
+
+  setBirthCycleId(gameCycleId) {
+    this._birthCycleId = gameCycleId;
   }
 
   isIntersectWith(circle_2) {

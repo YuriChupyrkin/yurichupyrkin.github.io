@@ -16,6 +16,10 @@ class GameState {
     delete this._players[id];
   }
 
+  getPlayers() {
+    return this.intancesObjectToArray(this._players);
+  }
+
   removeGun(id) {
     delete this._guns[id];
   }
@@ -36,16 +40,20 @@ class GameState {
     this._npcs[npc._id] = npc;
   }
 
+  removeNpc(npcId) {
+    delete this._npcs[npcId];
+  }
+
   getNpcs() {
     return this.intancesObjectToArray(this._npcs);
   }
 
-  removeAllNpcs() {
-    return this._npcs = {};
+  getNpcsCount() {
+    return Object.keys(this._npcs).length;
   }
 
-  getPlayers() {
-    return this.intancesObjectToArray(this._players);
+  removeAllNpcs() {
+    return this._npcs = {};
   }
 
   addBullet(bullet) {

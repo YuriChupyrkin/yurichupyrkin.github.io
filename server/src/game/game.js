@@ -3,13 +3,14 @@ const GunCirlce = require('../circles/gun-cirlce');
 const NpcBuilder = require('./npc-builder');
 const gameState = require('./game-state');
 const gameLoop = require('./gameloop');
-const {logInfo, logError} = require('../logger');
+const settings = require('../settings/settings');
+const {logInfo, logError} = require('../utils/logger');
 
 class Game {
   constructor(websocketServer) {
    // this._notifyPlayerCallback = null;
     this._gameLoopId = null;
-    this._refreshNumber = 0;
+    this._gameCycleId = 0;
 
     this._npcBuilder = new NpcBuilder;
     this._websocketServer = websocketServer;
@@ -28,7 +29,10 @@ class Game {
     this._gameLoopId = id;
 
     logInfo('GAME STARTED! ID:' + id);
-    this._npcBuilder.initNpcsSet(150);
+    this._npcBuilder.buildNPCs(
+      settings.NPC_COUNT_PER_PLAYER,
+      this._gameCycleId
+    );
   }
 
   stopGame() {
@@ -40,11 +44,21 @@ class Game {
   }
 
   refresh() {
-    this._refreshNumber++;
+    this._gameCycleId++;
+
+    if (this._gameCycleId % 100 == 0) {
+      this._npcBuilder.tryToAddNpcs(
+        settings.NPC_COUNT_PER_PLAYER,
+        this._gameCycleId
+      );
+    }
 
     const npcAndBulletsCicles = gameState.getNpcAndBulletInstances();
     npcAndBulletsCicles.forEach((circle) => {
-      circle.refresh();
+      circle.refresh(this._gameCycleId);
+      if (circle.isDead()) {
+        gameState.removeNpc(circle._id);
+      }
     });
   }
 
