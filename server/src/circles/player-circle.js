@@ -3,11 +3,17 @@ const settings = require('../settings/settings');
 
 class PlayerCirlce extends Circle {
   constructor(id, x, y) {
-    super(id, x, y, settings.START_SPEED, settings.START_SPEED, settings.START_RADIUS);
+    super(id, x, y, 0, 0, settings.START_RADIUS);
 
-    this._score = 0;
+    this._score = {
+      playerHit: 0,
+      playerKilled: 0,
+      npcKilled: 0,
+    };
+
     this._health = settings.START_HEALTH;
     this._gun = {};
+    this._playerSpeed = settings.START_SPEED;
 
     this.setRole(settings.ROLE_PLAYER);
   }
@@ -26,37 +32,51 @@ class PlayerCirlce extends Circle {
   }
 
   move(moveState) {
+    this._dx = 0;
+    this._dy = 0;
+
     if (moveState.LEFT) {
-      this._x -= this._dx;
+      this._dx -= this._playerSpeed;
     }
   
     if (moveState.RIGHT) {
-      this._x += this._dx;
+      this._dx += this._playerSpeed;
     }
   
     if (moveState.UP) {
-      this._y -= this._dy;
+      this._dy -= this._playerSpeed;
     }
 
     if (moveState.DOWN) {
-      this._y += this._dy;
+      this._dy += this._playerSpeed;
     }
+
+    this._x += this._dx;
+    this._y += this._dy;
   }
 
-  shoot() {
-    this._gun.shoot();
+  shoot(gameCycleId) {
+    this._gun.shoot(gameCycleId);
   }
 
   addBulletsCount(npcRadius) {
     this._gun.addBulletsCount(npcRadius);
-    this.animatePlayer(settings.BULLETS_UPDATED_COLORS);
   }
 
   getBulletsCount() {
     return this._gun.getBulletsCount();
   }
 
-  increaseHelth(npcRadius) {
+  getPlayerState() {
+    return {
+      health: this._health,
+      score: this._score,
+      bulletsCount: this._gun.getBulletsCount(),
+      score: this._score,
+    }
+  }
+
+  increaseHealth(npcRadius) {
     let addHp = npcRadius > 28 ? 2 : 1;
 
     this._radius += addHp;
@@ -65,15 +85,27 @@ class PlayerCirlce extends Circle {
     this.updateSpeed();
   }
 
-  decreaseHelth() {
+  decreaseHealth() {
     this._radius--;
     this._health--;
+
+    if (this._health < 1) {
+      this.kill();
+    }
 
     this.updateSpeed();
   }
 
-  addScore() {
-    this._score++;
+  addPlayerHitScore() {
+    this._score.playerHit++;
+  }
+
+  addPlayerKilledScore() {
+    this._score.playerKilled++;
+  }
+
+  addNpcKillScore() {
+    this._score.npcKilled++;
   }
 
   getScore() {
@@ -100,10 +132,7 @@ class PlayerCirlce extends Circle {
       return;
     }
 
-    const speed = settings.START_SPEED + speedRate;
-
-    this._dx = speed;
-    this._dy = speed;
+    this._playerSpeed = settings.START_SPEED + speedRate;
   }
 }
 

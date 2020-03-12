@@ -20,6 +20,10 @@ class GameState {
     return this.intancesObjectToArray(this._players);
   }
 
+  getPlayersInstances() {
+    return Object.values(this._players);
+  }
+
   removeGun(id) {
     delete this._guns[id];
   }
@@ -58,6 +62,10 @@ class GameState {
 
   addBullet(bullet) {
     this._bullets[bullet._id] = bullet;
+  }
+
+  removeBullet(bulletId) {
+    delete this._bullets[bulletId];
   }
 
   getBullets() {
@@ -128,6 +136,14 @@ class GameState {
     return []
       .concat(Object.values(this._npcs))
       .concat(Object.values(this._bullets));
+  }
+
+  getNpcInstances() {
+    return Object.values(this._npcs);
+  }
+
+  getBulletInstances() {
+    return Object.values(this._bullets);
   }
 }
 

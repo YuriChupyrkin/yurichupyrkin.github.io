@@ -68,6 +68,7 @@ class Game {
     }
 
     this._statusBarHelper.updatePosition(playerInstance.x, playerInstance.y);
+    this._statusBarHelper.updatePlayerState(serverGameState.playerState);
 
     const npcs = Object.values(circles.npcs);
     const bullets = Object.values(circles.bullets);

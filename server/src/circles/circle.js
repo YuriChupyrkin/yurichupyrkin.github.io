@@ -35,6 +35,17 @@ class Circle {
     return this._isDead;
   }
 
+  isReadyForDie(gameCycleId) {
+    if (gameCycleId - this._birthCycleId > this._lifeDuration) {
+      this.kill();
+      return true;
+    }
+  }
+
+  kill() {
+    this._isDead = true;
+  }
+
   setBirthCycleId(gameCycleId) {
     this._birthCycleId = gameCycleId;
   }

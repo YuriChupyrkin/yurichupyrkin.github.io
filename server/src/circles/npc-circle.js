@@ -9,8 +9,7 @@ class NPCCircle extends Circle {
   }
 
   refresh(gameCycleId) {
-    if (gameCycleId - this._birthCycleId > this._lifeDuration) {
-      this._isDead = true;
+    if (this.isReadyForDie(gameCycleId)) {
       return;
     }
 

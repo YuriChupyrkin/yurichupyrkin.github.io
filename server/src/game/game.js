@@ -1,6 +1,7 @@
 const PlayerCircle = require('../circles/player-circle');
 const GunCirlce = require('../circles/gun-cirlce');
 const NpcBuilder = require('./npc-builder');
+const InteractionResolver = require('./interaction-resolver');
 const gameState = require('./game-state');
 const gameLoop = require('./gameloop');
 const settings = require('../settings/settings');
@@ -14,6 +15,7 @@ class Game {
 
     this._npcBuilder = new NpcBuilder;
     this._websocketServer = websocketServer;
+    this._insteractionResolver = new InteractionResolver();
 
     this.initWebsocketHandlers(websocketServer);
   }
@@ -44,6 +46,8 @@ class Game {
   }
 
   refresh() {
+    console.time('refreshTime');
+
     this._gameCycleId++;
 
     if (this._gameCycleId % 100 == 0) {
@@ -53,13 +57,27 @@ class Game {
       );
     }
 
-    const npcAndBulletsCicles = gameState.getNpcAndBulletInstances();
+    const npcs = gameState.getNpcInstances();
+    const bullets = gameState.getBulletInstances();
+
+    const npcAndBulletsCicles = npcs.concat(bullets);
+    const players = gameState.getPlayersInstances();
+
+    this._insteractionResolver.resolve(players, bullets, npcs);
+
     npcAndBulletsCicles.forEach((circle) => {
-      circle.refresh(this._gameCycleId);
       if (circle.isDead()) {
-        gameState.removeNpc(circle._id);
+        if (circle.getRole() === settings.ROLE_BULLET) {
+          gameState.removeBullet(circle._id);
+        } else {
+          gameState.removeNpc(circle._id);
+        }
       }
+
+      circle.refresh(this._gameCycleId);
     });
+
+    console.timeEnd('refreshTime');
   }
 
   onPlayerShoot(message) {
@@ -68,7 +86,7 @@ class Game {
       return;
     }
 
-    player.shoot();
+    player.shoot(this._gameCycleId);
   }
 
   onRefreshPlayer(message) {
@@ -91,6 +109,7 @@ class Game {
     this._websocketServer.onPlayerRefreshed(
       {
         circles: visibleForPlayerCicles,
+        playerState: player.getPlayerState(),
       },
       player.getPlayerSocket()
     );

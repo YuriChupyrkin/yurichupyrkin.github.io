@@ -1,16 +1,4 @@
 function StatusBarHelper() {
-  const updateHealth = (health) => {
-    document.getElementById('health').innerHTML = health;
-  }
-
-  const updateBulletsCount = (bullets) => {
-    document.getElementById('bullet-count').innerHTML = bullets;
-  }
-
-  const updateScore = (score) => {
-    document.getElementById('score-count').innerHTML = score;
-  }
-
   const updatePauseButton = (isPause) => {
     let state = isPause ? 'Continue' : 'Pause';
     let text = `${state} (ESC)`;
@@ -21,11 +9,21 @@ function StatusBarHelper() {
     document.getElementById('position').innerHTML = `${x}; ${y}`;
   }
 
+  const updatePlayerState = (playerState) => {
+    document.getElementById('health')
+      .innerHTML = playerState.health;
+    document.getElementById('bullet-count')
+      .innerHTML = playerState.bulletsCount;
+    document.getElementById('npc-score-count')
+      .innerHTML = playerState.score.npcKilled;
+    document.getElementById('players-score-count')
+      .innerHTML = `${playerState.score.playerHit} / ${playerState.score.playerKilled}`;
+      
+  }
+
   return {
-    updateHealth,
-    updateBulletsCount,
-    updateScore,
     updatePauseButton,
     updatePosition,
+    updatePlayerState,
   };
 };
