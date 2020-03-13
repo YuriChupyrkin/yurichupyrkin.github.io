@@ -27,6 +27,10 @@ class PlayerCirlce extends Circle {
   }
 
   refresh(moveState) {
+    if (this.isDead()) {
+      return;
+    }
+
     this.move(moveState);
     this._gun.refresh(moveState);
   }
@@ -73,6 +77,7 @@ class PlayerCirlce extends Circle {
       score: this._score,
       bulletsCount: this._gun.getBulletsCount(),
       score: this._score,
+      isDead: this.isDead(),
     }
   }
 

@@ -46,7 +46,7 @@ class Game {
   }
 
   refresh() {
-    console.time('refreshTime');
+    //console.time('refreshTime');
 
     this._gameCycleId++;
 
@@ -77,7 +77,7 @@ class Game {
       circle.refresh(this._gameCycleId);
     });
 
-    console.timeEnd('refreshTime');
+    //console.timeEnd('refreshTime');
   }
 
   onPlayerShoot(message) {
@@ -95,12 +95,17 @@ class Game {
       return;
     }
 
-    player.refresh(message.moveState);
-    this.playerRefreshed(player, message.playerScreenParams);
+    if (!player.isDead()) {
+      player.refresh(message.moveState);
+      this.playerRefreshed(player, message.playerScreenParams, false);
+    } else {
+      gameState.killPlayer(message.playerId);
+      this.playerRefreshed(player, message.playerScreenParams, true);
+    }
   }
 
-  playerRefreshed(player, playerScreenParams) {
-    //console.time('playerRefreshed');
+  playerRefreshed(player, playerScreenParams, isGameOver) {
+    console.time('playerRefreshed');
     const playerParams = player.getCircleParams();
 
     const visibleForPlayerCicles =
@@ -110,11 +115,12 @@ class Game {
       {
         circles: visibleForPlayerCicles,
         playerState: player.getPlayerState(),
+       // isGameOver: isGameOver,
       },
       player.getPlayerSocket()
     );
 
-    //console.timeEnd('playerRefreshed');
+    console.timeEnd('playerRefreshed');
   }
 
   onPlayerConnected(playerSocket) {

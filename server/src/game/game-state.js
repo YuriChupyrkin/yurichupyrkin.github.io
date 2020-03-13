@@ -4,12 +4,18 @@ class GameState {
     this._npcs = {};
     this._bullets = {};
     this._guns = {};
+    this._killedPlayers = {};
 
     this._newCircleId = 0;
   }
 
   addPlayer(player) {
     this._players[player._id] = player;
+  }
+
+  killPlayer(playerId) {
+    this.killPlayer[playerId] = this._players[playerId];
+    this.removePlayer(playerId);
   }
 
   removePlayer(id) {
@@ -33,7 +39,7 @@ class GameState {
   }
 
   getPlayerById(id) {
-    return this._players[id];
+    return this._players[id] || this.killPlayer[id];
   }
 
   getNewCircleId() {
