@@ -3,7 +3,7 @@ const settings = require('../settings/settings');
 
 class PlayerCirlce extends Circle {
   constructor(id, x, y) {
-    super(id, x, y, 0, 0, settings.START_RADIUS);
+    super(id, x, y, 0, 0, settings.PLAYER_START_RADIUS);
 
     this._score = {
       playerHit: 0,
@@ -11,9 +11,9 @@ class PlayerCirlce extends Circle {
       npcKilled: 0,
     };
 
-    this._health = settings.START_HEALTH;
+    this._health = settings.PLAYER_START_HEALTH;
     this._gun = {};
-    this._playerSpeed = settings.START_SPEED;
+    this._playerSpeed = settings.PLAYER_START_SPEED;
 
     this.setRole(settings.ROLE_PLAYER);
   }
@@ -134,14 +134,14 @@ class PlayerCirlce extends Circle {
   }
 
   updateSpeed() {
-    const speedRate = Math.round((settings.START_HEALTH - this._health) / 2); // 10 - 16 = -6 / 2  = -3
+    const speedRate = Math.round((settings.PLAYER_START_HEALTH - this._health) / 2); // 10 - 16 = -6 / 2  = -3
 
     // check negative rate
-    if (settings.START_SPEED + speedRate < 1) {
+    if (settings.PLAYER_START_SPEED + speedRate < 1) {
       return;
     }
 
-    this._playerSpeed = settings.START_SPEED + speedRate;
+    this._playerSpeed = settings.PLAYER_START_SPEED + speedRate;
   }
 }
 
