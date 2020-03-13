@@ -1,9 +1,8 @@
 const socket = require('socket.io');
 
 module.exports = class WebsocketServer {
-  constructor (httpServer, actionName) {
+  constructor (httpServer) {
     this._httpServer = httpServer;
-    this._actionName = actionName;
 
     this._onPlayerShootCallback = null;
     this._onPlayerConnectedCallback = null;

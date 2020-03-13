@@ -5,7 +5,7 @@ $(document).ready(() => {
   $('.check-server').click(function() {
     this.setAttribute('disabled', true);
 
-    HttpHelper.getServerPing().then((ping) => {
+    HttpHelper.getServerPing(origin).then((ping) => {
       serverPing = ping;
       $('.server-ping-value').text(ping);
     }).catch((error) => {
@@ -18,9 +18,7 @@ $(document).ready(() => {
   });
 
   $('.start-game-button').click(function() {
-    console.log('start game');
-
-    HttpHelper.getServerSettings().then((settings) => {
+    HttpHelper.getServerSettings(origin).then((settings) => {
       console.log(settings);
       localStorage.setItem('serverSettings', settings);
       location.pathname = '/circles-online';

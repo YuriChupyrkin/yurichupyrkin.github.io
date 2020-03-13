@@ -4,11 +4,12 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node app.js"
   },
-  "author": "",
+  "author": "Yury Chupyrkin",
   "license": "ISC",
   "dependencies": {
+    "express": "^4.17.1",
     "lodash": "^4.17.15",
     "node-gameloop": "^0.1.4",
     "node-stringify": "^0.2.1",

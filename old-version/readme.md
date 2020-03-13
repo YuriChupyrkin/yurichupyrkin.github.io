@@ -1,1 +1,0 @@
-**Simple game based on HTML canvas**

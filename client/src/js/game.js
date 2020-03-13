@@ -109,7 +109,7 @@ class Game {
 
   buildConnection() {
     // todo: URL
-    const socket = io.connect('http://localhost:8888');
+    const socket = io.connect(SERVER_SETTIGS.SERVER_ORIGIN);
     const socketHelper = new SocketHelper(socket);
 
     socketHelper.onPlayerConnected((message) => {
