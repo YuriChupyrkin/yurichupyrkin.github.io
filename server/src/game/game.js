@@ -82,7 +82,7 @@ class Game {
 
   onPlayerShoot(message) {
     const player = gameState.getPlayerById(message.playerId);
-    if (!player) {
+    if (!player || player.isDead()) {
       return;
     }
 
@@ -95,17 +95,17 @@ class Game {
       return;
     }
 
-    if (!player.isDead()) {
-      player.refresh(message.moveState);
-      this.playerRefreshed(player, message.playerScreenParams, false);
-    } else {
+    player.refresh(message.moveState);
+
+    if (player.isDead() && !gameState.isKilledPlayer(message.playerId)) {
       gameState.killPlayer(message.playerId);
-      this.playerRefreshed(player, message.playerScreenParams, true);
     }
+
+    this.playerRefreshed(player, message.playerScreenParams);
   }
 
-  playerRefreshed(player, playerScreenParams, isGameOver) {
-    console.time('playerRefreshed');
+  playerRefreshed(player, playerScreenParams) {
+    //console.time('playerRefreshed');
     const playerParams = player.getCircleParams();
 
     const visibleForPlayerCicles =
@@ -114,13 +114,12 @@ class Game {
     this._websocketServer.onPlayerRefreshed(
       {
         circles: visibleForPlayerCicles,
-        playerState: player.getPlayerState(),
-       // isGameOver: isGameOver,
+        playerParams: player.getPlayerParams(),
       },
       player.getPlayerSocket()
     );
 
-    console.timeEnd('playerRefreshed');
+    //console.timeEnd('playerRefreshed');
   }
 
   onPlayerConnected(playerSocket) {

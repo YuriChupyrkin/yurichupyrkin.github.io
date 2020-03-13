@@ -14,8 +14,14 @@ class GameState {
   }
 
   killPlayer(playerId) {
+    const player = this._players[playerId];
     this.killPlayer[playerId] = this._players[playerId];
+    this.removeGun(player.getGunParams().id);
     this.removePlayer(playerId);
+  }
+
+  isKilledPlayer(playerId) {
+    return !!this.killPlayer[playerId];
   }
 
   removePlayer(id) {

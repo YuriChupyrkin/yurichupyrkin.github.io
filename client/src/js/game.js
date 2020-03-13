@@ -5,6 +5,7 @@ class Game {
     this._statusBarHelper = new StatusBarHelper();
     this._gameLoop = null;
     this._socketHelper = null;
+    this._isGameOver = false;
 
     this._refreshCount = 0;
     this._log = {
@@ -60,15 +61,19 @@ class Game {
     const refreshTimeStart = performance.now();
 
     const circles = serverGameState.circles;
-    const playerInstance = this._playerHerlper.getInstance(circles.players);
+    const playerInstance = serverGameState.playerParams;
+    this._playerHerlper.setInstance(playerInstance);
 
-    if (!playerInstance) {
-      console.error('player is not found');
-      return;
+    if (playerInstance.isDead && !this._isGameOver) {
+      this._isGameOver = true;
+
+      if (confirm('GAME OVER! Press "OK" to exit')) {
+        this._playerHerlper.disconnect();
+      }
     }
 
     this._statusBarHelper.updatePosition(playerInstance.x, playerInstance.y);
-    this._statusBarHelper.updatePlayerState(serverGameState.playerState);
+    this._statusBarHelper.updatePlayerState(serverGameState.playerParams);
 
     const npcs = Object.values(circles.npcs);
     const bullets = Object.values(circles.bullets);

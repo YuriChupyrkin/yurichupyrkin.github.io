@@ -18,6 +18,19 @@ class PlayerCirlce extends Circle {
     this.setRole(settings.ROLE_PLAYER);
   }
 
+  getPlayerParams() {
+    const params = this.getCircleParams();
+
+    return {
+      ...params,
+      health: this._health,
+      score: this._score,
+      bulletsCount: this._gun.getBulletsCount(),
+      score: this._score,
+      isDead: this.isDead(),
+    }
+  }
+
   setPlayerSocket(playerSocket) {
     this._playerSocket = playerSocket;
   }
@@ -71,16 +84,6 @@ class PlayerCirlce extends Circle {
     return this._gun.getBulletsCount();
   }
 
-  getPlayerState() {
-    return {
-      health: this._health,
-      score: this._score,
-      bulletsCount: this._gun.getBulletsCount(),
-      score: this._score,
-      isDead: this.isDead(),
-    }
-  }
-
   increaseHealth(npcRadius) {
     let addHp = npcRadius > 28 ? 2 : 1;
 
@@ -96,6 +99,7 @@ class PlayerCirlce extends Circle {
 
     if (this._health < 1) {
       this.kill();
+      this._gun.kill();
     }
 
     this.updateSpeed();

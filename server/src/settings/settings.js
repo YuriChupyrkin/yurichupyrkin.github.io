@@ -12,7 +12,7 @@ const gameConfig = {
 
   /* player */
   START_RADIUS: 30,
-  START_HEALTH: 3,
+  START_HEALTH: 10,
   START_SPEED: 5,
   PLAYER_STROKE_COLOR: '#fd795c',
   PLAYER_FILL_COLOR: playerColor,

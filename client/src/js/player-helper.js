@@ -20,11 +20,8 @@ class PlayerHelper {
     this._keyState = eventListener.getKeyState();
   }
 
-  getInstance(allPlayers) {
-    const player = allPlayers.find((player) => player.id === this._playerId);
-    this._player = player;
-
-    return player;
+  setInstance(playerInstance) {
+    this._player = playerInstance;
   }
 
   refresh(playerScreenParams) {

@@ -129,11 +129,19 @@ class InteractionResolver {
   }
 
   player_player_intersection(player_1, player_2) {
-    player_1._x += player_2._dx;
-    player_2._x += player_1._dx;
+    player_1._x += player_2._dx * 2;
+    player_2._x += player_1._dx * 2;
 
-    player_1._y += player_2._dy;
-    player_2._y += player_1._dy;
+    player_1._y += player_2._dy * 2;
+    player_2._y += player_1._dy * 2;
+
+    if (player_1.getHealth() > 1) {
+      player_1.decreaseHealth();
+    }
+
+    if (player_2.getHealth() > 1) {
+      player_2.decreaseHealth();
+    }
   }
 
   exchangeDirection(circle_1, circle_2) {
