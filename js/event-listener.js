@@ -18,8 +18,8 @@ class EventListener {
   
     window.addEventListener('keydown', (e) => {
       // can listen PAUSE
-      if (e.keyCode === 17 && this._ctrlAction) {
-        this._ctrlAction();
+      if (e.keyCode === 27 && this._escAction) {
+        this._escAction();
       }
 
       if (this._stopListen) {
@@ -48,8 +48,8 @@ class EventListener {
     this._whiteSpaceAction = action;
   }
 
-  setupCtrlAction(action) {
-    this._ctrlAction = action;
+  setupEscAction(action) {
+    this._escAction = action;
   }
 
   setStopListen(isStop) {

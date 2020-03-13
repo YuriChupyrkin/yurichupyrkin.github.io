@@ -13,7 +13,7 @@ function Menu() {
 
   const updatePauseButton = (isPause) => {
     let state = isPause ? 'Continue' : 'Pause';
-    let text = `${state} (Ctrl)`;
+    let text = `${state} (Esc)`;
     document.getElementById('btn-pause').innerHTML = text;
   }
 

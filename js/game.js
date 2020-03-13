@@ -8,7 +8,7 @@ class Game {
     this._eventListener = new EventListener();
     this._menu = new Menu();
 
-    this._eventListener.setupCtrlAction(this.togglePause.bind(this));
+    this._eventListener.setupEscAction(this.togglePause.bind(this));
     this._eventListener
       .listenClicks('btn-pause', this.togglePause.bind(this), true);
   }
