@@ -97,6 +97,16 @@ class GameState {
     return array;
   }
 
+  resetAll() {
+    this._players = {};
+    this._npcs = {};
+    this._bullets = {};
+    this._guns = {};
+    this._killedPlayers = {};
+
+    this._newCircleId = 0;
+  }
+
   getAllCircles() {
     return {
       players: this.getPlayers(),
@@ -142,7 +152,6 @@ class GameState {
 
     return visibleCycles;
   }
-
 
   getNpcAndBulletInstances() {
     return []

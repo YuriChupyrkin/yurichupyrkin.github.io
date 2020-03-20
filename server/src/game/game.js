@@ -8,9 +8,10 @@ const settings = require('../settings/settings');
 const {logInfo, logError} = require('../utils/logger');
 const {randomRange} = require('../utils/math-utils');
 
+const FPS = 5;
+
 class Game {
   constructor(websocketServer) {
-   // this._notifyPlayerCallback = null;
     this._gameLoopId = null;
     this._gameCycleId = 0;
 
@@ -28,7 +29,7 @@ class Game {
   }
 
   startGame() {
-    const id = gameLoop.startGameLoop(60, this.refresh.bind(this));
+    const id = gameLoop.startGameLoop(FPS, this.refresh.bind(this));
     this._gameLoopId = id;
 
     logInfo('GAME STARTED! ID:' + id);
@@ -43,7 +44,7 @@ class Game {
     logInfo('GAME STOPPED! ID:' + this._gameLoopId);
     this._gameLoopId = null;
 
-    this._npcBuilder.destroyAllNpcs();
+    gameState.resetAll();
   }
 
   refresh() {
@@ -64,7 +65,9 @@ class Game {
     const npcAndBulletsCicles = npcs.concat(bullets);
     const players = gameState.getPlayersInstances();
 
+    console.time('_insteractionResolver');
     this._insteractionResolver.resolve(players, bullets, npcs);
+    console.timeEnd('_insteractionResolver');
 
     npcAndBulletsCicles.forEach((circle) => {
       if (circle.isDead()) {
@@ -146,7 +149,7 @@ class Game {
     logInfo(`player #${plaeyerId} is connected`);
 
     // first player is connected
-    if (!this._gameLoopId) {
+    if (this._gameLoopId == null) {
       this.startGame();
     }
 

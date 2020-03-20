@@ -35,5 +35,4 @@ module.exports = function runServer(port) {
   const game = new Game(websocketServer);
 
   websocketServer.run();
-  game.startGame();
 }

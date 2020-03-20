@@ -9,18 +9,27 @@ class InteractionResolver {
 
   resolveForAll(players, bullets, npcs) {
     const allCircles = players.concat(bullets, npcs);
-    allCircles.forEach((circlce, index) => {
-      const circle_1 = circlce;
+    for(let index = 0; index < allCircles.length; index++) {
+      const circle_1 = allCircles[index];
+
+      if (circle_1.isDead()) {
+        continue;
+      }
 
       for (let i = index + 1; i < allCircles.length; i++) {
         let circle_2 = allCircles[i];
-        let isIntersect = circle_1.isIntersectWith(circle_2);
-          
+
+        if (circle_2.isDead()) {
+          continue;
+        }
+
+        let isIntersect = this.isIntersect(circle_1, circle_2);
+
         if (isIntersect) {
           this.resolveIntersection(circle_1, circle_2);
         }
       }
-    });
+    }
   }
 
   resolveIntersection(circle_1, circle_2) {
@@ -78,11 +87,15 @@ class InteractionResolver {
     // player #1 decrease hp
     player.decreaseHealth();
 
-    // plater #2 add score
-    if (player._health < 1) {
-      gameState.getPlayerById(bullet.getPlayerId()).addPlayerKilledScore();
-    } else {
-      gameState.getPlayerById(bullet.getPlayerId()).addPlayerHitScore();
+    const player_2 = this.getBulletOwner(bullet);
+
+    if (player_2) {
+      // plater #2 add score
+      if (player._health < 1) {
+        player_2.addPlayerKilledScore();
+      } else {
+        player_2.addPlayerHitScore();
+      }
     }
 
     bullet.kill();
@@ -98,7 +111,10 @@ class InteractionResolver {
 
   bullet_npc_intersection(bullet, npc) {
     if (npc.getRole() === settings.ROLE_NPC_ENEMY) {
-      gameState.getPlayerById(bullet.getPlayerId()).addNpcKillScore();
+      const player = this.getBulletOwner(bullet);
+      if (player) {
+        player.addNpcKillScore();
+      }
     }
 
     this.double_kill_intersection(bullet, npc);
@@ -245,20 +261,27 @@ class InteractionResolver {
     }
   }
 
-  // resolveNpcInteraction(npcs) {
-  //   npcs.forEach((npc, index) => {
-  //     let npc_1 = npc;
+  getBulletOwner(bullet) {
+    const player = gameState.getPlayerById(bullet.getPlayerId());
+    return player;
+  }
 
-  //     for (let i = index + 1; i < npcs.length; i++) {
-  //       let npc_2 = npcs[i];
-  //       let isIntersect = npc_1.isIntersectWith(npc_2);
-          
-  //       if (isIntersect) {
-  //         this.npcsHasIntersection(npc_1, npc_2);
-  //       }
-  //     }
-  //   });
-  // }
+  isIntersect(circle_1, circle_2) {
+    let deltaX = Math.abs(circle_1._x - circle_2._x);
+    let deltaY = Math.abs(circle_1._y - circle_2._y);
+
+    // possible intersection
+    if (deltaX < circle_1._radius + circle_2._radius
+      && deltaY < circle_1._radius + circle_2._radius) {
+
+      let sqrtDistance = Math.pow(deltaX, 2) + Math.pow(deltaY, 2);
+      let distance = Math.sqrt(sqrtDistance);
+
+      return distance < circle_1._radius + circle_2._radius;
+    }
+
+    return false;
+  }
 }
 
 module.exports = InteractionResolver;

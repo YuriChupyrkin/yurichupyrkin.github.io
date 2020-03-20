@@ -9,6 +9,8 @@ class Circle {
 
     this._birthCycleId = 0;
     this._lifeDuration = 0;
+
+    this._isDead = false;
   }
 
   setRole(roleName) {
@@ -54,10 +56,17 @@ class Circle {
     let deltaX = Math.abs(this._x - circle_2._x);
     let deltaY = Math.abs(this._y - circle_2._y);
 
-    let sqrtDistance = Math.pow(deltaX, 2) + Math.pow(deltaY, 2);
-    let distance = Math.sqrt(sqrtDistance);
+    // possible intersection
+    if (deltaX < this._radius + circle_2._radius
+      && deltaY < this._radius + circle_2._radius) {
 
-    return distance < this._radius + circle_2._radius;
+      let sqrtDistance = Math.pow(deltaX, 2) + Math.pow(deltaY, 2);
+      let distance = Math.sqrt(sqrtDistance);
+
+      return distance < this._radius + circle_2._radius;
+    }
+
+    return false;
   }
 }
 
