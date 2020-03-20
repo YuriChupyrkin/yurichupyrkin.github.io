@@ -1,19 +1,19 @@
 const Game = require('./src/game/game');
 const WebsocketServer = require('./src/http-helpers/websocket-server');
 const ApiController = require('./src/http-helpers/api-controller');
+const {logInfo} = require('./src/utils/logger');
 
 const path = require('path');
 const express = require('express');
 const http = require('http');
 
 module.exports = function runServer(port) {
-  console.log('SERVER IS STARTING...');
+  logInfo('SERVER IS STARTING...');
 
   const expressServer = express();
   const router = express.Router();
   const httpServer = http.Server(expressServer);
   const websocketServer = new WebsocketServer(httpServer);
-
 
   router.get('/', (req ,res) => {
     res.sendFile(path.join(__dirname + '/../client/main-menu.html'));

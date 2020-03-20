@@ -6,6 +6,7 @@ const gameState = require('./game-state');
 const gameLoop = require('./gameloop');
 const settings = require('../settings/settings');
 const {logInfo, logError} = require('../utils/logger');
+const {randomRange} = require('../utils/math-utils');
 
 class Game {
   constructor(websocketServer) {
@@ -122,6 +123,24 @@ class Game {
     //console.timeEnd('playerRefreshed');
   }
 
+  buildPlayer(plaeyerId) {
+    const randomX = randomRange(-3000, 3000);
+    const randomY = randomRange(-3000, 3000);
+
+    const player = new PlayerCircle(plaeyerId, randomX, randomY);
+
+    const playerParams = player.getCircleParams();
+    const gunId = gameState.getNewCircleId();
+    const gun = new GunCirlce(gunId, playerParams.x + playerParams.radius, player._y);
+    player.setGun(gun);
+    gun.setPlayer(player);
+
+    gameState.addPlayer(player);
+    gameState.addGun(gun);
+
+    return player;
+  }
+
   onPlayerConnected(playerSocket) {
     const plaeyerId = gameState.getNewCircleId();
     logInfo(`player #${plaeyerId} is connected`);
@@ -131,17 +150,10 @@ class Game {
       this.startGame();
     }
 
-    const player = new PlayerCircle(plaeyerId, 0, 0);
+    const player = this.buildPlayer(plaeyerId);
+    const gunId = player.getGunParams().id;
     player.setPlayerSocket(playerSocket);
-    const playerParams = player.getCircleParams();
 
-    const gunId = gameState.getNewCircleId();
-    const gun = new GunCirlce(gunId, playerParams.x + playerParams.radius, player._y);
-    player.setGun(gun);
-    gun.setPlayer(player);
-
-    gameState.addPlayer(player);
-    gameState.addGun(gun);
 
     playerSocket.emit('player-connected', {
       status: 'connected',
