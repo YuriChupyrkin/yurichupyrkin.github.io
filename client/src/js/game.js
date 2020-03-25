@@ -36,7 +36,7 @@ class Game {
   }
 
   startGame() {
-    const FPS = 60;
+    const FPS = SERVER_SETTIGS.CLIENT_FPS;
     const playerScreenParams = {
       width: this._canvas.getWidth(),
       height: this._canvas.getHeight(),
