@@ -5,6 +5,10 @@ function StatusBarHelper() {
     document.getElementById('btn-pause').innerHTML = text;
   }
 
+  const setSettingsVersion = (version) => {
+    document.querySelector('.settings-id').innerHTML = version;
+  }
+
   const updatePosition = (x, y) => {
     document.getElementById('position').innerHTML =
       `${Math.round(x)}; ${Math.round(y)}`;
@@ -28,5 +32,6 @@ function StatusBarHelper() {
     updatePauseButton,
     updatePosition,
     updatePlayerState,
+    setSettingsVersion,
   };
 };

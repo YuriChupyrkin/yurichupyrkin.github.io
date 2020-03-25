@@ -23,6 +23,8 @@ class Game {
       return;
     }
 
+    this._statusBarHelper.setSettingsVersion(serverSettings.SETTINGS_ID);
+
     // build canvas
     this.buildCanvas();
 

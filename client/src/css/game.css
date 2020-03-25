@@ -90,3 +90,14 @@ body {
     border: 1px solid gray;
     background: #f1f0f0;
 }
+
+.player-position {
+    flex: 1.9;
+}
+
+.settings-id {
+    flex: 0.1;
+    margin-right: 0px;
+    color: #a9a7a4;
+    font-size: 10px;
+}
