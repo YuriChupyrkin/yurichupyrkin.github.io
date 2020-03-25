@@ -15,18 +15,6 @@ class BulletCirlce extends Circle {
       return;
     }
 
-    const playerParams = this._player.getCircleParams();
-
-    if (this._x > playerParams.x + settings.NPC_IVISIBLE_BORDER_LENGTH
-      || this._x < playerParams.x - settings.NPC_IVISIBLE_BORDER_LENGTH) {
-      this._hidden = true;
-    }
-
-    if (this._y > playerParams.y + settings.NPC_IVISIBLE_BORDER_LENGTH
-      || this._y < playerParams.y - settings.NPC_IVISIBLE_BORDER_LENGTH) {
-      this._hidden = true;
-    }
-
     this._x += this._dx;
     this._y += this._dy;
   }
