@@ -61,14 +61,14 @@ class Game {
     const npcs = gameState.getNpcInstances();
     const bullets = gameState.getBulletInstances();
 
-    const npcAndBulletsCicles = npcs.concat(bullets);
+    const npcAndBulletsCircles = npcs.concat(bullets);
     const players = gameState.getPlayersInstances();
 
     //console.time('_insteractionResolver');
     this._insteractionResolver.resolve(players, bullets, npcs);
     //console.timeEnd('_insteractionResolver');
 
-    npcAndBulletsCicles.forEach((circle) => {
+    npcAndBulletsCircles.forEach((circle) => {
       if (circle.isDead()) {
         if (circle.getRole() === settings.ROLE_BULLET) {
           gameState.removeBullet(circle._id);
@@ -79,6 +79,8 @@ class Game {
 
       circle.refresh(this._gameCycleId);
     });
+
+    this.notifyPlayers(players);
 
     //console.timeEnd('refreshTime');
   }
@@ -98,31 +100,37 @@ class Game {
       return;
     }
 
+    player._playerScreenParams = message.playerScreenParams;
     player.refresh(message.moveState);
 
     if (player.isDead() && !gameState.isKilledPlayer(message.playerId)) {
       gameState.killPlayer(message.playerId);
     }
-
-    this.playerRefreshed(player, message.playerScreenParams);
   }
 
-  playerRefreshed(player, playerScreenParams) {
-    //console.time('playerRefreshed');
-    const playerParams = player.getCircleParams();
+  notifyPlayers(players) {
+    players.forEach((player) => {
+      const playerScreenParams = player._playerScreenParams;
 
-    const visibleForPlayerCicles =
-      gameState.getAllVisibleCycles(playerParams, playerScreenParams);
+      // no need to refresh player
+      if (!playerScreenParams) {
+        return;
+      }
 
-    this._websocketServer.onPlayerRefreshed(
-      {
-        circles: visibleForPlayerCicles,
-        playerParams: player.getPlayerParams(),
-      },
-      player.getPlayerSocket()
-    );
+      const playerParams = player.getCircleParams();
 
-    //console.timeEnd('playerRefreshed');
+      const visibleForPlayerCircles =
+        gameState.getAllVisibleCycles(playerParams, playerScreenParams);
+  
+      this._websocketServer.onPlayerNotify(
+        {
+          circles: visibleForPlayerCircles,
+          playerParams: player.getPlayerParams(),
+          gameCycleId: this._gameCycleId,
+        },
+        player.getPlayerSocket()
+      );
+    });
   }
 
   buildPlayer(plaeyerId) {

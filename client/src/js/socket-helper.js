@@ -30,8 +30,8 @@ class SocketHelper {
     });
   };
 
-  onPlaeyerRefreshed(callback) {
-    this._socket.on('player-refreshed', callback);
+  onPlayerNotified(callback) {
+    this._socket.on('player-notified', callback);
   }
 
   triggerPlayershoot(playerId) {
