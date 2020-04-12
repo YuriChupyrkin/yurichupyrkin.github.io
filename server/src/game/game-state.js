@@ -117,16 +117,16 @@ class GameState {
   }
 
   getAllVisibleCycles(playerParams, playerScreenParams) {
-    const allCicles = this.getAllCircles();
+    const allCircles = this.getAllCircles();
 
     const visiblePlayers = this.getVisibleCycles(
-      playerParams, playerScreenParams, allCicles.players);
+      playerParams, playerScreenParams, allCircles.players);
     const visibleNpcs = this.getVisibleCycles(
-      playerParams, playerScreenParams, allCicles.npcs);
+      playerParams, playerScreenParams, allCircles.npcs);
     const visibleBullets = this.getVisibleCycles(
-      playerParams, playerScreenParams, allCicles.bullets);
+      playerParams, playerScreenParams, allCircles.bullets);
     const visibleGuns = this.getVisibleCycles(
-      playerParams, playerScreenParams, allCicles.guns);
+      playerParams, playerScreenParams, allCircles.guns);
 
     return {
       players: visiblePlayers,

@@ -6,6 +6,7 @@ class Game {
     this._gameLoop = null;
     this._socketHelper = null;
     this._isGameOver = false;
+    this._refreshCirclesResolver = new RefreshCirclesResolver();
 
     this._refreshCount = 0;
     this._log = {
@@ -38,7 +39,7 @@ class Game {
   }
 
   startGame() {
-    const FPS = SERVER_SETTIGS.CLIENT_FPS;
+    const FPS = SERVER_SETTINGS.FPS;
     const playerScreenParams = {
       width: this._canvas.getWidth(),
       height: this._canvas.getHeight(),
@@ -62,11 +63,18 @@ class Game {
   refresh(serverGameState) {
     const refreshTimeStart = performance.now();
 
-    const circles = serverGameState.circles;
-    const playerInstance = serverGameState.playerParams;
-    this._playerHerlper.setInstance(playerInstance);
+    //const circles = serverGameState.circles;
+    //const playerInstance = serverGameState.playerParams;
 
-    if (playerInstance.isDead && !this._isGameOver) {
+    const resolvedCircles = this._refreshCirclesResolver
+      .resolve(serverGameState);
+
+    const player = resolvedCircles.player;
+    const circle = resolvedCircles.circle;
+
+    this._playerHerlper.setInstance(player);
+
+    if (player.isDead && !this._isGameOver) {
       this._isGameOver = true;
 
       if (confirm('GAME OVER! Press "OK" to exit')) {
@@ -74,25 +82,26 @@ class Game {
       }
     }
 
-    this._statusBarHelper.updatePosition(playerInstance.x, playerInstance.y);
-    this._statusBarHelper.updatePlayerState(serverGameState.playerParams);
+    this._statusBarHelper.updatePosition(player.x, player.y);
+    this._statusBarHelper.updatePlayerState(player);
 
-    const npcs = Object.values(circles.npcs);
-    const bullets = Object.values(circles.bullets);
-    const guns = Object.values(circles.guns);
-    const players = Object.values(circles.players);
 
-    const allCircles = bullets
-      .concat(npcs)
-      .concat(players)
-      .concat(guns);
+    // const npcs = Object.values(circles.npcs);
+    // const bullets = Object.values(circles.bullets);
+    // const guns = Object.values(circles.guns);
+    // const players = Object.values(circles.players);
 
-    this._canvas.draw(playerInstance, allCircles);
+    // const allCircles = bullets
+    //   .concat(npcs)
+    //   .concat(players)
+    //   .concat(guns);
+
+    this._canvas.draw(player, circle);
 
     const refreshTime = performance.now() - refreshTimeStart;
 
     this._refreshCount++;
-    this.writeLog(refreshTime, npcs, bullets, players);
+    //this.writeLog(refreshTime, npcs, bullets, players);
   }
 
   buildCanvas() {
@@ -111,7 +120,7 @@ class Game {
 
   buildConnection() {
     // todo: URL
-    const socket = io.connect(SERVER_SETTIGS.SERVER_ORIGIN);
+    const socket = io.connect(SERVER_SETTINGS.SERVER_ORIGIN);
     const socketHelper = new SocketHelper(socket);
 
     socketHelper.onPlayerConnected((message) => {
