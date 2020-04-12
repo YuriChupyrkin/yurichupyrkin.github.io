@@ -1,7 +1,7 @@
 const gameConfig = {
-  SETTINGS_ID: 1,
+  SETTINGS_ID: 3,
   FPS: 60,
-  CLIENT_SYNC_COORDS_PERIOD: 100,
+  CLIENT_SYNC_COORDS_PERIOD: 120,
 
 
   /* game balance */
@@ -17,10 +17,10 @@ const gameConfig = {
   NPC_MIN_RADIUS: 18,
   NPC_MAX_RADIUS: 46,
   // can be hidden after that rate
-  NPC_DISTANCE_TO_PLAYERS_AREA: 2000,
+  NPC_DISTANCE_TO_PLAYERS_AREA: 5000,
   NPC_LIFE_DURATION: 3000,
   NPC_ENEMY_PROBABILITY: 0.8,
-  NPC_COUNT_PER_PLAYER: 500,
+  NPC_COUNT_PER_PLAYER: 50,
 
 
   /* canvas */
