@@ -1,7 +1,7 @@
 const gameConfig = {
-  SETTINGS_ID: 1,
+  SETTINGS_ID: 4,
   FPS: 60,
-  CLIENT_FPS: 60,
+  CLIENT_SYNC_COORDS_PERIOD: 120,
 
 
   /* game balance */
@@ -26,8 +26,9 @@ const gameConfig = {
   GAZE_ZONE_FILL_COLOR: 'rgba(220, 232, 228, 0.3)',
 
 
+
   /* canvas */
-  CANVAS_CELL_LENGHT: 200,
+  CANVAS_CELL_LENGTH: 200,
 
 
   /* player */

@@ -7,15 +7,15 @@ module.exports = class WebsocketServer {
     this._onPlayerShootCallback = null;
     this._onPlayerConnectedCallback = null;
     this._onRefreshPlayerCallback = null;
-    this.onPlayerRefreshedCallback  = null;
+    this.onPlayerNotifiedCallback  = null;
   }
 
   setOnRefreshPlayerCallback(onRefreshPlayerCallback) {
     this._onRefreshPlayerCallback = onRefreshPlayerCallback;
   }
 
-  setOnPlayerRefreshedCallback(onPlayerRefreshedCallback) {
-    this.onPlayerRefreshedCallback = onPlayerRefreshedCallback;
+  setOnPlayerRefreshedCallback(onPlayerNotifiedCallback) {
+    this.onPlayerNotifiedCallback = onPlayerNotifiedCallback;
   }
 
   setOnPlayerConnectedCallback(onPlayerConnectedCallback) {
@@ -44,8 +44,8 @@ module.exports = class WebsocketServer {
     this._onRefreshPlayerCallback(message);
   }
 
-  onPlayerRefreshed(message, socket) {
-    socket.emit('player-refreshed', message);
+  onPlayerNotify(message, socket) {
+    socket.emit('player-notified', message);
   }
 
   onPlayerShoot(message) {

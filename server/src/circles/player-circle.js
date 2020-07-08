@@ -15,6 +15,7 @@ class PlayerCirlce extends Circle {
     this._gun = {};
     this._playerSpeed = settings.PLAYER_START_SPEED;
     this._playerSocket = null;
+    this._playerScreenParams = null;
 
     this.setRole(settings.ROLE_PLAYER);
   }

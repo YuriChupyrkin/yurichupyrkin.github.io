@@ -5,7 +5,7 @@ class Canvas {
     console.log('canvas loaded');
     console.log(this._canvas);
 
-    this._canvasCellLength = SERVER_SETTIGS.CANVAS_CELL_LENGHT;
+    this._canvasCellLength = SERVER_SETTINGS.CANVAS_CELL_LENGTH;
   }
 
   setSize(width, height) {
@@ -80,7 +80,7 @@ class Canvas {
     ctx.strokeStyle = colors.stroke;
     ctx.lineWidth = 2;
 
-    if (circle.role === SERVER_SETTIGS.ROLE_GAME_ZONE) {
+    if (circle.role === SERVER_SETTINGS.ROLE_GAME_ZONE) {
       ctx.lineWidth = 10;
     }
 
@@ -97,38 +97,38 @@ class Canvas {
     let fillColor;
 
     switch (roleName) {
-      case SERVER_SETTIGS.ROLE_PLAYER:
-        strokeColor = SERVER_SETTIGS.PLAYER_STROKE_COLOR;
-        fillColor = SERVER_SETTIGS.PLAYER_FILL_COLOR;
+      case SERVER_SETTINGS.ROLE_PLAYER:
+        strokeColor = SERVER_SETTINGS.PLAYER_STROKE_COLOR;
+        fillColor = SERVER_SETTINGS.PLAYER_FILL_COLOR;
         break;
-      case SERVER_SETTIGS.ROLE_BULLET: {
-        strokeColor = SERVER_SETTIGS.BULLET_STROKE_COLOR;
-        fillColor = SERVER_SETTIGS.BULLET_FILL_COLOR;
-        break;
-      }
-      case SERVER_SETTIGS.ROLE_GUN: {
-        strokeColor = SERVER_SETTIGS.GUN_STROKE_COLOR;
-        fillColor = SERVER_SETTIGS.GUN_FILL_COLOR;
+      case SERVER_SETTINGS.ROLE_BULLET: {
+        strokeColor = SERVER_SETTINGS.BULLET_STROKE_COLOR;
+        fillColor = SERVER_SETTINGS.BULLET_FILL_COLOR;
         break;
       }
-      case SERVER_SETTIGS.ROLE_NPC_AMMO: {
-        strokeColor = SERVER_SETTIGS.NPC_DEFAULT_STROKE_COLOR;
-        fillColor = SERVER_SETTIGS.NPC_AMMO_FILL_COLOR;
+      case SERVER_SETTINGS.ROLE_GUN: {
+        strokeColor = SERVER_SETTINGS.GUN_STROKE_COLOR;
+        fillColor = SERVER_SETTINGS.GUN_FILL_COLOR;
         break;
       }
-      case SERVER_SETTIGS.ROLE_NPC_HEALTH: {
-        strokeColor = SERVER_SETTIGS.NPC_DEFAULT_STROKE_COLOR;
-        fillColor = SERVER_SETTIGS.NPC_HEALTH_FILL_COLOR;
+      case SERVER_SETTINGS.ROLE_NPC_AMMO: {
+        strokeColor = SERVER_SETTINGS.NPC_DEFAULT_STROKE_COLOR;
+        fillColor = SERVER_SETTINGS.NPC_AMMO_FILL_COLOR;
         break;
       }
-      case SERVER_SETTIGS.ROLE_NPC_ENEMY: {
-        strokeColor = SERVER_SETTIGS.NPC_ENEMY_STROKE_COLOR;
-        fillColor = SERVER_SETTIGS.NPC_ENEMY_FILL_COLOR;
+      case SERVER_SETTINGS.ROLE_NPC_HEALTH: {
+        strokeColor = SERVER_SETTINGS.NPC_DEFAULT_STROKE_COLOR;
+        fillColor = SERVER_SETTINGS.NPC_HEALTH_FILL_COLOR;
         break;
       }
-      case SERVER_SETTIGS.ROLE_GAME_ZONE: {
-        fillColor = SERVER_SETTIGS.GAZE_ZONE_FILL_COLOR;
-        strokeColor = SERVER_SETTIGS.GAZE_ZONE_STROKE_COLOR;
+      case SERVER_SETTINGS.ROLE_NPC_ENEMY: {
+        strokeColor = SERVER_SETTINGS.NPC_ENEMY_STROKE_COLOR;
+        fillColor = SERVER_SETTINGS.NPC_ENEMY_FILL_COLOR;
+        break;
+      }
+      case SERVER_SETTINGS.ROLE_GAME_ZONE: {
+        fillColor = SERVER_SETTINGS.GAZE_ZONE_FILL_COLOR;
+        strokeColor = SERVER_SETTINGS.GAZE_ZONE_STROKE_COLOR;
         break;
       }
     }
