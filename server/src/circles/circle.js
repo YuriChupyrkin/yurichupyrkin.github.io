@@ -7,9 +7,6 @@ class Circle {
     this._dx = dx || 0;
     this._dy = dy || 0;
 
-    this._birthCycleId = 0;
-    this._lifeDuration = 0;
-
     this._isDead = false;
   }
 
@@ -37,20 +34,10 @@ class Circle {
     return this._isDead;
   }
 
-  isReadyForDie(gameCycleId) {
-    if (gameCycleId - this._birthCycleId > this._lifeDuration) {
-      this.kill();
-      return true;
-    }
-  }
-
   kill() {
     this._isDead = true;
   }
 
-  setBirthCycleId(gameCycleId) {
-    this._birthCycleId = gameCycleId;
-  }
 }
 
 module.exports = Circle;

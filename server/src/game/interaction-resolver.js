@@ -3,13 +3,16 @@ const gameState = require('./game-state');
 
 class InteractionResolver {
 
-  resolve(players, bullets, npcs) {
-    this.resolveForAll(players, bullets, npcs);
+  resolve(players, bullets, npcs, gameZone) {
+    this.resolveForAll(players, bullets, npcs, gameZone);
   }
 
-  resolveForAll(players, bullets, npcs) {
+  resolveForAll(players, bullets, npcs, gameZone) {
     const allCircles = players.concat(bullets, npcs);
-    for(let index = 0; index < allCircles.length; index++) {
+
+    this.resolveGameZoneIntersection(players, bullets, npcs, gameZone);
+
+    for (let index = 0; index < allCircles.length; index++) {
       const circle_1 = allCircles[index];
 
       if (circle_1.isDead()) {
@@ -31,6 +34,43 @@ class InteractionResolver {
       }
     }
   }
+
+  resolveGameZoneIntersection(players, bullets, npcs, gameZone) {
+    const resolve = (circles, outGameZoneRosolver) => {
+      circles.forEach((circle) => {
+        if (this.isOutOfGameZone(gameZone, circle)) {
+          outGameZoneRosolver(circle);
+        }
+      });
+    }
+
+    const bulletOutGameZoneResolver = (bullet) => {
+      bullet.kill();
+    };
+
+    const npcOutGameZoneResolver = (npc) => {
+      npc._dx *= -1;
+      npc._dy *= -1;
+
+      npc._x = npc._x + npc._dx * 3;
+      npc._y = npc._y + npc._dy * 3;
+    }
+
+    const playerOutGameZoneResolver = (player) => {
+      player.decreaseHealth();
+
+      player._dx *= -1;
+      player._dy *= -1;
+
+      player._x = player._x + player._dx * 4;
+      player._y = player._y + player._dy * 4;
+    }
+
+
+    resolve(bullets, bulletOutGameZoneResolver);
+    resolve(npcs, npcOutGameZoneResolver);
+    resolve(players, playerOutGameZoneResolver);
+  };
 
   resolveIntersection(circle_1, circle_2) {
     const intersectionInfo = this.getIntersectionInfo(circle_1, circle_2);
@@ -281,6 +321,16 @@ class InteractionResolver {
     }
 
     return false;
+  }
+
+  isOutOfGameZone(gameZone, circle) {
+    let deltaX = Math.abs(gameZone._x - circle._x);
+    let deltaY = Math.abs(gameZone._y - circle._y);
+
+    let sqrtDistance = Math.pow(deltaX, 2) + Math.pow(deltaY, 2);
+    let distance = Math.sqrt(sqrtDistance);
+
+    return distance + circle._radius > gameZone._radius;
   }
 }
 

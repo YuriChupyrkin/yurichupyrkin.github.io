@@ -46,7 +46,7 @@ class GunCircle extends Circle {
     this._y = playerY + playerRadius * Math.sin(alfa);
   }
 
-  shoot(gameCycleId) {
+  shoot() {
     if (!this._bulletCount) {
       return;
     }
@@ -68,7 +68,6 @@ class GunCircle extends Circle {
     );
 
     bullet.setPlayer(this._player);
-    bullet.setBirthCycleId(gameCycleId);
     gameState.addBullet(bullet);
 
     this._bulletCount--;

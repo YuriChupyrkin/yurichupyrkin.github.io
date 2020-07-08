@@ -5,16 +5,10 @@ class BulletCirlce extends Circle {
   constructor(id, x, y, dx, dy, radius) {
     super(id, x, y, dx, dy, radius);
     this._player = null;
-    this._lifeDuration = settings.NPC_LIFE_DURATION;
-
     this.setRole(settings.ROLE_BULLET);
   }
 
-  refresh(gameCycleId) {
-    if (this.isReadyForDie(gameCycleId)) {
-      return;
-    }
-
+  refresh() {
     this._x += this._dx;
     this._y += this._dy;
   }

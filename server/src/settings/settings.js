@@ -16,11 +16,14 @@ const gameConfig = {
   BULLET_SPEED_RATE: 0.3,
   NPC_MIN_RADIUS: 18,
   NPC_MAX_RADIUS: 46,
-  // can be hidden after that rate
-  NPC_DISTANCE_TO_PLAYERS_AREA: 2000,
-  NPC_LIFE_DURATION: 20000,
   NPC_ENEMY_PROBABILITY: 0.8,
-  NPC_COUNT_PER_PLAYER: 1000,
+
+  /* GAME ZONE */
+  REDUCE_GAME_ZONE_RATE: 3,
+  GAME_ZONE_NPC_DENCITY_RATE: 600,
+  GAME_ZONE_RADIUS: 5000,
+  GAZE_ZONE_STROKE_COLOR: 'red',
+  GAZE_ZONE_FILL_COLOR: 'rgba(220, 232, 228, 0.3)',
 
 
   /* canvas */
@@ -55,6 +58,7 @@ const gameConfig = {
   ROLE_BULLET: 'BULLET',
   ROLE_GUN: 'GUN',
   ROLE_PLAYER: 'PLAYER',
+  ROLE_GAME_ZONE: 'GAME_ZONE',
 };
 
 module.exports = gameConfig;

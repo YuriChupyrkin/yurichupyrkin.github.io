@@ -11,73 +11,48 @@ class NpcBuilder {
     gameState.removeAllNpcs();
   }
 
-  tryToAddNpcs(npcCountPerPlayer, gameCycleId) {
-    const playersCount = gameState.getPlayersCount();
+  tryToAddNpcs() {
     const npcsCount = gameState.getNpcsCount();
 
-    const expectedNpcCount = npcCountPerPlayer * playersCount;
+    const densityRate = settings.GAME_ZONE_NPC_DENCITY_RATE;
+    const gameZoneRadius = gameState.getGameZoneCircle().radius;
+    const expectedNpcCount = Math.ceil(
+      Math.PI * Math.pow(gameZoneRadius / densityRate, 2)
+    );
+
     const needToAddCount = expectedNpcCount - npcsCount;
 
     if (needToAddCount > 0) {
-      this.buildNPCs(needToAddCount, gameCycleId);
+      this.buildNPCs(needToAddCount);
     }
   }
 
-  buildNPCs(count, gameCycleId) {
-    const playersArea = this.getPlayersArea();
-
+  buildNPCs(count) {
     for(let i = 0; i < count; i++) {
-      this.buildNPC(playersArea, gameCycleId);
+      this.buildNPC();
     }
   }
 
-  buildNPC(playersArea, gameCycleId) {
-    const randomX = randomRange(playersArea.minX, playersArea.maxX);
-    const randomY = randomRange(playersArea.minY, playersArea.maxY);
-
+  buildNPC() {
+    const respPoint = this.getNPCRespPoint();
     const dx = randomRange(-7, 7);
     const dy = randomRange(-7, 7);
 
     const id = gameState.getNewCircleId();
-    const npc = new NpcCicle(id, randomX, randomY, dx, dy, 24);
+    const npc = new NpcCicle(id, respPoint.x, respPoint.y, dx, dy, 24);
     npc.setRole(this.getRandomRole());
-    npc.setBirthCycleId(gameCycleId);
 
     gameState.addNpc(npc);
   }
 
-  getPlayersArea() {
-    const distanceToPlayers = settings.NPC_DISTANCE_TO_PLAYERS_AREA;
-
-    let minX = -distanceToPlayers;
-    let maxX = distanceToPlayers;
-    let minY = -distanceToPlayers;
-    let maxY = distanceToPlayers;
-
-    const players = gameState.getPlayers();
-
-    if (!players.length) {
-      return {
-        minX,
-        maxX,
-        minY,
-        maxY,
-      };
-    }
-
-    const xs = players.map((player) => player.x).sort();
-    const ys = players.map((player) => player.y).sort();
-
-    minX = xs[0] - distanceToPlayers;
-    maxX = xs[xs.length - 1] + distanceToPlayers;
-    minY = ys[0] - distanceToPlayers;
-    maxY = ys[ys.length - 1] + distanceToPlayers;
+  getNPCRespPoint() {
+    const inGameZoneCoord = gameState.getGameZoneCircle().radius * 0.7;
+    const randomX = randomRange(-inGameZoneCoord, inGameZoneCoord);
+    const randomY = randomRange(-inGameZoneCoord, inGameZoneCoord);
 
     return {
-      minX,
-      maxX,
-      minY,
-      maxY,
+      x: randomX,
+      y: randomY,
     };
   }
 
