@@ -30,9 +30,12 @@ module.exports = function runServer(port) {
 
   //add the router
   expressServer.use('/', router);
+  port = port || 8888;
   httpServer.listen(port || 8888);
 
   const game = new Game(websocketServer);
 
   websocketServer.run();
+
+  logInfo(`SERVER IS STARTED ON PORT ${port}...`);
 }

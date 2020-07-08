@@ -73,8 +73,8 @@ class PlayerCirlce extends Circle {
     this._y += this._dy;
   }
 
-  shoot(gameCycleId) {
-    this._gun.shoot(gameCycleId);
+  shoot() {
+    this._gun.shoot();
   }
 
   addBulletsCount(npcRadius) {

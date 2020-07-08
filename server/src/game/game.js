@@ -2,6 +2,7 @@ const PlayerCircle = require('../circles/player-circle');
 const GunCirlce = require('../circles/gun-cirlce');
 const NpcBuilder = require('./npc-builder');
 const InteractionResolver = require('./interaction-resolver');
+const GameZoneCircle = require('../circles/game-zone-circle');
 const gameState = require('./game-state');
 const gameLoop = require('./gameloop');
 const settings = require('../settings/settings');
@@ -32,10 +33,10 @@ class Game {
     this._gameLoopId = id;
 
     logInfo('GAME STARTED! ID:' + id);
-    this._npcBuilder.buildNPCs(
-      settings.NPC_COUNT_PER_PLAYER,
-      this._gameCycleId
-    );
+
+    gameState.setGameZoneCircle(this.buildGameZone());
+
+    this._npcBuilder.tryToAddNpcs();
   }
 
   stopGame() {
@@ -52,10 +53,9 @@ class Game {
     this._gameCycleId++;
 
     if (this._gameCycleId % 100 == 0) {
-      this._npcBuilder.tryToAddNpcs(
-        settings.NPC_COUNT_PER_PLAYER,
-        this._gameCycleId
-      );
+      //console.time('tryToAddNpcs');
+      this._npcBuilder.tryToAddNpcs();
+      //console.timeEnd('tryToAddNpcs');
     }
 
     const npcs = gameState.getNpcInstances();
@@ -64,8 +64,10 @@ class Game {
     const npcAndBulletsCicles = npcs.concat(bullets);
     const players = gameState.getPlayersInstances();
 
+    const gameZone = gameState.getGameZoneInstance();
+
     //console.time('_insteractionResolver');
-    this._insteractionResolver.resolve(players, bullets, npcs);
+    this._insteractionResolver.resolve(players, bullets, npcs, gameZone);
     //console.timeEnd('_insteractionResolver');
 
     npcAndBulletsCicles.forEach((circle) => {
@@ -77,8 +79,16 @@ class Game {
         }
       }
 
-      circle.refresh(this._gameCycleId);
+      circle.refresh();
     });
+
+    if (gameZone) {
+      if (gameZone.isDead()) {
+        this.stopGame();
+        return;
+      }
+      gameZone.refresh(this._gameCycleId);
+    }
 
     //console.timeEnd('refreshTime');
   }
@@ -89,7 +99,7 @@ class Game {
       return;
     }
 
-    player.shoot(this._gameCycleId);
+    player.shoot();
   }
 
   onRefreshPlayer(message) {
@@ -125,9 +135,21 @@ class Game {
     //console.timeEnd('playerRefreshed');
   }
 
+  buildGameZone() {
+    const gameZoneId = gameState.getNewCircleId();
+    const gameZoneCircle = new GameZoneCircle(
+      gameZoneId,
+      gameSettings.GAME_ZONE_RADIUS
+    );
+
+    return gameZoneCircle;
+  }
+
   buildPlayer(plaeyerId) {
-    const randomX = randomRange(-3000, 3000);
-    const randomY = randomRange(-3000, 3000);
+    const inGameZoneCoord = gameState.getGameZoneCircle().radius * 0.7;
+
+    const randomX = randomRange(-inGameZoneCoord, inGameZoneCoord);
+    const randomY = randomRange(-inGameZoneCoord, inGameZoneCoord);
 
     const player = new PlayerCircle(plaeyerId, randomX, randomY);
 

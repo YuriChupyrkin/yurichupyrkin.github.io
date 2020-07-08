@@ -78,6 +78,12 @@ class Canvas {
     ctx.beginPath();
     ctx.arc(canvasX, canvasY, radius, 0, Math.PI * 2, false);
     ctx.strokeStyle = colors.stroke;
+    ctx.lineWidth = 2;
+
+    if (circle.role === SERVER_SETTIGS.ROLE_GAME_ZONE) {
+      ctx.lineWidth = 10;
+    }
+
     ctx.stroke();
 
     if (colors.fill) {
@@ -118,6 +124,11 @@ class Canvas {
       case SERVER_SETTIGS.ROLE_NPC_ENEMY: {
         strokeColor = SERVER_SETTIGS.NPC_ENEMY_STROKE_COLOR;
         fillColor = SERVER_SETTIGS.NPC_ENEMY_FILL_COLOR;
+        break;
+      }
+      case SERVER_SETTIGS.ROLE_GAME_ZONE: {
+        fillColor = SERVER_SETTIGS.GAZE_ZONE_FILL_COLOR;
+        strokeColor = SERVER_SETTIGS.GAZE_ZONE_STROKE_COLOR;
         break;
       }
     }

@@ -4,9 +4,22 @@ class GameState {
     this._npcs = {};
     this._bullets = {};
     this._guns = {};
+    this._gameZone = null;
     this._killedPlayers = {};
 
     this._newCircleId = 0;
+  }
+
+  setGameZoneCircle(gameZone) {
+    this._gameZone = gameZone;
+  }
+
+  getGameZoneInstance() {
+    return this._gameZone;
+  }
+
+  getGameZoneCircle() {
+    return this._gameZone && this._gameZone.getCircleParams();
   }
 
   addPlayer(player) {
@@ -103,6 +116,7 @@ class GameState {
     this._bullets = {};
     this._guns = {};
     this._killedPlayers = {};
+    this._gameZone = null;
 
     this._newCircleId = 0;
   }
@@ -113,6 +127,7 @@ class GameState {
       npcs: this.getNpcs(),
       bullets: this.getBullets(),
       guns: this.getGuns(),
+      gameZone: this.getGameZoneCircle(),
     };
   }
 
@@ -133,6 +148,7 @@ class GameState {
       npcs: visibleNpcs,
       bullets: visibleBullets,
       guns: visibleGuns,
+      gameZone: this.getGameZoneCircle(),
     }
   }
 

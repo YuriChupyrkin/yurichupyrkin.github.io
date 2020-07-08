@@ -82,7 +82,8 @@ class Game {
     const guns = Object.values(circles.guns);
     const players = Object.values(circles.players);
 
-    const allCircles = bullets
+    const allCircles = [circles.gameZone]
+      .concat(bullets)
       .concat(npcs)
       .concat(players)
       .concat(guns);
