@@ -38,25 +38,24 @@ class Game {
   }
 
   startGame() {
-    const FPS = SERVER_SETTIGS.CLIENT_FPS;
     const playerScreenParams = {
       width: this._canvas.getWidth(),
       height: this._canvas.getHeight(),
     };
 
-    this._gameLoop = new GameLoop(
-      FPS,
-      this.gameLoop.bind(this, playerScreenParams)
-    );
-    this._gameLoop.start();
-  }
+    // Run browser animation
+    (() => {
+      var animate = () => {
+        requestAnimationFrame(animate);
+        if (!this._playerHerlper) {
+          return;
+        }
+    
+        this._playerHerlper.refresh(playerScreenParams);
+      }
 
-  gameLoop(playerScreenParams) {
-    if (!this._playerHerlper) {
-      return;
-    }
-
-    this._playerHerlper.refresh(playerScreenParams);
+      animate();
+    })();
   }
 
   refresh(serverGameState) {

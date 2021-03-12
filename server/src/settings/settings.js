@@ -1,7 +1,6 @@
 const gameConfig = {
   SETTINGS_ID: 1,
   FPS: 60,
-  CLIENT_FPS: 60,
 
 
   /* game balance */
