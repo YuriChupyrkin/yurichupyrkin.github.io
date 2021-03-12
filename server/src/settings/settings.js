@@ -1,5 +1,5 @@
 const gameConfig = {
-  SETTINGS_ID: 1,
+  SETTINGS_ID: "1.0.1",
   FPS: 60,
 
 
