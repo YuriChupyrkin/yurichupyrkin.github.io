@@ -1,7 +1,7 @@
 class Canvas {
   init(canvas) {
     this._canvas = canvas;
-    this._context = this._canvas.getContext('2d', { alpha: false });
+    this._context = this._canvas.getContext('2d');
     console.log('canvas loaded');
     console.log(this._canvas);
 
