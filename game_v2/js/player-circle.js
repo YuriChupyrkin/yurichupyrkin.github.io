@@ -8,13 +8,17 @@ class PlayerCirlce extends Circle {
     this._score = 0;
     this._health = GAME_CONFIG.START_HEALTH;
 
-    this._gun = {};
+    //this._gun = {};
+    this._guns = [];
     this._role = GAME_CONFIG.PLAYER_ROLE
   }
 
   refresh(keyState) {
     this.move(keyState);
-    this._gun.refresh(this.getCircleParams(), keyState);
+    //this._gun.refresh(this.getCircleParams(), keyState);
+    this._guns.forEach(g => {
+      g.refresh(this.getCircleParams(), keyState);
+    });
   }
 
   move(keyState) {
@@ -36,20 +40,24 @@ class PlayerCirlce extends Circle {
   }
 
   shoot() {
-    this._gun.shoot(this.getCircleParams());
+    //this._gun.shoot(this.getCircleParams());
+    this._guns.forEach(g => g.shoot(this.getCircleParams()));
   }
 
   getBullets() {
-    return this._gun.getBullets();
+    return Object.assign(this._guns[0].getBullets(), this._guns[1].getBullets());
+    //return this._gun.getBullets();
   }
 
   addBulletsCount(npcRadius) {
-    this._gun.addBulletsCount(npcRadius);
+    this._guns[0].addBulletsCount(npcRadius);
+    //this._gun.addBulletsCount(npcRadius);
     this.animatePlayer(GAME_CONFIG.BULLETS_UPDATED_COLORS);
   }
 
   getBulletsCount() {
-    return this._gun.getBulletsCount();
+    return 1000;
+   // return this._gun.getBulletsCount();
   }
 
   increaseHelth(npcRadius) {
@@ -86,10 +94,19 @@ class PlayerCirlce extends Circle {
     const x = this._x + this._radius
     const gun = new GunCirlce(x, this._y);
     this._gun = gun;
+
+    this._guns = [
+      new GunCirlce(x, this._y, false),
+      new GunCirlce(x - 300, this._y, true)
+    ];
   }
 
   getGun() {
     return this._gun;
+  }
+
+  getGuns() {
+    return this._guns;
   }
 
   updateSpeed() {
