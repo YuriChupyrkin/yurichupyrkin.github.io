@@ -1,5 +1,5 @@
 class GunCirlce extends Circle {
-  constructor(x, y) {
+  constructor(x, y, b) {
     super(x, y, 0, 0, GAME_CONFIG.GUN_RADIUS);
 
     this.setStrokeColor('#110952');
@@ -10,6 +10,7 @@ class GunCirlce extends Circle {
     this._bullets = {};
 
     this._angle = 0;
+    this._bonus = b;
   }
 
   refresh(playerCircleParams, keyState) {
@@ -36,7 +37,12 @@ class GunCirlce extends Circle {
     const playerRadius =  playerCircleParams.radius;
     const alfa = this._angle * Math.PI / 180;
 
-    this._x = playerX + playerRadius * Math.cos(alfa);
+    if (this._bonus) {
+      this._x = playerX - playerRadius * Math.cos(alfa);
+    } 
+    else {
+      this._x = playerX + playerRadius * Math.cos(alfa);
+    }
     this._y = playerY + playerRadius * Math.sin(alfa);
   }
 
@@ -67,6 +73,7 @@ class GunCirlce extends Circle {
   }
 
   getBulletId() {
+    return Math.floor(Math.random() * 100) * Math.floor(Math.random() * 100) * Math.floor(Math.random() * 100);
     return this._lastBulletId++;
   }
 

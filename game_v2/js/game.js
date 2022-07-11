@@ -58,9 +58,10 @@ class Game {
     const bulletsArray = Object.values(bullets);
     const allCircles = bulletsArray
       .concat(npcsArray)
+      .concat(player.getGuns())
       .concat([
         player,
-        player.getGun()
+        //player.getGun()
       ]);
 
 
